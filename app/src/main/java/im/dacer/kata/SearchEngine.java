@@ -6,7 +6,7 @@ package im.dacer.kata;
 
 import android.content.Context;
 
-import im.dacer.kata.core.action.BaiduSearchAction;
+import im.dacer.kata.core.action.BingSearchAction;
 import im.dacer.kata.core.action.GoogleSearchAction;
 import im.dacer.kata.core.action.SearchAction;
 import com.baoyz.treasure.Treasure;
@@ -16,14 +16,14 @@ import com.baoyz.treasure.Treasure;
  */
 public class SearchEngine {
 
-    public static final String BAIDU = "百度";
+    public static final String BING = "Bing";
     public static final String GOOGLE = "Google";
 
     public static SearchAction getSearchAction(Context context) {
         Config config = Treasure.get(context, Config.class);
         switch (config.getSearchEngine()) {
-            case BAIDU:
-                return BaiduSearchAction.create();
+            case BING:
+                return BingSearchAction.create();
             case GOOGLE:
                 return GoogleSearchAction.create();
         }
@@ -31,6 +31,6 @@ public class SearchEngine {
     }
 
     public static String[] getSupportSearchEngineList() {
-        return new String[]{BAIDU, GOOGLE};
+        return new String[]{BING, GOOGLE};
     }
 }

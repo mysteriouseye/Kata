@@ -13,7 +13,7 @@ import com.baoyz.treasure.Preferences;
 @Preferences
 public interface Config {
 
-    @Default(SearchEngine.BAIDU)
+    @Default(SearchEngine.BING)
     String getSearchEngine();
     void setSearchEngine(String searchEngine);
 

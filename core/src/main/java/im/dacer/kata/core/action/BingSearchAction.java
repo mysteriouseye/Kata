@@ -9,14 +9,14 @@ import android.net.Uri;
 /**
  * Created by baoyongzhang on 2016/10/26.
  */
-public class BaiduSearchAction extends SearchAction {
+public class BingSearchAction extends SearchAction {
 
-    public static BaiduSearchAction create() {
-        return new BaiduSearchAction();
+    public static BingSearchAction create() {
+        return new BingSearchAction();
     }
 
     @Override
     public Uri createSearchUriWithEncodedText(String encodedText) {
-        return Uri.parse("https://www.baidu.com/s?wd=" + encodedText);
+        return Uri.parse("https://www.bing.com/search?q=" + encodedText);
     }
 }
