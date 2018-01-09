@@ -1,5 +1,5 @@
 # Kata
-
+Based on [BigBang](https://github.com/baoyongzhang/BigBang) and [Kuromoji](https://github.com/atilika/kuromoji)
 
 # License
 
