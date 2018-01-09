@@ -10,10 +10,14 @@ import android.support.annotation.StringDef;
 import im.dacer.kata.core.action.Action;
 import im.dacer.kata.segment.SimpleParser;
 import im.dacer.kata.segment.parser.KuromojiParser;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 
 import java.lang.annotation.Retention;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
@@ -69,10 +73,22 @@ public class BigBang {
 
     public static SimpleParser getSegmentParser() {
         if (sParser == null) {
-            // TODO Default parser
             sParser = new KuromojiParser();
         }
         return sParser;
+    }
+
+    public static Observable<SimpleParser> getSegmentParserAsync() {
+
+        return Observable.fromCallable(new Callable<SimpleParser>() {
+            @Override
+            public SimpleParser call() throws Exception {
+                if (sParser == null) {
+                    sParser = new KuromojiParser();
+                }
+                return sParser;
+            }
+        }).subscribeOn(Schedulers.io());
     }
 
     public static void setSegmentParser(SimpleParser parser) {

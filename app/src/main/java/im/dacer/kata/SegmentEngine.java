@@ -10,6 +10,8 @@ import im.dacer.kata.core.BigBang;
 import im.dacer.kata.segment.CharacterParser;
 import im.dacer.kata.segment.SimpleParser;
 import im.dacer.kata.segment.parser.KuromojiParser;
+import timber.log.Timber;
+
 import com.baoyz.treasure.Treasure;
 
 /**

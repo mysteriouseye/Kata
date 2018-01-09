@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <im.dacer.kata.core.BigBangLayout
-            android:id="@+id/bigbang"
+            android:id="@+id/bigbangLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
