@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BigBang</string>
+    <string name="about">关于</string>
+    <string name="description">
+    </string>
+    <string name="settings">设置</string>
+    <string name="style">样式</string>
+</resources>
