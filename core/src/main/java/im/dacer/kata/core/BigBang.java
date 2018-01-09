@@ -8,8 +8,8 @@ import android.content.Context;
 import android.support.annotation.StringDef;
 
 import im.dacer.kata.core.action.Action;
-import im.dacer.kata.segment.NetworkParser;
 import im.dacer.kata.segment.SimpleParser;
+import im.dacer.kata.segment.parser.KuromojiParser;
 
 import java.lang.annotation.Retention;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public class BigBang {
     public static SimpleParser getSegmentParser() {
         if (sParser == null) {
             // TODO Default parser
-            sParser = new NetworkParser();
+            sParser = new KuromojiParser();
         }
         return sParser;
     }

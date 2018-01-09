@@ -25,7 +25,7 @@ public interface Config {
     boolean isListenClipboard();
     void setListenClipboard(boolean listenClipboard);
 
-    @Default(SegmentEngine.TYPE_NETWORK)
+    @Default(SegmentEngine.TYPE_THIRD)
     String getSegmentEngine();
     void setSegmentEngine(String segmentEngine);
 

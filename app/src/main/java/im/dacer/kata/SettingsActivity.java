@@ -27,7 +27,6 @@ import com.baoyz.treasure.Treasure;
 public class SettingsActivity extends AppCompatActivity {
 
     private TextView mSearchEngineText;
-    private TextView mSegmentEngineText;
     private SwitchCompat mAutoCopySwitch;
     private SwitchCompat mListenClipboardSwitch;
     private Config mConfig;
@@ -38,28 +37,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_settings);
 
-        // 默认分词引擎
-        findViewById(R.id.segment_engine).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(SettingsActivity.this).setItems(SegmentEngine.getSupportSegmentEngineNameList(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mConfig.setSegmentEngine(SegmentEngine.getSupportSegmentEngineList()[which]);
-                        SegmentEngine.setup(getApplicationContext());
-                        updateUI();
-                        if (SegmentEngine.TYPE_THIRD.equals(SegmentEngine.getSegmentParserType(getApplicationContext()))) {
-                            new AlertDialog.Builder(SettingsActivity.this).setMessage("本地分词第一次使用的会比较慢，需要将字典加载到内存，会额外占用一部分内存空间。")
-                                    .setPositiveButton("确定", null).show();
-                        }
-                    }
-                }).show();
-            }
-        });
-
-        mSegmentEngineText = (TextView) findViewById(R.id.segment_engine_text);
-
-        // 默认搜索引擎
         findViewById(R.id.search_engine).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +53,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         mSearchEngineText = (TextView) findViewById(R.id.search_engine_text);
 
-        // 返回自动复制
         mAutoCopySwitch = (SwitchCompat) findViewById(R.id.auto_copy_switch);
         mAutoCopySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -87,7 +63,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        // 返回自动复制
         mListenClipboardSwitch = (SwitchCompat) findViewById(R.id.listen_clipboard_switch);
         mListenClipboardSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -116,7 +91,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void updateUI() {
         mSearchEngineText.setText(mConfig.getSearchEngine());
-        mSegmentEngineText.setText(SegmentEngine.getSegmentEngineName(getApplicationContext()));
         mAutoCopySwitch.setChecked(mConfig.isAutoCopy());
         mListenClipboardSwitch.setChecked(mConfig.isListenClipboard());
     }
