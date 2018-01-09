@@ -24,8 +24,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import im.dacer.kata.core.R;
-
 import java.util.ArrayList;
 import java.util.List;
 

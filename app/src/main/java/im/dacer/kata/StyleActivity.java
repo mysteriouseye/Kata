@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import im.dacer.kata.R;
-import im.dacer.kata.core.BigBang;
-import im.dacer.kata.core.BigBangLayout;
 import com.baoyz.treasure.Treasure;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
+import im.dacer.kata.core.BigBang;
+import im.dacer.kata.core.BigBangLayout;
 
 public class StyleActivity extends AppCompatActivity {
 

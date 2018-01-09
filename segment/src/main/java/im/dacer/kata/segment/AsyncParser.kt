@@ -2,8 +2,6 @@ package im.dacer.kata.segment
 
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
 abstract class AsyncParser<T> : Parser<T> {
 

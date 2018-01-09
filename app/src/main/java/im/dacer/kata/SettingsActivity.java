@@ -15,11 +15,11 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import im.dacer.kata.R;
+import com.baoyz.treasure.Treasure;
+
 import im.dacer.kata.core.BigBang;
 import im.dacer.kata.core.action.CopyAction;
 import im.dacer.kata.service.ListenClipboardService;
-import com.baoyz.treasure.Treasure;
 
 /**
  * Created by baoyongzhang on 2016/10/26.

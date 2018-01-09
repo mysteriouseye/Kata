@@ -7,14 +7,11 @@ package im.dacer.kata.core.service;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-
-import java.net.URLEncoder;
 
 import im.dacer.kata.core.SchemeHelper;
 

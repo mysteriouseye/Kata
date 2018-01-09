@@ -6,13 +6,12 @@ package im.dacer.kata;
 
 import android.content.Context;
 
+import com.baoyz.treasure.Treasure;
+
 import im.dacer.kata.core.BigBang;
 import im.dacer.kata.segment.CharacterParser;
 import im.dacer.kata.segment.SimpleParser;
 import im.dacer.kata.segment.parser.KuromojiParser;
-import timber.log.Timber;
-
-import com.baoyz.treasure.Treasure;
 
 /**
  * Created by baoyongzhang on 2016/10/28.

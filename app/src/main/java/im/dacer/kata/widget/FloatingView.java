@@ -9,7 +9,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,9 +18,6 @@ import android.widget.ImageView;
 
 import im.dacer.kata.R;
 import im.dacer.kata.core.SchemeHelper;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 /**
  * Created by baoyongzhang on 2016/11/1.

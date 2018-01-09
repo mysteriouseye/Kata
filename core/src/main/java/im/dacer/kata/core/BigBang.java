@@ -7,17 +7,16 @@ package im.dacer.kata.core;
 import android.content.Context;
 import android.support.annotation.StringDef;
 
-import im.dacer.kata.core.action.Action;
-import im.dacer.kata.segment.SimpleParser;
-import im.dacer.kata.segment.parser.KuromojiParser;
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
-import io.reactivex.schedulers.Schedulers;
-
 import java.lang.annotation.Retention;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
+
+import im.dacer.kata.core.action.Action;
+import im.dacer.kata.segment.SimpleParser;
+import im.dacer.kata.segment.parser.KuromojiParser;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 

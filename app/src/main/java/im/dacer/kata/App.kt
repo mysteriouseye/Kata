@@ -2,18 +2,14 @@ package im.dacer.kata
 
 import android.app.Application
 import android.util.Log
-
+import com.baoyz.treasure.Treasure
 import im.dacer.kata.core.BigBang
 import im.dacer.kata.core.action.CopyAction
 import im.dacer.kata.core.action.ShareAction
 import im.dacer.kata.service.ListenClipboardService
 import io.reactivex.Observable
-import timber.log.Timber
-
-import com.baoyz.treasure.Treasure
 import io.reactivex.schedulers.Schedulers
-
-import java.util.concurrent.Callable
+import timber.log.Timber
 
 class App : Application() {
 

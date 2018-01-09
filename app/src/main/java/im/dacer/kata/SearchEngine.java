@@ -6,10 +6,11 @@ package im.dacer.kata;
 
 import android.content.Context;
 
+import com.baoyz.treasure.Treasure;
+
 import im.dacer.kata.core.action.BingSearchAction;
 import im.dacer.kata.core.action.GoogleSearchAction;
 import im.dacer.kata.core.action.SearchAction;
-import com.baoyz.treasure.Treasure;
 
 /**
  * Created by baoyongzhang on 2016/10/26.
