@@ -9,6 +9,6 @@ import java.net.URLEncoder
 class SchemeHelper {
     companion object {
         fun getUri(text: String) =
-                Uri.parse("bigBang://?extra_text=${URLEncoder.encode(text, "utf-8")}")
+                Uri.parse("kata://?extra_text=${URLEncoder.encode(text, "utf-8")}")
     }
 }
