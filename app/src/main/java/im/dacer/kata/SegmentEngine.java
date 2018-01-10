@@ -9,7 +9,6 @@ import android.content.Context;
 import com.baoyz.treasure.Treasure;
 
 import im.dacer.kata.core.BigBang;
-import im.dacer.kata.segment.CharacterParser;
 import im.dacer.kata.segment.SimpleParser;
 import im.dacer.kata.segment.parser.KuromojiParser;
 
@@ -18,17 +17,14 @@ import im.dacer.kata.segment.parser.KuromojiParser;
  */
 public class SegmentEngine {
 
-    public static final String TYPE_CHARACTER = "character"; // 单字符分词
-    public static final String TYPE_THIRD = "third";     // 第三方库分词
+    public static final String TYPE_THIRD = "third";
 
-    public static final String[] ENGINE_LIST = new String[]{TYPE_CHARACTER, TYPE_THIRD};
-    public static final String[] ENGINE_NAME_LIST = new String[]{"单字符", "本地三方库(Beta)"};
+    public static final String[] ENGINE_LIST = new String[]{TYPE_THIRD};
+    public static final String[] ENGINE_NAME_LIST = new String[]{"Kuromoji"};
 
     public static SimpleParser getSegmentParser(Context context) {
         String segmentEngine = Treasure.get(context, Config.class).getSegmentEngine();
         switch (segmentEngine) {
-            case TYPE_CHARACTER:
-                return new CharacterParser();
             case TYPE_THIRD:
                 return new KuromojiParser();
         }
@@ -55,10 +51,8 @@ public class SegmentEngine {
     public static String getSegmentEngineName(Context context) {
         String segmentEngine = Treasure.get(context, Config.class).getSegmentEngine();
         switch (segmentEngine) {
-            case TYPE_CHARACTER:
-                return ENGINE_NAME_LIST[0];
             case TYPE_THIRD:
-                return ENGINE_NAME_LIST[1];
+                return ENGINE_NAME_LIST[0];
         }
         return null;
     }

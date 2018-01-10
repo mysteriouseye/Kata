@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.widget.Toast
+import im.dacer.kata.segment.model.KanjiResult
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_big_bang.*
 import timber.log.Timber
 
-class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener {
+class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBangLayout.ItemClickListener {
+
+    var kanjiResultList: Array<KanjiResult>? = null
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -22,6 +25,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_big_bang)
         bigbangLayout.setActionListener(this)
+        bigbangLayout.setItemClickListener(this)
         if (BigBang.getItemSpace() > 0) bigbangLayout.setItemSpace(BigBang.getItemSpace())
         if (BigBang.getLineSpace() > 0) bigbangLayout.setLineSpace(BigBang.getLineSpace())
         if (BigBang.getItemTextSize() > 0) bigbangLayout.setItemTextSize(BigBang.getItemTextSize())
@@ -47,8 +51,9 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     bigbangLayout.reset()
+                    kanjiResultList = it
                     for (str in it) {
-                        bigbangLayout.addTextItem(str)
+                        bigbangLayout.addTextItem(str.surface)
                     }
                 }, {
                     Timber.e(it)
@@ -61,6 +66,11 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener {
         super.onBackPressed()
         val selectedText = bigbangLayout.selectedText
         BigBang.startAction(this, BigBang.ACTION_BACK, selectedText)
+    }
+
+    override fun onItemClicked(index: Int) {
+        titleTv.text = "${kanjiResultList?.get(index)?.surface} ${kanjiResultList?.get(index)?.furigana}"
+        descTv.text = kanjiResultList?.get(index)?.meanings?.joinToString("\n")
     }
 
     override fun onSearch(text: String) {

@@ -51,6 +51,7 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
     private int mScaledTouchSlop;
     private float mDownX;
     private boolean mDisallowedParentIntercept;
+    private ItemClickListener itemClickListener;
 
     public BigBangLayout(Context context) {
         super(context);
@@ -92,18 +93,10 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
         setClipChildren(false);
 
         mScaledTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+    }
 
-        if (isInEditMode()) {
-            // 测试预览数据
-            addTextItem("BigBang");
-            addTextItem("是");
-            addTextItem("一个");
-            addTextItem("非常");
-            addTextItem("实用");
-            addTextItem("的");
-            addTextItem("功能");
-            addTextItem("！");
-        }
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     public void setItemSpace(int itemSpace) {
@@ -293,11 +286,6 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
         super.onDraw(canvas);
     }
 
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        return true;
-//    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int actionMasked = MotionEventCompat.getActionMasked(event);
@@ -324,6 +312,10 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
                         } else {
                             state.next = mItemState;
                             mItemState = state;
+                        }
+                        if (item.isSelected()) {
+                            //index 0 is BigBangActionBar
+                            if (itemClickListener != null) itemClickListener.onItemClicked(item.index - 1);
                         }
                     }
                 }
@@ -501,6 +493,10 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
         CharSequence getText() {
             return ((TextView) view).getText();
         }
+    }
+
+    public interface ItemClickListener {
+        void onItemClicked(int index);
     }
 
     /**

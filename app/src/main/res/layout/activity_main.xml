@@ -21,8 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title"
         android:layout_marginTop="15dp"
-        android:text="Android是一种基于Linux的自由及开放源代码的操作系统，主要使用于移动设备，如智能手机和平板电脑，由Google公司和开放手机联盟领导及开发。"/>
-
+        android:text="@string/example_sentence"/>
     <Button
         android:id="@+id/weixin"
         android:layout_width="wrap_content"
