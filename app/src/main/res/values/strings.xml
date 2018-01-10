@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">BigBang</string>
-    <string name="about">关于</string>
+    <string name="app_name">Kata</string>
+    <string name="about">About</string>
     <string name="description"></string>
-    <string name="settings">设置</string>
-    <string name="style">样式</string>
+    <string name="settings">Settings</string>
+    <string name="style">Style</string>
+    <string name="bigbang_hold_tip">Try to touch and hold ↓</string>
     <string name="example_sentence">日本語（にほんご、にっぽんご[注 1]）は、主に日本国内や日本人同士の間で使われている言語である。日本は法令によって公用語を規定していないが、法令その他の公用文は全て日本語で記述され、各種法令[6]において日本語を用いることが定められ、学校教育においては「国語」として教えられるなど、事実上、唯一の公用語となっている。</string>
 </resources>

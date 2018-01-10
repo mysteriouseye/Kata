@@ -12,7 +12,7 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="长按下面文字体验 BigBang"
+        android:text="@string/bigbang_hold_tip"
         android:textColor="#C0C0C0"/>
 
     <TextView
@@ -22,22 +22,5 @@
         android:layout_below="@+id/title"
         android:layout_marginTop="15dp"
         android:text="@string/example_sentence"/>
-    <Button
-        android:id="@+id/weixin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/des"
-        android:layout_marginBottom="5dp"
-        android:text="开启微信支持"
-        android:textColor="#606060"/>
-
-    <TextView
-        android:id="@+id/des"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="desc"
-        android:textColor="#808080"
-        android:textSize="11sp"/>
 
 </RelativeLayout>
