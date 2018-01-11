@@ -1,0 +1,16 @@
+CREATE TABLE entry (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    kanji TEXT,
+    reading TEXT,
+    gloss TEXT,
+    position TEXT
+);
+
+select_all:
+SELECT *
+FROM entry;
+
+search:
+SELECT *
+FROM entry
+WHERE kanji LIKE ?;

@@ -1,0 +1,27 @@
+package im.dacer.kata.core.model;
+
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
+
+import com.google.auto.value.AutoValue;
+import com.squareup.sqldelight.RowMapper;
+
+/**
+ * Created by Dacer on 11/01/2018.
+ */
+
+@AutoValue
+public abstract class DictEntry implements Parcelable, DictEntryModel {
+
+
+    public static final DictEntryModel.Factory<DictEntry> FACTORY =
+            new DictEntryModel.Factory<>(new DictEntryModel.Creator<DictEntry>() {
+                @Override
+                public DictEntry create(long id, @Nullable String kanji, @Nullable String reading, @Nullable String gloss, @Nullable String position) {
+                    return new AutoValue_DictEntry(id, kanji, reading, gloss, position);
+                }
+            });
+
+    public static final RowMapper<DictEntry> SELECT_ALL_MAPPER = FACTORY.select_allMapper();
+
+}

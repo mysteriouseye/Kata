@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import im.dacer.kata.core.SchemeHelper
-import im.dacer.kata.data.DBImporter
+import im.dacer.kata.data.DictImporter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        val dbImporter = DBImporter(applicationContext)
+        val dbImporter = DictImporter(applicationContext)
         if (!dbImporter.isDataBaseExists) {
             bigbangTipTv.setText(R.string.initializing_database)
             Observable.fromCallable{ dbImporter.importDataBaseFromAssets() }

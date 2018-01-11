@@ -1,8 +1,7 @@
 package im.dacer.kata.data
 
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
+import im.dacer.kata.core.data.JMDictDbHelper
 import timber.log.Timber
 import java.io.FileOutputStream
 import java.io.IOException
@@ -14,11 +13,7 @@ import java.util.zip.ZipInputStream
  * import JMDict.sqlite3
  */
 
-class DBImporter(private val context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
-    private val dbFile = context.getDatabasePath(DB_NAME)
-
-    val isDataBaseExists: Boolean
-        get() = dbFile.exists()
+class DictImporter(private val context: Context) : JMDictDbHelper(context) {
 
     /**
      * return false if db is existed
@@ -50,13 +45,7 @@ class DBImporter(private val context: Context) : SQLiteOpenHelper(context, DB_NA
         return zis
     }
 
-    override fun onCreate(arg0: SQLiteDatabase) {}
-
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
-
     companion object {
-        val DB_NAME = "JMDict"
         val ASSET_DB_FILE_NAME = "$DB_NAME.sqlite3.zip"
-        val DB_VERSION = 1
     }
 }
