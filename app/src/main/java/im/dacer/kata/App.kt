@@ -3,6 +3,7 @@ package im.dacer.kata
 import android.app.Application
 import android.util.Log
 import com.baoyz.treasure.Treasure
+import com.facebook.stetho.Stetho
 import im.dacer.kata.core.BigBang
 import im.dacer.kata.core.action.CopyAction
 import im.dacer.kata.core.action.ShareAction
@@ -20,6 +21,7 @@ class App : Application() {
         } else {
             Timber.plant(CrashReportingTree())
         }
+        Stetho.initializeWithDefaults(this)
 
         BigBang.registerAction(BigBang.ACTION_SEARCH, SearchEngine.getSearchAction(this))
         BigBang.registerAction(BigBang.ACTION_COPY, CopyAction.create())
