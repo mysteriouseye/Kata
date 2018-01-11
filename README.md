@@ -1,5 +1,12 @@
 # Kata
-Based on [BigBang](https://github.com/baoyongzhang/BigBang) and [Kuromoji](https://github.com/atilika/kuromoji)
+
+
+# Credits
+
+* Dictionary - [JMdict](http://www.edrdg.org/edrdg/licence.html)
+* Inspired by - [Rikaichan](https://github.com/melink14/rikaikun)
+* Segment UI - [BigBang](https://github.com/baoyongzhang/BigBang)
+* Japanese morphological analyzer - [Kuromoji](https://github.com/atilika/kuromoji)
 
 # License
 
