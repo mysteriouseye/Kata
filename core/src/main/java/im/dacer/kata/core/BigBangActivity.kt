@@ -1,19 +1,27 @@
 package im.dacer.kata.core
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.widget.Toast
+import im.dacer.kata.core.data.JMDictDbHelper
+import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.segment.model.KanjiResult
-
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_big_bang.*
 import timber.log.Timber
 
+
 class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBangLayout.ItemClickListener {
 
-    var kanjiResultList: Array<KanjiResult>? = null
+    private var kanjiResultList: List<KanjiResult>? = null
+    private var db: SQLiteDatabase? = null
+    private var segmentDis: Disposable? = null
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -45,9 +53,19 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
             return
         }
 
-        //todo add loading progressbar
-        BigBang.getSegmentParserAsync()
+        db = JMDictDbHelper(this).readableDatabase
+        val searchHelper = SearchHelper(db!!)
+
+        segmentDis?.dispose()
+        segmentDis = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(text) }
+                .flatMap { Observable.fromIterable(it) }
+                .map {
+                    //todo SLOW!
+                    it.meanings = searchHelper.search(it.baseForm).map { it.gloss()!! }
+                    return@map it
+                }
+                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     bigbangLayout.reset()
@@ -62,15 +80,24 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        db?.close()
+        segmentDis?.dispose()
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         val selectedText = bigbangLayout.selectedText
         BigBang.startAction(this, BigBang.ACTION_BACK, selectedText)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onItemClicked(index: Int) {
-        titleTv.text = "${kanjiResultList?.get(index)?.surface} ${kanjiResultList?.get(index)?.furigana}"
-        descTv.text = kanjiResultList?.get(index)?.meanings?.joinToString("\n")
+        val result = kanjiResultList?.get(index)
+        titleTv.text = "${result?.surface} ${result?.furigana}"
+        descTv.text = result?.meanings?.joinToString("\n")
+        meaningTv.text = result?.meanings?.joinToString("\n")
     }
 
     override fun onSearch(text: String) {

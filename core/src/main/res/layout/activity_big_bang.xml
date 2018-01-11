@@ -27,6 +27,13 @@
                 android:textSize="22sp"
                 android:textColor="#fff" />
 
+            <TextView
+                android:id="@+id/meaningTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="#fff" />
+
         </LinearLayout>
     </ScrollView>
 

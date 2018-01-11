@@ -10,7 +10,12 @@ select_all:
 SELECT *
 FROM entry;
 
-search:
+search_kanji:
 SELECT *
 FROM entry
-WHERE kanji LIKE ?;
+WHERE kanji is ?;
+
+search_reading:
+SELECT *
+FROM entry
+WHERE reading LIKE ?;

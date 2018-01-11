@@ -14,8 +14,10 @@ class KuromojiParser : SimpleParser() {
 
     private val tokenizer = Tokenizer.Builder().mode(TokenizerBase.Mode.NORMAL).build()
 
-    override fun parseSync(text: String): Array<KanjiResult> {
+    override fun parseSync(text: String): List<KanjiResult> {
         val tokens = tokenizer.tokenize(text)
-        return tokens.map { KanjiResult(it.surface, it.pronunciation, emptyList()) }.toTypedArray()
+        return tokens.map {
+            KanjiResult(it.surface, it.baseForm, it.pronunciation, emptyList())
+        }
     }
 }

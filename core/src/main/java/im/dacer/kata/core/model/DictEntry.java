@@ -13,7 +13,6 @@ import com.squareup.sqldelight.RowMapper;
 @AutoValue
 public abstract class DictEntry implements Parcelable, DictEntryModel {
 
-
     public static final DictEntryModel.Factory<DictEntry> FACTORY =
             new DictEntryModel.Factory<>(new DictEntryModel.Creator<DictEntry>() {
                 @Override
