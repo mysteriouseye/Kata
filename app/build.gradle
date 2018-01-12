@@ -69,4 +69,6 @@ dependencies {
 //    jcsegCompile project(':segment-jcseg')
 //    jiebaCompile project(':segment-jieba')
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
