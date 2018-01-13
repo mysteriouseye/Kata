@@ -51,6 +51,10 @@ public class BigBang {
     private BigBang() {
     }
 
+    public static boolean initialized() {
+        return sParser != null;
+    }
+
     public static void registerAction(@ActionType String type, Action action) {
         mActionMap.put(type, action);
     }
@@ -68,13 +72,6 @@ public class BigBang {
         if (action != null) {
             action.start(context, text);
         }
-    }
-
-    public static SimpleParser getSegmentParser() {
-        if (sParser == null) {
-            sParser = new KuromojiParser();
-        }
-        return sParser;
     }
 
     public static Observable<SimpleParser> getSegmentParserAsync() {

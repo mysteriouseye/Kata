@@ -69,9 +69,9 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mConfig.setListenClipboard(isChecked);
                 if (mConfig.isListenClipboard()) {
-                    ListenClipboardService.start(getApplicationContext());
+                    ListenClipboardService.Companion.start(getApplicationContext());
                 } else {
-                    ListenClipboardService.stop(getApplicationContext());
+                    ListenClipboardService.Companion.stop(getApplicationContext());
                 }
                 updateUI();
             }

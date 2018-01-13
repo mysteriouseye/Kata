@@ -36,6 +36,7 @@ public class SegmentEngine {
     }
 
     public static void setup(Context context) {
+        if (BigBang.initialized()) return;
         SimpleParser parser = SegmentEngine.getSegmentParser(context);
         BigBang.setSegmentParser(parser);
     }
