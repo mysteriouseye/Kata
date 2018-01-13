@@ -102,7 +102,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
 
             dictDisposable?.dispose()
             dictDisposable = Observable.fromCallable{ searchHelper!!.search(result.baseForm) }
-                    .map { it.map { "* ${it.gloss()} - (${it.reading()})" }.joinToString("\n") }
+                    .map { it.map { "· ${it.gloss()} - (${it.reading()})" }.joinToString("\n\n") }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ meaningTv.text = it }, { Timber.e(it) })

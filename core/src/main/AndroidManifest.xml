@@ -7,7 +7,7 @@
             android:name=".BigBangActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/BigBangTheme"
             android:process=":listener">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

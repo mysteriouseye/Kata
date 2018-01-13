@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="BigBangTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:statusBarColor">@color/gray</item>
+    </style>
+
+</resources>
