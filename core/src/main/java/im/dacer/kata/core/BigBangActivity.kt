@@ -9,10 +9,12 @@ import android.text.TextUtils
 import android.widget.Toast
 import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.core.data.JMDictDbHelper
+import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_big_bang.*
 import timber.log.Timber
 
@@ -22,6 +24,8 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
     private var kanjiResultList: List<Token>? = null
     private var db: SQLiteDatabase? = null
     private var segmentDis: Disposable? = null
+    private var searchHelper: SearchHelper? = null
+    private var dictDisposable: Disposable? = null
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -54,7 +58,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
         }
 
         db = JMDictDbHelper(this).readableDatabase
-//        val searchHelper = SearchHelper(db!!)
+        searchHelper = SearchHelper(db!!)
 
         segmentDis?.dispose()
         segmentDis = BigBang.getSegmentParserAsync()
@@ -95,9 +99,18 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
             titleTv.text = result.baseForm ?: result.surface
             descTv.text = result.getSubtitle()
             meaningTv.text = ""
+
+            dictDisposable?.dispose()
+            dictDisposable = Observable.fromCallable{ searchHelper!!.search(result.baseForm) }
+                    .map { it.map { "* ${it.gloss()} - (${it.reading()})" }.joinToString("\n") }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ meaningTv.text = it }, { Timber.e(it) })
+
         } else {
             // todo
         }
+
     }
 
     override fun onSearch(text: String) {
