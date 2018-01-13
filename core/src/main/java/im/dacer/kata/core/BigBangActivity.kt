@@ -70,7 +70,8 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
                     bigbangLayout.reset()
                     kanjiResultList = it
                     for (str in it) {
-                        bigbangLayout.addTextItem(str.surface)
+                        //since bigbangLayout can deal with '/n'
+                        bigbangLayout.addTextItem(str.surface.replace("\n", " "))
                     }
                 }, {
                     Timber.e(it)
