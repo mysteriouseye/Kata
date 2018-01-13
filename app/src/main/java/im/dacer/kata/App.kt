@@ -3,12 +3,14 @@ package im.dacer.kata
 import android.app.Application
 import android.util.Log
 import com.baoyz.treasure.Treasure
+import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
 import im.dacer.kata.core.BigBang
 import im.dacer.kata.core.action.CopyAction
 import im.dacer.kata.core.action.ShareAction
 import im.dacer.kata.service.ListenClipboardService
+import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 class App : Application() {
@@ -21,6 +23,7 @@ class App : Application() {
             return
         }
         LeakCanary.install(this)
+        Fabric.with(this, Crashlytics())
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
@@ -47,7 +50,7 @@ class App : Application() {
             if (priority == Log.VERBOSE || priority == Log.DEBUG) {
                 return
             }
-            // todo use Fabric
+            Crashlytics.logException(t)
         }
     }
 }
