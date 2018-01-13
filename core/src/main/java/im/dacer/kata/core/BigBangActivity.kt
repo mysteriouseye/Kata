@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.widget.Toast
+import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.core.data.JMDictDbHelper
-import im.dacer.kata.core.data.SearchHelper
-import im.dacer.kata.segment.model.KanjiResult
+import im.dacer.kata.core.extension.getSubtitle
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -19,7 +19,7 @@ import timber.log.Timber
 
 class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBangLayout.ItemClickListener {
 
-    private var kanjiResultList: List<KanjiResult>? = null
+    private var kanjiResultList: List<Token>? = null
     private var db: SQLiteDatabase? = null
     private var segmentDis: Disposable? = null
 
@@ -54,17 +54,12 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
         }
 
         db = JMDictDbHelper(this).readableDatabase
-        val searchHelper = SearchHelper(db!!)
+//        val searchHelper = SearchHelper(db!!)
 
         segmentDis?.dispose()
         segmentDis = BigBang.getSegmentParserAsync()
                 .flatMap { it.parse(text) }
                 .flatMap { Observable.fromIterable(it) }
-                .map {
-                    //todo SLOW!
-                    it.meanings = searchHelper.search(it.baseForm).map { it.gloss()!! }
-                    return@map it
-                }
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
@@ -95,9 +90,14 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
     @SuppressLint("SetTextI18n")
     override fun onItemClicked(index: Int) {
         val result = kanjiResultList?.get(index)
-        titleTv.text = "${result?.surface} ${result?.furigana}"
-        descTv.text = result?.meanings?.joinToString("\n")
-        meaningTv.text = result?.meanings?.joinToString("\n")
+        if (result?.isKnown == true) {
+            furikanaTv.text = result.pronunciation
+            titleTv.text = result.baseForm ?: result.surface
+            descTv.text = result.getSubtitle()
+            meaningTv.text = ""
+        } else {
+            // todo
+        }
     }
 
     override fun onSearch(text: String) {

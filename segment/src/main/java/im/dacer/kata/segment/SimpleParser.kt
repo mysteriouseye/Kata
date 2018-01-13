@@ -1,5 +1,5 @@
 package im.dacer.kata.segment
 
-import im.dacer.kata.segment.model.KanjiResult
+import com.atilika.kuromoji.ipadic.Token
 
-abstract class SimpleParser : AsyncParser<List<KanjiResult>>()
+abstract class SimpleParser : AsyncParser<List<Token>>()
