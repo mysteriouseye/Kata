@@ -13,7 +13,10 @@ import com.atilika.kuromoji.ipadic.Token
     partOfSpeechLevel3.addToList(list)
     partOfSpeechLevel4.addToList(list)
 
-    return "${partOfSpeechLevel1} (${list.joinToString(", ")})"
+    if (list.isEmpty()) {
+        return partOfSpeechLevel1
+    }
+    return "$partOfSpeechLevel1 (${list.joinToString(", ")})"
 }
 
 private fun String.addToList(list: ArrayList<String>) {

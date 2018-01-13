@@ -16,8 +16,8 @@ public abstract class DictEntry implements Parcelable, DictEntryModel {
     public static final DictEntryModel.Factory<DictEntry> FACTORY =
             new DictEntryModel.Factory<>(new DictEntryModel.Creator<DictEntry>() {
                 @Override
-                public DictEntry create(long id, @Nullable String kanji, @Nullable String reading, @Nullable String gloss, @Nullable String position) {
-                    return new AutoValue_DictEntry(id, kanji, reading, gloss, position);
+                public DictEntry create(long id, @Nullable String gloss, @Nullable String position) {
+                    return new AutoValue_DictEntry(id, gloss, position);
                 }
             });
 
