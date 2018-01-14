@@ -45,14 +45,8 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
     }
 
     private fun handleIntent(intent: Intent) {
-        val data = intent.data
-        if (data == null) {
-            finish()
-            return
-        }
-        val text = data.getQueryParameter(EXTRA_TEXT)
-
-        if (TextUtils.isEmpty(text)) {
+        val text = intent.data.getQueryParameter(EXTRA_TEXT)
+        if (text.isEmpty()) {
             finish()
             return
         }

@@ -83,7 +83,6 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
             mActionBarTopHeight = getResources().getDimensionPixelSize(R.dimen.big_bang_action_bar_height);
         }
 
-        // TODO 暂时放到这里
         mActionBar = new BigBangActionBar(getContext());
         mActionBar.setVisibility(View.GONE);
         mActionBar.setActionListener(this);
@@ -286,6 +285,7 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
         super.onDraw(canvas);
     }
 
+    private Item lastSelectedItem, actionDownItem;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int actionMasked = MotionEventCompat.getActionMasked(event);
@@ -293,32 +293,33 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
             case MotionEvent.ACTION_DOWN:
                 mDownX = event.getX();
                 mDisallowedParentIntercept = false;
+                actionDownItem = findItemByPoint((int) event.getX(), (int) event.getY());
             case MotionEvent.ACTION_MOVE:
                 int x = (int) event.getX();
                 if (!mDisallowedParentIntercept && Math.abs(x - mDownX) > mScaledTouchSlop) {
                     getParent().requestDisallowInterceptTouchEvent(true);
                     mDisallowedParentIntercept = true;
                 }
-                Item item = findItemByPoint(x, (int) event.getY());
-                if (mTargetItem != item) {
-                    mTargetItem = item;
-                    if (item != null) {
-                        item.setSelected(!item.isSelected());
-                        ItemState state = new ItemState();
-                        state.item = item;
-                        state.isSelected = item.isSelected();
-                        if (mItemState == null) {
-                            mItemState = state;
-                        } else {
-                            state.next = mItemState;
-                            mItemState = state;
-                        }
-                        if (item.isSelected()) {
-                            //index 0 is BigBangActionBar
-                            if (itemClickListener != null) itemClickListener.onItemClicked(item.index - 1);
-                        }
-                    }
-                }
+//                Item item = findItemByPoint(x, (int) event.getY());
+//                if (mTargetItem != item) {
+//                    mTargetItem = item;
+//                    if (item != null) {
+//                        item.setSelected(!item.isSelected());
+//                        ItemState state = new ItemState();
+//                        state.item = item;
+//                        state.isSelected = item.isSelected();
+//                        if (mItemState == null) {
+//                            mItemState = state;
+//                        } else {
+//                            state.next = mItemState;
+//                            mItemState = state;
+//                        }
+//                        if (item.isSelected()) {
+//                            //index 0 is BigBangActionBar
+//                            if (itemClickListener != null) itemClickListener.onItemClicked(item.index - 1);
+//                        }
+//                    }
+//                }
                 break;
             case MotionEvent.ACTION_CANCEL:
                 if (mItemState != null) {
@@ -336,6 +337,19 @@ public class BigBangLayout extends ViewGroup implements BigBangActionBar.ActionL
                     getParent().requestDisallowInterceptTouchEvent(false);
                 }
                 mItemState = null;
+
+
+                Item item = findItemByPoint((int) event.getX(), (int) event.getY());
+                if (item != null && item == actionDownItem) {
+                    if (lastSelectedItem != null) lastSelectedItem.setSelected(false);
+                    item.setSelected(true);
+                    lastSelectedItem = item;
+                    if (item.isSelected()) {
+                        //index 0 is BigBangActionBar
+                        if (itemClickListener != null)
+                            itemClickListener.onItemClicked(item.index - 1);
+                    }
+                }
                 break;
         }
         return true;
