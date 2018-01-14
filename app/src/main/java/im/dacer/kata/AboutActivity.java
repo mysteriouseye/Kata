@@ -15,13 +15,9 @@ import android.widget.TextView;
 import me.drakeet.multitype.Items;
 import me.drakeet.support.about.Card;
 import me.drakeet.support.about.Category;
-import me.drakeet.support.about.Contributor;
 import me.drakeet.support.about.License;
 import me.drakeet.support.about.Line;
 
-/**
- * Created by baoyongzhang on 2016/10/25.
- */
 public class AboutActivity extends me.drakeet.support.about.AboutActivity {
 
     @Override
@@ -39,8 +35,8 @@ public class AboutActivity extends me.drakeet.support.about.AboutActivity {
         items.add(new Line());
 
         items.add(new Category("Developers"));
-        items.add(new Contributor(R.mipmap.bao, "baoyongzhang", "核心功能开发"));
-        items.add(new Contributor(R.mipmap.dim, "zzz40500", "Xposed 模块开发"));
+//        items.add(new Contributor(R.mipmap.bao, "baoyongzhang", "核心功能开发"));
+//        items.add(new Contributor(R.mipmap.dim, "zzz40500", "Xposed 模块开发"));
 
         items.add(new Line());
 
