@@ -1,5 +1,6 @@
 package im.dacer.kata
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.view.MenuItem
@@ -20,7 +21,7 @@ class AboutActivity : me.drakeet.support.about.AboutActivity() {
 
     override fun onItemsCreated(items: Items) {
         items.add(Category(s(R.string.about)))
-        items.add(Card(s(R.string.description), s(R.string.homepage)))
+        items.add(Card(s(R.string.description), s(R.string.review)))
 
         items.add(Line())
 
@@ -48,8 +49,9 @@ class AboutActivity : me.drakeet.support.about.AboutActivity() {
 
     override fun onActionClick(action: View?) {
         super.onActionClick(action)
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/dacer/Kata"))
-        startActivity(intent)
+//        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/dacer/Kata"))
+//        startActivity(intent)
+        goGooglePlay()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -63,6 +65,17 @@ class AboutActivity : me.drakeet.support.about.AboutActivity() {
     }
 
     private fun s(resId: Int): String = getString(resId)
+
+
+    private fun goGooglePlay() {
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")))
+        } catch (e: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}")))
+        }
+    }
 
     companion object {
         private val CC_LICENSE = "Creative Commons Attribution-ShareAlike Licence (V3.0)"
