@@ -28,13 +28,13 @@ class SettingsActivity : AppCompatActivity() {
             }.show()
         }
 
-        autoCopySwitch!!.setOnCheckedChangeListener { _, isChecked ->
-            mConfig!!.isAutoCopy = isChecked
-            BigBang.registerAction(BigBang.ACTION_BACK, if (mConfig!!.isAutoCopy) CopyAction.create() else null)
-            updateUI()
-        }
+//        autoCopySwitch!!.setOnCheckedChangeListener { _, isChecked ->
+//            mConfig!!.isAutoCopy = isChecked
+//            BigBang.registerAction(BigBang.ACTION_BACK, if (mConfig!!.isAutoCopy) CopyAction.create() else null)
+//            updateUI()
+//        }
 
-        listenClipboardSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+        listenClipboardSwitch.setOnCheckedChangeListener { _, isChecked ->
             mConfig!!.isListenClipboard = isChecked
             if (mConfig!!.isListenClipboard) {
                 ListenClipboardService.start(applicationContext)
@@ -52,9 +52,9 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        searchEngineTv?.text = mConfig!!.searchEngine
-        autoCopySwitch?.isChecked = mConfig!!.isAutoCopy
-        listenClipboardSwitch!!.isChecked = mConfig!!.isListenClipboard
+        searchEngineTv.text = mConfig!!.searchEngine
+//        autoCopySwitch?.isChecked = mConfig!!.isAutoCopy
+        listenClipboardSwitch.isChecked = mConfig!!.isListenClipboard
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
