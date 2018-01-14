@@ -25,7 +25,7 @@ class AboutActivity : me.drakeet.support.about.AboutActivity() {
         items.add(Line())
 
         items.add(Category(s(R.string.developer)))
-        items.add(Contributor(R.mipmap.ic_launcher, "Dacer", "(๑•̀ㅂ•́)و✧"))
+        items.add(Contributor(R.mipmap.ic_launcher, "Dacer", "頑張ってね (๑•̀ㅂ•́)و✧"))
 
         items.add(Line())
 

@@ -16,5 +16,18 @@
 #   public *;
 #}
 
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
 -keep class android.support.** { *; }
--dontwarn **
+-dontwarn okio.**
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
+
+-keep class com.atilika.**{*;}
+
+-keepclassmembers class im.dacer.kata.core.model.** {
+    !static !private <fields>;
+}

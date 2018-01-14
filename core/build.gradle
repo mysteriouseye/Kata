@@ -44,7 +44,7 @@ dependencies {
     annotationProcessor "com.ryanharter.auto.value:auto-value-gson:$AUTO_VALUE_GSON_VERSION"
     provided "com.ryanharter.auto.value:auto-value-gson-annotations:$AUTO_VALUE_GSON_VERSION"
     annotationProcessor "com.google.auto.value:auto-value:$AUTO_VALUE_VERSION"
-    provided "com.jakewharton.auto.value:auto-value-annotations:1.5"
+    provided "com.jakewharton.auto.value:auto-value-annotations:1.4"
     annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
     compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.5'
     annotationProcessor 'com.squareup:javapoet:1.9.0'

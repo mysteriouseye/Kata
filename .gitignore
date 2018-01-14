@@ -60,3 +60,5 @@ pom.xml.*
 ### AppEngine
 google_generated/
 datanucleus.log 
+
+ks.properties
