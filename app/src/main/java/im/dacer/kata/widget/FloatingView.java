@@ -40,7 +40,7 @@ public class FloatingView extends android.support.v7.widget.AppCompatImageView {
     public FloatingView(Context context) {
         super(context);
 
-        setImageResource(R.mipmap.floating_button);
+        setImageResource(R.drawable.floating_button);
         mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
         mMarginY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 180, getResources().getDisplayMetrics());
 
