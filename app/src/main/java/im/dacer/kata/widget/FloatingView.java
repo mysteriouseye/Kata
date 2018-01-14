@@ -22,12 +22,12 @@ import im.dacer.kata.core.SchemeHelper;
 /**
  * Created by baoyongzhang on 2016/11/1.
  */
-public class FloatingView extends ImageView {
+public class FloatingView extends android.support.v7.widget.AppCompatImageView {
 
     private static final int ANIMATION_DURATION = 500;
 
     private final WindowManager mWindowManager;
-    private final int mMargin;
+    private final int mMargin, mMarginY;
     private Runnable mDismissTask = new Runnable() {
         @Override
         public void run() {
@@ -42,6 +42,7 @@ public class FloatingView extends ImageView {
 
         setImageResource(R.mipmap.floating_button);
         mMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+        mMarginY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 180, getResources().getDisplayMetrics());
 
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 
@@ -71,7 +72,7 @@ public class FloatingView extends ImageView {
             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(w, h, type, flags, PixelFormat.TRANSLUCENT);
             layoutParams.gravity = Gravity.RIGHT | Gravity.BOTTOM;
             layoutParams.x = mMargin;
-            layoutParams.y = mMargin;
+            layoutParams.y = mMarginY;
 
             mWindowManager.addView(this, layoutParams);
 
