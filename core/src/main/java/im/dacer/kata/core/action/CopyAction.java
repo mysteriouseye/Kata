@@ -10,6 +10,8 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import im.dacer.kata.core.R;
+
 /**
  * Created by baoyongzhang on 2016/10/26.
  */
@@ -29,6 +31,6 @@ public class CopyAction implements Action {
     }
 
     public void copySuccess(Context context) {
-        Toast.makeText(context, "已复制", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT).show();
     }
 }

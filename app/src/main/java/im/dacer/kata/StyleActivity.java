@@ -31,7 +31,28 @@ public class StyleActivity extends AppCompatActivity {
 
         mConfig = Treasure.get(this, Config.class);
 
-        String[] testStrings = new String[]{"你", "可以", "调整", "文字", "大小", "、", "行间距", "以及", "块间距", "以", "达到", "最佳的", "操作", "手感", "。"};
+        String[] testStrings = new String[]{
+                "日本国",
+                "または",
+                "日本",
+                "は",
+                "、",
+                "東アジア",
+                "に",
+                "位置する",
+                "日本列島",
+                "及び",
+                "、",
+                "南西諸島",
+                "・",
+                "伊豆諸島",
+                "・",
+                "小笠原諸島",
+                "など",
+                "から",
+                "成る",
+                "島国",
+                "である"};
         for (String testString : testStrings) {
             mBigBang.addTextItem(testString);
         }
