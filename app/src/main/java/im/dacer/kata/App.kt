@@ -32,11 +32,8 @@ class App : Application() {
         }
         Stetho.initializeWithDefaults(this)
 
-        BigBang.registerAction(BigBang.ACTION_SEARCH, SearchEngine.getSearchAction(this))
-        BigBang.registerAction(BigBang.ACTION_COPY, CopyAction.create())
-        BigBang.registerAction(BigBang.ACTION_SHARE, ShareAction.create())
         val config = Treasure.get(this, Config::class.java)
-        BigBang.registerAction(BigBang.ACTION_BACK, if (config.isAutoCopy) CopyAction.create() else null)
+//        BigBang.registerAction(BigBang.ACTION_BACK, if (config.isAutoCopy) CopyAction.create() else null)
 
         if (config.isListenClipboard) {
             ListenClipboardService.start(this)

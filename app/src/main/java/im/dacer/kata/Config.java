@@ -13,10 +13,6 @@ import com.baoyz.treasure.Preferences;
 @Preferences
 public interface Config {
 
-    @Default(SearchEngine.GOOGLE)
-    String getSearchEngine();
-    void setSearchEngine(String searchEngine);
-
     @Default("false")
     boolean isAutoCopy();
     void setAutoCopy(boolean autoCopy);

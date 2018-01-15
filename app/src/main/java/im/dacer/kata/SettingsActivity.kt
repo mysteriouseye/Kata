@@ -8,22 +8,28 @@ import android.view.MenuItem
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.core.BigBang
 import im.dacer.kata.core.action.CopyAction
+import im.dacer.kata.core.data.AppPreference
 import im.dacer.kata.service.ListenClipboardService
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
 
     private var mConfig: Config? = null
+    private var bigBang: BigBang? = null
+    private var appPref: AppPreference? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_settings)
 
+        bigBang = BigBang(this)
+        appPref = AppPreference(this)
+
         findViewById(R.id.search_engine).setOnClickListener {
             AlertDialog.Builder(this@SettingsActivity).setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->
-                mConfig!!.searchEngine = SearchEngine.getSupportSearchEngineList()[which]
-                BigBang.registerAction(BigBang.ACTION_SEARCH, SearchEngine.getSearchAction(applicationContext))
+                appPref!!.setSearchEngine(SearchEngine.getSupportSearchEngineList()[which])
+                bigBang!!.registerAction(BigBang.ACTION_SEARCH, SearchEngine.getSearchAction(applicationContext))
                 updateUI()
             }.show()
         }
@@ -52,7 +58,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun updateUI() {
-        searchEngineTv.text = mConfig!!.searchEngine
+        searchEngineTv.text = appPref!!.getSearchEngine()
 //        autoCopySwitch?.isChecked = mConfig!!.isAutoCopy
         listenClipboardSwitch.isChecked = mConfig!!.isListenClipboard
     }

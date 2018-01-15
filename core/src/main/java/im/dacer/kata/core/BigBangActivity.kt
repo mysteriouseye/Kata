@@ -27,6 +27,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
     private var segmentDis: Disposable? = null
     private var searchHelper: SearchHelper? = null
     private var dictDisposable: Disposable? = null
+    private var bigBang: BigBang? = null
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -37,6 +38,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_big_bang)
+        bigBang = BigBang(this)
         bigbangLayout.setActionListener(this)
         bigbangLayout.setItemClickListener(this)
 
@@ -86,7 +88,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
     override fun onBackPressed() {
         super.onBackPressed()
         val selectedText = bigbangLayout.selectedText
-        BigBang.startAction(this, BigBang.ACTION_BACK, selectedText)
+        bigBang?.startAction(this, BigBang.ACTION_BACK, selectedText)
     }
 
     @SuppressLint("SetTextI18n")
@@ -112,15 +114,15 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
     }
 
     override fun onSearch(text: String) {
-        BigBang.startAction(this, BigBang.ACTION_SEARCH, text)
+        bigBang?.startAction(this, BigBang.ACTION_SEARCH, text)
     }
 
     override fun onShare(text: String) {
-        BigBang.startAction(this, BigBang.ACTION_SHARE, text)
+        bigBang?.startAction(this, BigBang.ACTION_SHARE, text)
     }
 
     override fun onCopy(text: String) {
-        BigBang.startAction(this, BigBang.ACTION_COPY, text)
+        bigBang?.startAction(this, BigBang.ACTION_COPY, text)
     }
 
     companion object {
