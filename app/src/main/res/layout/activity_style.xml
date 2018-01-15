@@ -16,7 +16,7 @@
         android:layout_weight="1">
 
         <im.dacer.kata.core.BigBangLayout
-            android:id="@+id/bigbang"
+            android:id="@+id/bigbangLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
@@ -31,7 +31,7 @@
         android:text="@string/text_size"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-        android:id="@+id/textSize"
+        android:id="@+id/textSizeSeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -45,7 +45,7 @@
         android:text="@string/line_spacing"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-        android:id="@+id/lineSpace"
+        android:id="@+id/lineSpaceSeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
