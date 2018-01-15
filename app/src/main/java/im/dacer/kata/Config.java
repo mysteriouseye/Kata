@@ -29,15 +29,4 @@ public interface Config {
     String getSegmentEngine();
     void setSegmentEngine(String segmentEngine);
 
-    @Default("10")
-    int getLineSpace();
-    void setLineSpace(int space);
-
-    @Default("0")
-    int getItemSpace();
-    void setItemSpace(int space);
-
-    @Default("15")
-    int getItemTextSize();
-    void setItemTextSize(int size);
 }

@@ -48,4 +48,5 @@ dependencies {
     annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
     compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.5'
     annotationProcessor 'com.squareup:javapoet:1.9.0'
+    compile 'net.grandcentrix.tray:tray:0.12.0'
 }

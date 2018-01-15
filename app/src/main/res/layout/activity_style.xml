@@ -12,7 +12,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1">
 
         <im.dacer.kata.core.BigBangLayout
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="文字大小"/>
+        android:text="@string/text_size"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/textSize"
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="行间距"/>
+        android:text="@string/line_spacing"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/lineSpace"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="块间距"/>
+        android:text="@string/word_spacing"/>
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/itemSpace"

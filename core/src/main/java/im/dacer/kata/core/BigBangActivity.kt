@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.widget.Toast
 import com.atilika.kuromoji.ipadic.Token
+import im.dacer.kata.core.data.AppPreference
 import im.dacer.kata.core.data.JMDictDbHelper
 import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
@@ -38,9 +39,11 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
         setContentView(R.layout.activity_big_bang)
         bigbangLayout.setActionListener(this)
         bigbangLayout.setItemClickListener(this)
-        if (BigBang.getItemSpace() > 0) bigbangLayout.setItemSpace(BigBang.getItemSpace())
-        if (BigBang.getLineSpace() > 0) bigbangLayout.setLineSpace(BigBang.getLineSpace())
-        if (BigBang.getItemTextSize() > 0) bigbangLayout.setItemTextSize(BigBang.getItemTextSize())
+
+        val appPre = AppPreference(this)
+        bigbangLayout.setItemSpace(appPre.getItemSpace())
+        bigbangLayout.setLineSpace(appPre.getLineSpace())
+        bigbangLayout.setItemTextSize(appPre.getItemTextSize())
         handleIntent(intent)
     }
 

@@ -4,20 +4,19 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.baoyz.treasure.Treasure;
-
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
-import im.dacer.kata.core.BigBang;
 import im.dacer.kata.core.BigBangLayout;
+import im.dacer.kata.core.data.AppPreference;
+import im.dacer.kata.core.model.BigBangStyle;
 
 public class StyleActivity extends AppCompatActivity {
 
     private BigBangLayout mBigBang;
-    private Config mConfig;
     private DiscreteSeekBar mTextSize;
     private DiscreteSeekBar mLineSpace;
     private DiscreteSeekBar mItemSpace;
+    private AppPreference appPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +27,7 @@ public class StyleActivity extends AppCompatActivity {
         mTextSize = (DiscreteSeekBar) findViewById(R.id.textSize);
         mLineSpace = (DiscreteSeekBar) findViewById(R.id.lineSpace);
         mItemSpace = (DiscreteSeekBar) findViewById(R.id.itemSpace);
-
-        mConfig = Treasure.get(this, Config.class);
+        appPreference = new AppPreference(this);
 
         String[] testStrings = new String[]{
                 "日本国",
@@ -78,20 +76,22 @@ public class StyleActivity extends AppCompatActivity {
             }
         });
 
-        mTextSize.setProgress(mConfig.getItemTextSize());
-        mLineSpace.setProgress(mConfig.getLineSpace());
-        mItemSpace.setProgress(mConfig.getItemSpace());
+
+        mTextSize.setProgress(appPreference.getItemTextSize());
+        mLineSpace.setProgress(appPreference.getLineSpace());
+        mItemSpace.setProgress(appPreference.getItemSpace());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void onDestroy() {
+        appPreference.setBigBangStyle(new BigBangStyle(
+                mItemSpace.getProgress(),
+                mLineSpace.getProgress(),
+                mTextSize.getProgress()
+        ));
         super.onDestroy();
-        mConfig.setItemTextSize(mTextSize.getProgress());
-        mConfig.setLineSpace(mLineSpace.getProgress());
-        mConfig.setItemSpace(mItemSpace.getProgress());
-        BigBang.setStyle(mConfig.getItemSpace(), mConfig.getLineSpace(), mConfig.getItemTextSize());
     }
 
     @Override

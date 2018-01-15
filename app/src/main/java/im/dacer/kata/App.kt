@@ -38,8 +38,6 @@ class App : Application() {
         val config = Treasure.get(this, Config::class.java)
         BigBang.registerAction(BigBang.ACTION_BACK, if (config.isAutoCopy) CopyAction.create() else null)
 
-        BigBang.setStyle(config.itemSpace, config.lineSpace, config.itemTextSize)
-
         if (config.isListenClipboard) {
             ListenClipboardService.start(this)
         }
