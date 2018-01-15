@@ -6,7 +6,7 @@ import im.dacer.kata.core.action.BingSearchAction;
 import im.dacer.kata.core.action.DuckDuckGoSearchAction;
 import im.dacer.kata.core.action.GoogleSearchAction;
 import im.dacer.kata.core.action.SearchAction;
-import im.dacer.kata.core.data.AppPreference;
+import im.dacer.kata.core.data.MultiprocessPref;
 
 public class SearchEngine {
 
@@ -15,8 +15,8 @@ public class SearchEngine {
     public static final String DUCKDUCKGO = "DuckDuckGo";
 
     public static SearchAction getSearchAction(Context context) {
-        AppPreference appPreference = new AppPreference(context);
-        switch (appPreference.getSearchEngine()) {
+        MultiprocessPref multiprocessPref = new MultiprocessPref(context);
+        switch (multiprocessPref.getSearchEngine()) {
             case GOOGLE:
                 return GoogleSearchAction.create();
             case BING:

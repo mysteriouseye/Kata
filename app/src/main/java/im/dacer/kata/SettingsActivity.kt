@@ -7,8 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.core.BigBang
-import im.dacer.kata.core.action.CopyAction
-import im.dacer.kata.core.data.AppPreference
+import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.service.ListenClipboardService
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -16,7 +15,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private var mConfig: Config? = null
     private var bigBang: BigBang? = null
-    private var appPref: AppPreference? = null
+    private var appPref: MultiprocessPref? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         bigBang = BigBang(this)
-        appPref = AppPreference(this)
+        appPref = MultiprocessPref(this)
 
         findViewById(R.id.search_engine).setOnClickListener {
             AlertDialog.Builder(this@SettingsActivity).setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->

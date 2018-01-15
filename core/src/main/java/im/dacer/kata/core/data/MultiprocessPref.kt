@@ -8,7 +8,7 @@ import net.grandcentrix.tray.TrayPreferences
 /**
  * Created by Dacer on 15/01/2018.
  */
-class AppPreference(context: Context): TrayPreferences(context, "Kata", 1) {
+class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
 
 
     fun getLineSpace(): Int = getBigBangStyle().lineSpace

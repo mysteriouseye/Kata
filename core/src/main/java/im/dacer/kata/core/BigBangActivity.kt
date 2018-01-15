@@ -5,10 +5,9 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.TextUtils
 import android.widget.Toast
 import com.atilika.kuromoji.ipadic.Token
-import im.dacer.kata.core.data.AppPreference
+import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.data.JMDictDbHelper
 import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
@@ -42,7 +41,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
         bigbangLayout.setActionListener(this)
         bigbangLayout.setItemClickListener(this)
 
-        val appPre = AppPreference(this)
+        val appPre = MultiprocessPref(this)
         bigbangLayout.setItemSpace(appPre.getItemSpace())
         bigbangLayout.setLineSpace(appPre.getLineSpace())
         bigbangLayout.setItemTextSize(appPre.getItemTextSize())
