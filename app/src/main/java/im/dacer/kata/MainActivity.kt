@@ -1,37 +1,34 @@
 package im.dacer.kata
 
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import im.dacer.kata.core.SchemeHelper
+import android.widget.Toast
 import im.dacer.kata.data.DictImporter
+import im.dacer.kata.widget.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PopupView.PopupListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val clipboardService = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val primaryClip = clipboardService.primaryClip
-        if (primaryClip != null && primaryClip.itemCount > 0) {
-            clipTv.text = primaryClip.getItemAt(0).text
-        }
-
+        popupView.listener = this
         clipTv.setOnLongClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, SchemeHelper.getUri(clipTv.text.toString())))
-            true
+            popupView.show(Point((clipTv.width / 2), clipTv.y.toInt()- bigbangTipTv.height))
+            return@setOnLongClickListener true
         }
-
         val dbImporter = DictImporter(applicationContext)
         if (!dbImporter.isDataBaseExists) {
             bigbangTipTv.setText(R.string.initializing_database)
@@ -40,6 +37,12 @@ class MainActivity : AppCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ bigbangTipTv.setText(R.string.bigbang_hold_tip) }, { Timber.e(it) })
         }
+    }
+
+    override fun popupClicked() {
+        val service = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        service.primaryClip = ClipData.newPlainText("", clipTv.text.toString())
+        Toast.makeText(this, getString(im.dacer.kata.core.R.string.copied), Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
