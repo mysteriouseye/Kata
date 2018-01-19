@@ -15,16 +15,12 @@
         android:text="@string/bigbang_hold_tip"
         android:textColor="#C0C0C0"/>
 
-    <EditText
+    <TextView
         android:id="@+id/clipTv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/bigbangTipTv"
         android:layout_marginTop="15dp"
-        android:inputType="none"
-        android:focusable="false"
-        android:background="@null"
-        android:gravity="top"
         android:text="@string/example_sentence"/>
 
     <im.dacer.kata.widget.PopupView
