@@ -14,10 +14,10 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import im.dacer.kata.R;
 import im.dacer.kata.core.SchemeHelper;
+import timber.log.Timber;
 
 /**
  * Created by baoyongzhang on 2016/11/1.
@@ -74,7 +74,11 @@ public class FloatingView extends android.support.v7.widget.AppCompatImageView {
             layoutParams.x = mMargin;
             layoutParams.y = mMarginY;
 
-            mWindowManager.addView(this, layoutParams);
+            try {
+                mWindowManager.addView(this, layoutParams);
+            } catch (WindowManager.BadTokenException e) {
+                Timber.e(e);
+            }
 
             isShow = true;
 
@@ -95,7 +99,12 @@ public class FloatingView extends android.support.v7.widget.AppCompatImageView {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    mWindowManager.removeView(FloatingView.this);
+
+                    try {
+                        mWindowManager.removeView(FloatingView.this);
+                    } catch (Exception e) {
+                        Timber.e(e);
+                    }
                     isShow = false;
                 }
             }).start();

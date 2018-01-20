@@ -18,10 +18,7 @@ class StyleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_style)
 
         multiprocessPref = MultiprocessPref(this)
-
-        for (testString in TEST_STRING) {
-            kataLayout.addTextItem(testString)
-        }
+        kataLayout.setKanjiResultData(EXAMPLE_KANJI_RESULT_LIST)
 
         textSizeSeekBar.setOnProgressChangeListener(object : SimpleListener() {
             override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
@@ -78,7 +75,7 @@ class StyleActivity : AppCompatActivity() {
     }
 
     companion object {
-        val TEST_STRING = arrayOf(
+        val EXAMPLE_KANJI_RESULT_LIST = listOf(
                 KanjiResult("日本国", furigana = "にほんこく"),
                 KanjiResult("または"),
                 KanjiResult("日本", furigana = "にほん"),

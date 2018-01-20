@@ -7,7 +7,7 @@
     <ScrollView
         android:id="@+id/meaningScrollView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:background="@color/gray"
         >
@@ -17,25 +17,12 @@
             android:orientation="vertical"
             android:padding="20dp">
             <TextView
-                android:id="@+id/furiganaTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                apps:text="かた"/>
-            <TextView
-                android:id="@+id/titleTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="42sp"
-                android:textColor="#fff"
-                apps:text="片"/>
-            <TextView
                 android:id="@+id/descTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textColor="#fff"
                 apps:text="片" />
-
             <TextView
                 android:id="@+id/meaningTv"
                 android:layout_width="match_parent"

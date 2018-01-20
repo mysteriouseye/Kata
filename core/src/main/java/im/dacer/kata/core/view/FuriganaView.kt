@@ -19,7 +19,7 @@ import im.dacer.kata.segment.util.KanaHelper
 class FuriganaView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private var kanjiResult: KanjiResult? = null
+    var kanjiResult: KanjiResult? = null
 
     private val furiganaPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val normalPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -59,12 +59,22 @@ class FuriganaView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setText(kanjiResult: KanjiResult) {
+    fun setText(kanjiResult: KanjiResult): FuriganaView {
         this.kanjiResult = kanjiResult
+        return this
     }
 
     fun setText(token: Token) {
         setText(token.toKanjiResult())
+    }
+
+    /**
+     * return new line count
+     */
+    fun isNewLine(): Int {
+        val surface = kanjiResult?.surface ?: ""
+        if (surface.replace("\n", "").isNotBlank()) return 0
+        return surface.count { it == '\n' }
     }
 
     override fun setSelected(selected: Boolean) {
@@ -84,9 +94,14 @@ class FuriganaView @JvmOverloads constructor(
     }
 
     override fun onMeasure(width_ms: Int, height_ms: Int) {
-        setMeasuredDimension(
-                Math.max(furiganaWidth, normalWidth).toInt(),
-                (topMargin + furiganaHeight + furiganaBottomMargin + normalHeight + bottomMargin).toInt())
+        var width = Math.max(furiganaWidth, normalWidth).toInt()
+        var height = (topMargin + furiganaHeight + furiganaBottomMargin + normalHeight + bottomMargin).toInt()
+        val newLineCount = isNewLine()
+        if (newLineCount > 0) {
+            width = (parent as View).width
+            if (newLineCount == 1) height = 0
+        }
+        setMeasuredDimension(width, height)
     }
 
     companion object {

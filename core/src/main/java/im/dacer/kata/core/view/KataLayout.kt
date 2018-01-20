@@ -39,17 +39,19 @@ class KataLayout @JvmOverloads constructor(
     var itemClickListener: ItemClickListener? = null
     private var mLines: MutableList<Line> = arrayListOf()
     private var mScaledTouchSlop: Int = ViewConfiguration.get(getContext()).scaledTouchSlop
+    private val newLineView: FuriganaView = FuriganaView(context)
 
-
-    fun addTextItem(token: Token) {
-        addTextItem(token.toKanjiResult())
+    fun setTokenData(tokens: List<Token>) {
+        setKanjiResultData(tokens.map { it.toKanjiResult() })
     }
 
-    fun addTextItem(kanjiResult: KanjiResult) {
-        val view = FuriganaView(context)
-        view.setText(kanjiResult)
-        if (itemTextSize > 0) view.setTextSpSize(itemTextSize)
-        addView(view)
+    fun setKanjiResultData(kanjiResults: List<KanjiResult>) {
+        kanjiResults.forEach {
+            val view = FuriganaView(context)
+            view.setText(it)
+            if (itemTextSize > 0) view.setTextSpSize(itemTextSize)
+            addView(view)
+        }
     }
 
     fun reset() {
@@ -60,18 +62,32 @@ class KataLayout @JvmOverloads constructor(
         var top: Int
         var left: Int
         val offsetTop = 0
+        var newLineCount = 0f
 
         for (i in mLines.indices) {
             val line = mLines[i]
             val items = line.itemList
             left = paddingLeft
 
+
             for (j in items.indices) {
-                val item = items.get(j)
-                top = paddingTop + i * (item.height + lineSpace) + offsetTop
+                val item = items[j]
+                top = (paddingTop + (i - newLineCount) * (item.height + lineSpace) + offsetTop).toInt()
                 val child = item.view
-                val oldTop = child.getTop()
+                val oldTop = child.top
+
+                // \n
+                if (child.isNewLine() == 1) {
+                    newLineCount += 1
+                }
+
+                // \n\n 's height is 0.7 * normal view height
+                if (child.isNewLine() > 1) {
+                    newLineCount += (1 - EMPTY_LINE_RATIO)
+                }
+
                 child.layout(left, top, left + child.measuredWidth, top + child.measuredHeight)
+
                 if (oldTop != top) {
                     val translationY = oldTop - top
                     child.translationY = translationY.toFloat()
@@ -84,15 +100,17 @@ class KataLayout @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val widthSize = View.MeasureSpec.getSize(widthMeasureSpec) - paddingLeft - paddingRight
-        var heightSize = 0
         val childCount = childCount
         val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        var newLineCount = 0f
+        var childHeight = 0
 
         mLines.clear()
         var currentLine: Line? = null
         var currentLineWidth = widthSize
+
         for (i in 0 until childCount) {
-            val child = getChildAt(i)
+            val child = getChildAt(i) as FuriganaView
             child.measure(measureSpec, measureSpec)
 
             if (currentLineWidth > 0) {
@@ -100,20 +118,26 @@ class KataLayout @JvmOverloads constructor(
             }
             currentLineWidth += child.measuredWidth
             if (mLines.size == 0 || currentLineWidth > widthSize) {
-                heightSize += child.measuredHeight
+                if (child.isNewLine() > 1) {
+                    newLineCount += 1 - EMPTY_LINE_RATIO
+                } else if (child.isNewLine() == 1) {
+                    newLineCount += 1
+                } else {
+                    childHeight = child.measuredHeight
+                }
                 currentLineWidth = child.measuredWidth
                 currentLine = Line()
                 mLines.add(currentLine)
             }
-            val item = Item(child as FuriganaView)
+            val item = Item(child)
             item.index = i
             item.width = child.measuredWidth
             item.height = child.measuredHeight
             currentLine!!.addItem(item)
         }
 
-        val size = heightSize + paddingTop + paddingBottom + (mLines.size - 1) * lineSpace
-        super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(size, View.MeasureSpec.EXACTLY))
+        val size = (mLines.size - newLineCount) * childHeight + paddingTop + paddingBottom + (mLines.size - 1 - newLineCount) * lineSpace
+        super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(size.toInt(), View.MeasureSpec.EXACTLY))
     }
 
     private var lastSelectedItem : Item? = null
@@ -168,15 +192,15 @@ class KataLayout @JvmOverloads constructor(
                 } else 0
             }
 
-        fun addItem(item: Item) {
+        fun addItem(item: Item): Line {
             itemList.add(item)
+            return this
         }
 
     }
 
-    internal class Item(var view: FuriganaView) {
+    internal class Item(var view: FuriganaView, var height: Int = 0) {
         var index: Int = 0
-        var height: Int = 0
         var width: Int = 0
 
         val rect: Rect
@@ -197,4 +221,8 @@ class KataLayout @JvmOverloads constructor(
         fun onItemClicked(index: Int)
     }
 
+    companion object {
+        // \n\n 's height is 0.7 * normal view height
+        const val EMPTY_LINE_RATIO = 0.7f
+    }
 }

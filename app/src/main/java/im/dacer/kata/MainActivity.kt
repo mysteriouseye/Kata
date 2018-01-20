@@ -1,5 +1,6 @@
 package im.dacer.kata
 
+import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -10,7 +11,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.baoyz.treasure.Treasure
 import im.dacer.kata.data.DictImporter
+import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.widget.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,7 +21,9 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
+
 class MainActivity : AppCompatActivity(), PopupView.PopupListener {
+    private val treasure by lazy { Treasure.get(this, Config::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,15 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ bigbangTipTv.setText(R.string.bigbang_hold_tip) }, { Timber.e(it) })
+        }
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (treasure.isListenClipboard && !isMyServiceRunning(ListenClipboardService::class.java)) {
+            ListenClipboardService.start(this)
         }
     }
 
@@ -63,5 +77,10 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        return manager.getRunningServices(Integer.MAX_VALUE).any { serviceClass.name == it.service.className }
     }
 }

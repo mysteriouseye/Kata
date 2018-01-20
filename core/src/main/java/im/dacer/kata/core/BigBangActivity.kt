@@ -5,7 +5,6 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
 import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.core.data.JMDictDbHelper
 import im.dacer.kata.core.data.MultiprocessPref
@@ -67,14 +66,10 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
                 .subscribe ({
                     kataLayout.reset()
                     kanjiResultList = it
-                    for (token in it) {
-                        //since bigbangLayout can deal with '/n'
-                        kataLayout.addTextItem(token)
-//                        bigbangLayout.addTextItem(str.surface.replace("\n", " "))
-                    }
+                    kataLayout.setTokenData(it)
                 }, {
                     Timber.e(it)
-                    Toast.makeText(this@BigBangActivity, it.message, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@BigBangActivity, it.message, Toast.LENGTH_SHORT).show()
                 })
 
     }
@@ -89,9 +84,9 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
     override fun onItemClicked(index: Int) {
         val result = kanjiResultList?.get(index)
         if (result?.isKnown == true) {
-            furiganaTv.text = result.pronunciation
-            titleTv.text = result.baseForm ?: result.surface
-            descTv.text = result.getSubtitle()
+//            furiganaTv.text = result.pronunciation
+//            titleTv.text = result.baseForm ?: result.surface
+            descTv.text = "[${result.baseForm}] ${result.getSubtitle()}"
             meaningTv.text = ""
 
             dictDisposable?.dispose()
