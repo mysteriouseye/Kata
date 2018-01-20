@@ -3,12 +3,11 @@ package im.dacer.kata
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-
-import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.model.BigBangStyle
+import im.dacer.kata.segment.model.KanjiResult
 import kotlinx.android.synthetic.main.activity_style.*
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 
 class StyleActivity : AppCompatActivity() {
 
@@ -20,26 +19,25 @@ class StyleActivity : AppCompatActivity() {
 
         multiprocessPref = MultiprocessPref(this)
 
-        val testStrings = arrayOf("日本国", "または", "日本", "は", "、", "東アジア", "に", "位置する", "日本列島", "及び", "、", "南西諸島", "・", "伊豆諸島", "・", "小笠原諸島", "など", "から", "成る", "島国", "である")
-        for (testString in testStrings) {
-            bigbangLayout.addTextItem(testString)
+        for (testString in TEST_STRING) {
+            kataLayout.addTextItem(testString)
         }
 
         textSizeSeekBar.setOnProgressChangeListener(object : SimpleListener() {
             override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
-                bigbangLayout.setItemTextSize(value)
+                kataLayout.itemTextSize = value.toFloat()
             }
         })
 
         lineSpaceSeekBar.setOnProgressChangeListener(object : SimpleListener() {
             override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
-                bigbangLayout.setLineSpace(value)
+                kataLayout.lineSpace = value
             }
         })
 
         itemSpace.setOnProgressChangeListener(object : SimpleListener() {
             override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
-                bigbangLayout.setItemSpace(value)
+                kataLayout.itemSpace = value
             }
         })
 
@@ -72,16 +70,37 @@ class StyleActivity : AppCompatActivity() {
 
     internal abstract class SimpleListener : DiscreteSeekBar.OnProgressChangeListener {
 
-        override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
+        override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {}
 
-        }
+        override fun onStartTrackingTouch(seekBar: DiscreteSeekBar) {}
 
-        override fun onStartTrackingTouch(seekBar: DiscreteSeekBar) {
+        override fun onStopTrackingTouch(seekBar: DiscreteSeekBar) {}
+    }
 
-        }
+    companion object {
+        val TEST_STRING = arrayOf(
+                KanjiResult("日本国", furigana = "にほんこく"),
+                KanjiResult("または"),
+                KanjiResult("日本", furigana = "にほん"),
+                KanjiResult("は"),
+                KanjiResult("、"),
+                KanjiResult("東アジア", furigana = "ひがしあじあ"),
+                KanjiResult("に"),
+                KanjiResult("位置", furigana = "いち"),
+                KanjiResult("する"),
+                KanjiResult("日本列島", furigana = "にほん"),
+                KanjiResult("及び", furigana = "および"),
+                KanjiResult("、"),
+                KanjiResult("南西諸島", furigana = "なんせいしょとう"),
+                KanjiResult("・"),
+                KanjiResult("伊豆諸島", furigana = "いずしょとう"),
+                KanjiResult("・"),
+                KanjiResult("小笠原諸島", furigana = "おがさわらしょとう"),
+                KanjiResult("など"),
+                KanjiResult("から"),
+                KanjiResult("成る", furigana = "なる"),
+                KanjiResult("島国", furigana = "しまぐに"),
+                KanjiResult("である"))
 
-        override fun onStopTrackingTouch(seekBar: DiscreteSeekBar) {
-
-        }
     }
 }

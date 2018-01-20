@@ -1,0 +1,200 @@
+package im.dacer.kata.core.view
+
+import android.content.Context
+import android.graphics.Rect
+import android.util.AttributeSet
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewConfiguration
+import android.view.ViewGroup
+import com.atilika.kuromoji.ipadic.Token
+import im.dacer.kata.core.extension.toKanjiResult
+import im.dacer.kata.core.util.ViewUtil
+import im.dacer.kata.segment.model.KanjiResult
+
+/**
+ * Created by Dacer on 20/01/2018.
+ */
+class KataLayout @JvmOverloads constructor(
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : ViewGroup(context, attrs, defStyleAttr) {
+
+    var lineSpace: Int = 0
+        set(value) {
+            field = ViewUtil.dpToPx(value)
+            requestLayout()
+        }
+    var itemSpace: Int = 0
+        set(value) {
+            field = ViewUtil.dpToPx(value)
+            requestLayout()
+        }
+    var itemTextSize: Float = 10f
+        set(value) {
+            field = value
+            (0 until childCount)
+                    .map { getChildAt(it) }
+                    .forEach { (it as? FuriganaView)?.setTextSpSize(itemTextSize) }
+        }
+    var itemClickListener: ItemClickListener? = null
+    private var mLines: MutableList<Line> = arrayListOf()
+    private var mScaledTouchSlop: Int = ViewConfiguration.get(getContext()).scaledTouchSlop
+
+
+    fun addTextItem(token: Token) {
+        addTextItem(token.toKanjiResult())
+    }
+
+    fun addTextItem(kanjiResult: KanjiResult) {
+        val view = FuriganaView(context)
+        view.setText(kanjiResult)
+        if (itemTextSize > 0) view.setTextSpSize(itemTextSize)
+        addView(view)
+    }
+
+    fun reset() {
+        (childCount - 1 downTo 0).map { getChildAt(it) }.forEach { removeView(it) }
+    }
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        var top: Int
+        var left: Int
+        val offsetTop = 0
+
+        for (i in mLines.indices) {
+            val line = mLines[i]
+            val items = line.itemList
+            left = paddingLeft
+
+            for (j in items.indices) {
+                val item = items.get(j)
+                top = paddingTop + i * (item.height + lineSpace) + offsetTop
+                val child = item.view
+                val oldTop = child.getTop()
+                child.layout(left, top, left + child.measuredWidth, top + child.measuredHeight)
+                if (oldTop != top) {
+                    val translationY = oldTop - top
+                    child.translationY = translationY.toFloat()
+                    child.animate().translationYBy((-translationY).toFloat()).setDuration(200).start()
+                }
+                left += child.measuredWidth + itemSpace
+            }
+        }
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val widthSize = View.MeasureSpec.getSize(widthMeasureSpec) - paddingLeft - paddingRight
+        var heightSize = 0
+        val childCount = childCount
+        val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+
+        mLines.clear()
+        var currentLine: Line? = null
+        var currentLineWidth = widthSize
+        for (i in 0 until childCount) {
+            val child = getChildAt(i)
+            child.measure(measureSpec, measureSpec)
+
+            if (currentLineWidth > 0) {
+                currentLineWidth += itemSpace
+            }
+            currentLineWidth += child.measuredWidth
+            if (mLines.size == 0 || currentLineWidth > widthSize) {
+                heightSize += child.measuredHeight
+                currentLineWidth = child.measuredWidth
+                currentLine = Line()
+                mLines.add(currentLine)
+            }
+            val item = Item(child as FuriganaView)
+            item.index = i
+            item.width = child.measuredWidth
+            item.height = child.measuredHeight
+            currentLine!!.addItem(item)
+        }
+
+        val size = heightSize + paddingTop + paddingBottom + (mLines.size - 1) * lineSpace
+        super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(size, View.MeasureSpec.EXACTLY))
+    }
+
+    private var lastSelectedItem : Item? = null
+    private var actionDownItem: Item? = null
+    private var mDisallowedParentIntercept = false
+    private var mDownX: Float = 0F
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                mDownX = event.x
+                mDisallowedParentIntercept = false
+                actionDownItem = findItemByPoint(event.x.toInt(), event.y.toInt())
+            }
+            MotionEvent.ACTION_MOVE -> {
+                if (!mDisallowedParentIntercept && Math.abs(event.x - mDownX) > mScaledTouchSlop) {
+                    parent.requestDisallowInterceptTouchEvent(true)
+                    mDisallowedParentIntercept = true
+                }
+            }
+            MotionEvent.ACTION_UP -> {
+                if (mDisallowedParentIntercept) {
+                    parent.requestDisallowInterceptTouchEvent(false)
+                }
+                val item = findItemByPoint(event.x.toInt(), event.y.toInt())
+                if (item != null) {
+                    lastSelectedItem?.isSelected = false
+                    item.isSelected = true
+                    lastSelectedItem = item
+                    if (item.isSelected) {
+                        itemClickListener?.onItemClicked(item.index)
+                    }
+                }
+            }
+        }
+        return true
+    }
+
+    private fun findItemByPoint(x: Int, y: Int): Item? {
+        return mLines
+                .map { it.itemList }
+                .flatMap { it }
+                .firstOrNull { it.rect.contains(x, y) }
+    }
+
+    internal class Line {
+        var itemList: MutableList<Item> = arrayListOf()
+
+        val height: Int
+            get() {
+                return if (itemList.isNotEmpty()) {
+                    itemList[0].view.measuredHeight
+                } else 0
+            }
+
+        fun addItem(item: Item) {
+            itemList.add(item)
+        }
+
+    }
+
+    internal class Item(var view: FuriganaView) {
+        var index: Int = 0
+        var height: Int = 0
+        var width: Int = 0
+
+        val rect: Rect
+            get() {
+                val rect = Rect()
+                view.getHitRect(rect)
+                return rect
+            }
+
+        var isSelected: Boolean
+            get() = view.isSelected
+            set(selected) {
+                view.isSelected = selected
+            }
+    }
+
+    interface ItemClickListener {
+        fun onItemClicked(index: Int)
+    }
+
+}

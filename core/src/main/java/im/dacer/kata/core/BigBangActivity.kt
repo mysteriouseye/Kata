@@ -7,10 +7,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.atilika.kuromoji.ipadic.Token
-import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.data.JMDictDbHelper
+import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
+import im.dacer.kata.core.view.KataLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_big_bang.*
 import timber.log.Timber
 
 
-class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBangLayout.ItemClickListener {
+class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataLayout.ItemClickListener {
 
     private var kanjiResultList: List<Token>? = null
     private var db: SQLiteDatabase? = null
@@ -30,7 +31,6 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        bigbangLayout.reset()
         handleIntent(intent)
     }
 
@@ -38,14 +38,14 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_big_bang)
         bigBang = BigBang(this)
-        bigbangLayout.setActionListener(this)
-        bigbangLayout.setItemClickListener(this)
-
         val appPre = MultiprocessPref(this)
-        bigbangLayout.setItemSpace(appPre.getItemSpace())
-        bigbangLayout.setLineSpace(appPre.getLineSpace())
-        bigbangLayout.setItemTextSize(appPre.getItemTextSize())
+
+        kataLayout.itemSpace = appPre.getItemSpace()
+        kataLayout.lineSpace = appPre.getLineSpace()
+        kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
+        kataLayout.itemClickListener = this
         handleIntent(intent)
+
     }
 
     private fun handleIntent(intent: Intent) {
@@ -65,11 +65,12 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
-                    bigbangLayout.reset()
+                    kataLayout.reset()
                     kanjiResultList = it
-                    for (str in it) {
+                    for (token in it) {
                         //since bigbangLayout can deal with '/n'
-                        bigbangLayout.addTextItem(str.surface.replace("\n", " "))
+                        kataLayout.addTextItem(token)
+//                        bigbangLayout.addTextItem(str.surface.replace("\n", " "))
                     }
                 }, {
                     Timber.e(it)
@@ -84,17 +85,11 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
         segmentDis?.dispose()
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val selectedText = bigbangLayout.selectedText
-        bigBang?.startAction(this, BigBang.ACTION_BACK, selectedText)
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onItemClicked(index: Int) {
         val result = kanjiResultList?.get(index)
         if (result?.isKnown == true) {
-            furikanaTv.text = result.pronunciation
+            furiganaTv.text = result.pronunciation
             titleTv.text = result.baseForm ?: result.surface
             descTv.text = result.getSubtitle()
             meaningTv.text = ""
@@ -125,8 +120,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, BigBa
     }
 
     companion object {
-
-        val EXTRA_TEXT = "extra_text"
+        const val EXTRA_TEXT = "extra_text"
     }
 
 }

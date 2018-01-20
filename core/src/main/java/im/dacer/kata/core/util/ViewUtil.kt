@@ -15,8 +15,8 @@ object ViewUtil {
         return Math.round(dp * density)
     }
 
-    fun sp2px(spValue: Float): Int {
+    fun sp2px(spValue: Float): Float {
         val fontScale = Resources.getSystem().displayMetrics.scaledDensity
-        return (spValue * fontScale + 0.5f).toInt()
+        return (spValue * fontScale + 0.5f)
     }
 }

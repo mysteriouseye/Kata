@@ -1,12 +1,14 @@
 package im.dacer.kata.core.extension
 
 import com.atilika.kuromoji.ipadic.Token
+import im.dacer.kata.segment.model.KanjiResult
+import im.dacer.kata.segment.util.KanaHelper
 
 /**
  * Created by Dacer on 13/01/2018.
  */
 
- fun Token.getSubtitle(): String {
+fun Token.getSubtitle(): String {
     val list = arrayListOf<String>()
     conjugationType.addToList(list)
     partOfSpeechLevel2.addToList(list)
@@ -17,6 +19,10 @@ import com.atilika.kuromoji.ipadic.Token
         return partOfSpeechLevel1
     }
     return "$partOfSpeechLevel1 (${list.joinToString(", ")})"
+}
+
+fun Token.toKanjiResult(): KanjiResult {
+    return KanjiResult(surface, baseForm, KanaHelper.toHiragana(reading))
 }
 
 private fun String.addToList(list: ArrayList<String>) {

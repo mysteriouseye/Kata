@@ -5,10 +5,10 @@
     xmlns:apps="http://schemas.android.com/tools">
 
     <ScrollView
+        android:id="@+id/meaningScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/bigBangScrollView"
         android:background="@color/gray"
         >
         <LinearLayout
@@ -17,7 +17,7 @@
             android:orientation="vertical"
             android:padding="20dp">
             <TextView
-                android:id="@+id/furikanaTv"
+                android:id="@+id/furiganaTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 apps:text="かた"/>
@@ -50,21 +50,21 @@
     <ScrollView
         android:id="@+id/bigBangScrollView"
         android:layout_width="match_parent"
-        android:layout_height="333dp"
-        android:background="#8D9FB8"
+        android:layout_height="0dp"
+        android:background="#fff"
         android:fillViewport="true"
+        android:layout_below="@+id/meaningScrollView"
         android:layout_alignParentBottom="true">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <im.dacer.kata.core.BigBangLayout
-                android:id="@+id/bigbangLayout"
+            <im.dacer.kata.core.view.KataLayout
+                android:id="@+id/kataLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="10dp" />
+                android:padding="10dp"/>
         </FrameLayout>
     </ScrollView>
 </RelativeLayout>

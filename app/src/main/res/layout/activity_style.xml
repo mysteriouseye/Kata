@@ -15,13 +15,13 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <im.dacer.kata.core.BigBangLayout
-            android:id="@+id/bigbangLayout"
+        <im.dacer.kata.core.view.KataLayout
+            android:id="@+id/kataLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
-        </im.dacer.kata.core.BigBangLayout>
+        </im.dacer.kata.core.view.KataLayout>
     </FrameLayout>
 
     <TextView
