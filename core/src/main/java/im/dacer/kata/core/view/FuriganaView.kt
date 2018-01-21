@@ -77,6 +77,11 @@ class FuriganaView @JvmOverloads constructor(
         return surface.count { it == '\n' }
     }
 
+    fun isBlank(): Boolean {
+        val surface = kanjiResult?.surface ?: ""
+        return surface.replace("\n", "").isBlank()
+    }
+
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
         normalPaint.color = if (selected) RED else Color.BLACK

@@ -162,13 +162,11 @@ class KataLayout @JvmOverloads constructor(
                     parent.requestDisallowInterceptTouchEvent(false)
                 }
                 val item = findItemByPoint(event.x.toInt(), event.y.toInt())
-                if (item != null) {
+                if (item != null && !item.view.isBlank()) {
                     lastSelectedItem?.isSelected = false
                     item.isSelected = true
                     lastSelectedItem = item
-                    if (item.isSelected) {
-                        itemClickListener?.onItemClicked(item.index)
-                    }
+                    itemClickListener?.onItemClicked(item.index)
                 }
             }
         }

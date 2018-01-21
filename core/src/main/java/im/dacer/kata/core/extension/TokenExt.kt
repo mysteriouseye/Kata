@@ -25,6 +25,10 @@ fun Token.toKanjiResult(): KanjiResult {
     return KanjiResult(surface, baseForm, KanaHelper.toHiragana(reading))
 }
 
+fun Token.strForSearch(): String {
+    return if (isKnown) baseForm else surface
+}
+
 private fun String.addToList(list: ArrayList<String>) {
     if (!isAsteriskOrEmpty()) list.add(this)
 }

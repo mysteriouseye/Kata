@@ -6,10 +6,12 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.atilika.kuromoji.ipadic.Token
+import im.dacer.kata.SearchEngine
 import im.dacer.kata.core.data.JMDictDbHelper
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
+import im.dacer.kata.core.extension.strForSearch
 import im.dacer.kata.core.view.KataLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -27,6 +29,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
     private var searchHelper: SearchHelper? = null
     private var dictDisposable: Disposable? = null
     private var bigBang: BigBang? = null
+    var currentSelectedToken: Token? = null
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -44,7 +47,10 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
         kataLayout.itemClickListener = this
         handleIntent(intent)
-
+        val searchAction = SearchEngine.getSearchAction(this)
+        searchBtn.setOnClickListener {
+            currentSelectedToken?.run { searchAction.start(baseContext, this.strForSearch()) }
+        }
     }
 
     private fun handleIntent(intent: Intent) {
@@ -65,6 +71,7 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
                     kataLayout.reset()
+                    resetTopLayout()
                     kanjiResultList = it
                     kataLayout.setTokenData(it)
                 }, {
@@ -82,24 +89,31 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
 
     @SuppressLint("SetTextI18n")
     override fun onItemClicked(index: Int) {
-        val result = kanjiResultList?.get(index)
-        if (result?.isKnown == true) {
-//            furiganaTv.text = result.pronunciation
-//            titleTv.text = result.baseForm ?: result.surface
-            descTv.text = "[${result.baseForm}] ${result.getSubtitle()}"
-            meaningTv.text = ""
+        currentSelectedToken = kanjiResultList?.get(index)
+        val strForSearch: String
 
-            dictDisposable?.dispose()
-            dictDisposable = Observable.fromCallable{ searchHelper!!.search(result.baseForm) }
-                    .map { it.joinToString("\n\n") { "· ${it.gloss()}" } }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ meaningTv.text = it }, { Timber.e(it) })
+        if (currentSelectedToken?.isKnown == true) {
+            descTv.text = "[${currentSelectedToken?.baseForm}] ${currentSelectedToken?.getSubtitle()}"
+            meaningTv.text = ""
+            strForSearch = currentSelectedToken!!.baseForm
 
         } else {
-            // todo
+            descTv.text = currentSelectedToken?.surface
+            strForSearch = currentSelectedToken?.surface ?: ""
         }
 
+        dictDisposable?.dispose()
+        dictDisposable = Observable.fromCallable{ searchHelper!!.search(strForSearch) }
+                .map { it.joinToString("\n\n") { "· ${it.gloss()}" } }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.isBlank()) {
+                        meaningTv.text = getString(R.string.not_found_error, currentSelectedToken?.surface)
+                    } else {
+                        meaningTv.text = it
+                    }
+                }, { Timber.e(it) })
     }
 
     override fun onSearch(text: String) {
@@ -112,6 +126,11 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
 
     override fun onCopy(text: String) {
         bigBang?.startAction(this, BigBang.ACTION_COPY, text)
+    }
+
+    private fun resetTopLayout() {
+        descTv.text = ""
+        meaningTv.text = ""
     }
 
     companion object {
