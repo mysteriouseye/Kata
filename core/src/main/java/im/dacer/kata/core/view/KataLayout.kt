@@ -39,7 +39,6 @@ class KataLayout @JvmOverloads constructor(
     var itemClickListener: ItemClickListener? = null
     private var mLines: MutableList<Line> = arrayListOf()
     private var mScaledTouchSlop: Int = ViewConfiguration.get(getContext()).scaledTouchSlop
-    private val newLineView: FuriganaView = FuriganaView(context)
 
     fun setTokenData(tokens: List<Token>) {
         setKanjiResultData(tokens.map { it.toKanjiResult() })

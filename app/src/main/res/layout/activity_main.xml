@@ -2,29 +2,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/bigbangTipTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bigbang_hold_tip"
-        android:textColor="#C0C0C0"/>
-
-    <TextView
-        android:id="@+id/clipTv"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/bigbangTipTv"
-        android:layout_marginTop="15dp"
-        android:text="@string/example_sentence"/>
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-    <im.dacer.kata.widget.PopupView
-        android:id="@+id/popupView"
+        <TextView
+            android:id="@+id/bigbangTipTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bigbang_hold_tip"
+            android:textColor="#C0C0C0"/>
+
+        <TextView
+            android:id="@+id/clipTv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/bigbangTipTv"
+            android:layout_marginTop="15dp"
+            android:text="@string/example_sentence"/>
+
+        <im.dacer.kata.widget.PopupView
+            android:id="@+id/popupView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/permissionErrorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="#F44336"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:text="@string/permission_error_overlay"/>
+    </LinearLayout>
 </RelativeLayout>

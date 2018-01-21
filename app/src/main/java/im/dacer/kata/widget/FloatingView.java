@@ -63,7 +63,7 @@ public class FloatingView extends android.support.v7.widget.AppCompatImageView {
             int h = WindowManager.LayoutParams.WRAP_CONTENT;
             int flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
             int type;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
                 type = WindowManager.LayoutParams.TYPE_TOAST;
             } else {
                 type = WindowManager.LayoutParams.TYPE_PHONE;

@@ -1,15 +1,20 @@
 package im.dacer.kata
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.data.DictImporter
@@ -20,6 +25,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
+
+
 
 
 class MainActivity : AppCompatActivity(), PopupView.PopupListener {
@@ -42,14 +49,21 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ bigbangTipTv.setText(R.string.bigbang_hold_tip) }, { Timber.e(it) })
         }
-
+        permissionErrorLayout.setOnClickListener {
+            val requestIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + packageName))
+            startActivityForResult(requestIntent, REQUEST_CODE_OVERLAY_PERMISSION)
+        }
 
     }
 
+    @SuppressLint("NewApi")
     override fun onResume() {
         super.onResume()
-        if (treasure.isListenClipboard && !isMyServiceRunning(ListenClipboardService::class.java)) {
-            ListenClipboardService.start(this)
+        startListenServiceIfNeed()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val canDraw = Settings.canDrawOverlays(this)
+            permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
         }
     }
 
@@ -79,8 +93,18 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun startListenServiceIfNeed() {
+        if (treasure.isListenClipboard && !isMyServiceRunning(ListenClipboardService::class.java)) {
+            ListenClipboardService.start(this)
+        }
+    }
+
     private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         return manager.getRunningServices(Integer.MAX_VALUE).any { serviceClass.name == it.service.className }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_OVERLAY_PERMISSION = 123
     }
 }
