@@ -1,5 +1,6 @@
 package im.dacer.kata.segment.model
 
+import im.dacer.kata.segment.util.KanaHelper
 import im.dacer.kata.segment.util.isKana
 
 /**
@@ -14,9 +15,13 @@ data class KanjiResult(val surface: String, val baseForm: String = "", val furig
      *      　打ち上げ　→　打ち上げ
      */
     val furiganaForDisplay: String
-    val furiganaDisplayOffset: Float
+    val furiganaStartOffset: Int
+    val furiganaEndOffset: Int
+    val needShowFurigana: Boolean
 
     init {
+        needShowFurigana = KanaHelper.hasKanji(surface)
+
         var result = furigana
         var startCount = 0
         var endCount = 0
@@ -25,8 +30,9 @@ data class KanjiResult(val surface: String, val baseForm: String = "", val furig
                 .takeWhile { it.isKana() }
                 .forEach { startCount+=1 }
 
-        result = result.replaceRange(0, startCount, "")
-
+        if (result.isNotEmpty()) {
+            result = result.replaceRange(0, startCount, "")
+        }
         if (result.isNotEmpty()) {
             surface.toCharArray().reversed()
                     .takeWhile { it.isKana() }
@@ -37,12 +43,8 @@ data class KanjiResult(val surface: String, val baseForm: String = "", val furig
         }
 
         var offset = startCount - endCount.toFloat()
-        if (offset > 0) {
-            offset -= 0.4f
-        } else if (offset < 0) {
-            offset += 0.4f
-        }
-        furiganaDisplayOffset = offset
+        furiganaStartOffset = startCount
+        furiganaEndOffset = endCount
         furiganaForDisplay = result
     }
 }

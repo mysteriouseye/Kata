@@ -10,7 +10,6 @@ import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.core.extension.toKanjiResult
 import im.dacer.kata.core.util.ViewUtil
 import im.dacer.kata.segment.model.KanjiResult
-import im.dacer.kata.segment.util.KanaHelper
 
 
 /**
@@ -21,7 +20,7 @@ class FuriganaView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     var kanjiResult: KanjiResult? = null
 
-    private val furiganaPaint = Paint(Paint.ANTI_ALIAS_FLAG) //if it size can be changed in someday, remember to update singleFuriganaWidth
+    private val furiganaPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val normalPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var topMargin: Int = ViewUtil.dpToPx(2)
@@ -31,10 +30,9 @@ class FuriganaView @JvmOverloads constructor(
     private val normalHeight: Float get() = normalPaint.fontMetrics.let { it.bottom - it.top }
     private var bottomMargin: Int = ViewUtil.dpToPx(2)
 
-    private val furiganaWidth: Float get() = furiganaPaint.measureText(kanjiResult?.furiganaForDisplay ?: "")
+    private val furiganaContainerWidth: Float get() = kanjiResult?.run { getFuriganaContainerWidth(this) } ?: 0f
     private val normalWidth: Float get() = normalPaint.measureText(kanjiResult?.surface ?: "")
 
-    private var singleFuriganaWidth: Float
 
     init {
         furiganaPaint.color = GRAY
@@ -45,8 +43,6 @@ class FuriganaView @JvmOverloads constructor(
 
         furiganaPaint.textAlign = Paint.Align.CENTER
         normalPaint.textAlign = Paint.Align.CENTER
-
-        singleFuriganaWidth = furiganaPaint.measureText("あ")
 
 //        if (attrs != null) {
 //            val typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BigBangLayout)
@@ -88,23 +84,59 @@ class FuriganaView @JvmOverloads constructor(
     override fun setSelected(selected: Boolean) {
         super.setSelected(selected)
         normalPaint.color = if (selected) RED else Color.BLACK
+        furiganaPaint.color = if (selected) RED else GRAY
     }
 
     public override fun onDraw(canvas: Canvas) {
         if (kanjiResult == null) return
         val xPos = canvas.width / 2f
+        var xOffset = 0f
+        val surface = kanjiResult?.surface ?: ""
 
-        if (KanaHelper.hasKanji(kanjiResult!!.surface)) {
+        if (kanjiResult!!.needShowFurigana) {
+            val furiXPos = getFuriganaXpos(kanjiResult!!)
+            val furiWidth = furiganaPaint.measureText(kanjiResult!!.furiganaForDisplay)
+
+            if (furiXPos < furiWidth / 2) {
+                xOffset = furiWidth / 2 - furiXPos
+            }
+            // since none of 動詞 is end of 漢字, so this If Expression will never be reached
+//            else if (width - furiXPos < furiWidth / 2) {
+//                xOffset = furiWidth / 2 - width + furiXPos
+//            }
+
             canvas.drawText(kanjiResult!!.furiganaForDisplay,
-                    xPos + singleFuriganaWidth * kanjiResult!!.furiganaDisplayOffset,
+                    furiXPos + xOffset,
                     (topMargin - furiganaPaint.fontMetrics.top), furiganaPaint)
         }
-        canvas.drawText(kanjiResult!!.surface, xPos,
-                (topMargin + furiganaHeight + furiganaBottomMargin - normalPaint.fontMetrics.top), normalPaint)
+        canvas.drawText(surface, xPos + xOffset,
+                (topMargin + furiganaHeight + furiganaBottomMargin - normalPaint.fontMetrics.top),
+                normalPaint)
+    }
+
+    /**
+     * e.g.
+     * |←　　　→|
+     * |かんが　|
+     * |　考　え|
+     */
+    private fun getFuriganaContainerWidth(k: KanjiResult): Float {
+        val furiWidth = furiganaPaint.measureText(k.furiganaForDisplay)
+        val halfMainSurface = normalPaint.measureText(k.surface.substring(k.furiganaStartOffset, k.surface.length - k.furiganaEndOffset)) / 2
+        val startWidth = normalPaint.measureText(k.surface.substring(0, k.furiganaStartOffset))
+        val endWidth = normalPaint.measureText(k.surface.substring(k.surface.length - k.furiganaEndOffset, k.surface.length))
+
+        return Math.max(furiWidth, furiWidth / 2 + Math.max(halfMainSurface + startWidth, halfMainSurface + endWidth))
+    }
+
+    private fun getFuriganaXpos(k: KanjiResult): Float {
+        return (width - normalPaint.measureText(k.surface)) / 2 +
+                normalPaint.measureText(k.surface.substring(0, k.furiganaStartOffset)) +
+                normalPaint.measureText(k.surface.substring(k.furiganaStartOffset, k.surface.length - k.furiganaEndOffset)) / 2
     }
 
     override fun onMeasure(width_ms: Int, height_ms: Int) {
-        var width = Math.max(furiganaWidth, normalWidth).toInt()
+        var width = Math.max(furiganaContainerWidth, normalWidth).toInt()
         var height = (topMargin + furiganaHeight + furiganaBottomMargin + normalHeight + bottomMargin).toInt()
         val newLineCount = isNewLine()
         if (newLineCount > 0) {
