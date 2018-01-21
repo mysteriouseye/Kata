@@ -18,6 +18,9 @@ package im.dacer.kata.segment.util
  * @see [http://sourceforge.net/projects/kanjixml/](http://sourceforge.net/projects/kanjixml/)
  */
 
+fun Char.isKana(): Boolean = KanaHelper.isKana(this)
+
+
 object KanaHelper {
 
     /**

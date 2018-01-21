@@ -21,7 +21,7 @@ class FuriganaView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     var kanjiResult: KanjiResult? = null
 
-    private val furiganaPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val furiganaPaint = Paint(Paint.ANTI_ALIAS_FLAG) //if it size can be changed in someday, remember to update singleFuriganaWidth
     private val normalPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var topMargin: Int = ViewUtil.dpToPx(2)
@@ -31,9 +31,10 @@ class FuriganaView @JvmOverloads constructor(
     private val normalHeight: Float get() = normalPaint.fontMetrics.let { it.bottom - it.top }
     private var bottomMargin: Int = ViewUtil.dpToPx(2)
 
-    private val furiganaWidth: Float get() = furiganaPaint.measureText(kanjiResult?.furigana ?: "")
+    private val furiganaWidth: Float get() = furiganaPaint.measureText(kanjiResult?.furiganaForDisplay ?: "")
     private val normalWidth: Float get() = normalPaint.measureText(kanjiResult?.surface ?: "")
 
+    private var singleFuriganaWidth: Float
 
     init {
         furiganaPaint.color = GRAY
@@ -44,6 +45,8 @@ class FuriganaView @JvmOverloads constructor(
 
         furiganaPaint.textAlign = Paint.Align.CENTER
         normalPaint.textAlign = Paint.Align.CENTER
+
+        singleFuriganaWidth = furiganaPaint.measureText("あ")
 
 //        if (attrs != null) {
 //            val typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.BigBangLayout)
@@ -92,7 +95,9 @@ class FuriganaView @JvmOverloads constructor(
         val xPos = canvas.width / 2f
 
         if (KanaHelper.hasKanji(kanjiResult!!.surface)) {
-            canvas.drawText(kanjiResult!!.furigana, xPos, (topMargin - furiganaPaint.fontMetrics.top), furiganaPaint)
+            canvas.drawText(kanjiResult!!.furiganaForDisplay,
+                    xPos + singleFuriganaWidth * kanjiResult!!.furiganaDisplayOffset,
+                    (topMargin - furiganaPaint.fontMetrics.top), furiganaPaint)
         }
         canvas.drawText(kanjiResult!!.surface, xPos,
                 (topMargin + furiganaHeight + furiganaBottomMargin - normalPaint.fontMetrics.top), normalPaint)
