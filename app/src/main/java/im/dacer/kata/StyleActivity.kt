@@ -85,7 +85,7 @@ class StyleActivity : AppCompatActivity() {
                 KanjiResult("に"),
                 KanjiResult("位置", furigana = "いち"),
                 KanjiResult("する"),
-                KanjiResult("日本列島", furigana = "にほん"),
+                KanjiResult("日本列島", furigana = "にほんれっとう"),
                 KanjiResult("及び", furigana = "および"),
                 KanjiResult("、"),
                 KanjiResult("南西諸島", furigana = "なんせいしょとう"),
