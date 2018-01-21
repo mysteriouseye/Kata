@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
         permissionErrorLayout.setOnClickListener {
             val requestIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + packageName))
+            ListenClipboardService.stop(this)
             startActivityForResult(requestIntent, REQUEST_CODE_OVERLAY_PERMISSION)
         }
 
@@ -64,6 +65,13 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val canDraw = Settings.canDrawOverlays(this)
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {
+            restartListenService()
         }
     }
 
@@ -97,6 +105,12 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
         if (treasure.isListenClipboard && !isMyServiceRunning(ListenClipboardService::class.java)) {
             ListenClipboardService.start(this)
         }
+    }
+    private fun restartListenService() {
+        if (treasure.isListenClipboard && !isMyServiceRunning(ListenClipboardService::class.java)) {
+            ListenClipboardService.stop(this)
+        }
+        ListenClipboardService.start(this)
     }
 
     private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
