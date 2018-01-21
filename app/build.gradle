@@ -12,9 +12,9 @@ android {
     defaultConfig {
         applicationId "im.dacer.kata"
         minSdkVersion 15
-        versionCode 3
-        versionName "0.0.3"
         targetSdkVersion 26
+        versionCode 10
+        versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
