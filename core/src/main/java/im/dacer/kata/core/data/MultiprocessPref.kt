@@ -21,20 +21,19 @@ class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
         return BigBangStyle.getFrom(getString(BIG_BANG_STYLE, ""))
     }
 
-    fun setBigBangStyle(bigBangStyle: BigBangStyle) {
-        put(BIG_BANG_STYLE, bigBangStyle.toReadableString())
-    }
+    fun setBigBangStyle(s: BigBangStyle) = put(BIG_BANG_STYLE, s.toReadableString())
 
-    fun getSearchEngine(): String {
-        return getString(SEARCH_ENGINE, SearchEngine.GOOGLE)!!
-    }
+    fun getSearchEngine() = getString(SEARCH_ENGINE, SearchEngine.GOOGLE)!!
 
-    fun setSearchEngine(string: String) {
-        put(SEARCH_ENGINE, string)
-    }
+    fun setSearchEngine(string: String) = put(SEARCH_ENGINE, string)
+
+    fun isHideFurigana() = getBoolean(HIDE_FURIGANA, false)
+
+    fun setHideFurigana(hide: Boolean) = put(HIDE_FURIGANA, hide)
 
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
         private const val SEARCH_ENGINE = "pref_search_engine"
+        private const val HIDE_FURIGANA = "pref_hide_furigana"
     }
 }

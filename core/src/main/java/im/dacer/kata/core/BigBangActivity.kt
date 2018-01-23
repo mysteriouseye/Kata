@@ -46,40 +46,24 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         kataLayout.lineSpace = appPre.getLineSpace()
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
         kataLayout.itemClickListener = this
+        kataLayout.showFurigana(!appPre.isHideFurigana())
+
         handleIntent(intent)
         val searchAction = SearchEngine.getSearchAction(this)
         searchBtn.setOnClickListener {
             currentSelectedToken?.run { searchAction.start(baseContext, this.strForSearch()) }
         }
+        eyeBtn.setOnClickListener {
+            val showFurigana = !kataLayout.showFurigana
+            appPre.setHideFurigana(!showFurigana)
+            kataLayout.showFurigana(showFurigana)
+            refreshIconStatus()
+        }
     }
 
-    private fun handleIntent(intent: Intent) {
-        val text = intent.data.getQueryParameter(EXTRA_TEXT)
-        if (text.isEmpty()) {
-            finish()
-            return
-        }
-        meaningScrollView.smoothScrollTo(0,0)
-        bigBangScrollView.smoothScrollTo(0,0)
-        db = JMDictDbHelper(this).readableDatabase
-        searchHelper = SearchHelper(db!!)
-
-        segmentDis?.dispose()
-        segmentDis = BigBang.getSegmentParserAsync()
-                .flatMap { it.parse(text) }
-                .flatMap { Observable.fromIterable(it) }
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({
-                    kataLayout.reset()
-                    resetTopLayout()
-                    kanjiResultList = it
-                    kataLayout.setTokenData(it)
-                }, {
-                    Timber.e(it)
-//                    Toast.makeText(this@BigBangActivity, it.message, Toast.LENGTH_SHORT).show()
-                })
-
+    override fun onResume() {
+        super.onResume()
+        refreshIconStatus()
     }
 
     override fun onDestroy() {
@@ -115,6 +99,39 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                         meaningTv.text = it
                     }
                 }, { Timber.e(it) })
+    }
+
+    private fun refreshIconStatus() {
+        eyeBtn.text = if (kataLayout.showFurigana) "{gmd-visibility}" else "{gmd-visibility-off}"
+    }
+
+    private fun handleIntent(intent: Intent) {
+        val text = intent.data.getQueryParameter(EXTRA_TEXT)
+        if (text.isEmpty()) {
+            finish()
+            return
+        }
+        meaningScrollView.smoothScrollTo(0,0)
+        bigBangScrollView.smoothScrollTo(0,0)
+        db = JMDictDbHelper(this).readableDatabase
+        searchHelper = SearchHelper(db!!)
+
+        segmentDis?.dispose()
+        segmentDis = BigBang.getSegmentParserAsync()
+                .flatMap { it.parse(text) }
+                .flatMap { Observable.fromIterable(it) }
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe ({
+                    kataLayout.reset()
+                    resetTopLayout()
+                    kanjiResultList = it
+                    kataLayout.setTokenData(it)
+                }, {
+                    Timber.e(it)
+//                    Toast.makeText(this@BigBangActivity, it.message, Toast.LENGTH_SHORT).show()
+                })
+
     }
 
     private fun resetTopLayout() {

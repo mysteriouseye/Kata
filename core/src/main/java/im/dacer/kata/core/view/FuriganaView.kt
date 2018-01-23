@@ -33,6 +33,11 @@ class FuriganaView @JvmOverloads constructor(
     private val furiganaContainerWidth: Float get() = kanjiResult?.run { getFuriganaContainerWidth(this) } ?: 0f
     private val normalWidth: Float get() = normalPaint.measureText(kanjiResult?.surface ?: "")
 
+    var showFurigana: Boolean = true
+        set(value) {
+            field = value
+            postInvalidate()
+        }
 
     init {
         furiganaPaint.color = GRAY
@@ -93,7 +98,7 @@ class FuriganaView @JvmOverloads constructor(
         var xOffset = 0f
         val surface = kanjiResult?.surface ?: ""
 
-        if (kanjiResult!!.needShowFurigana) {
+        if (kanjiResult!!.needShowFurigana && (showFurigana || isSelected)) {
             val furiXPos = getFuriganaXpos(kanjiResult!!)
             val furiWidth = furiganaPaint.measureText(kanjiResult!!.furiganaForDisplay)
 

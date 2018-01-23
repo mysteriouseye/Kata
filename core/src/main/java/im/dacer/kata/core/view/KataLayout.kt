@@ -36,9 +36,18 @@ class KataLayout @JvmOverloads constructor(
                     .map { getChildAt(it) }
                     .forEach { (it as? FuriganaView)?.setTextSpSize(itemTextSize) }
         }
+    var showFurigana = true
     var itemClickListener: ItemClickListener? = null
     private var mLines: MutableList<Line> = arrayListOf()
     private var mScaledTouchSlop: Int = ViewConfiguration.get(getContext()).scaledTouchSlop
+
+    fun showFurigana(show: Boolean) {
+        showFurigana = show
+        mLines
+                .map { it.itemList }
+                .flatMap { it }
+                .forEach { it.view.showFurigana = show }
+    }
 
     fun setTokenData(tokens: List<Token>) {
         setKanjiResultData(tokens.map { it.toKanjiResult() })
@@ -48,6 +57,7 @@ class KataLayout @JvmOverloads constructor(
         kanjiResults.forEach {
             val view = FuriganaView(context)
             view.setText(it)
+            view.showFurigana = showFurigana
             if (itemTextSize > 0) view.setTextSpSize(itemTextSize)
             addView(view)
         }
