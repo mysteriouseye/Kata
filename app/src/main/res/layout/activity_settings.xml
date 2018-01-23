@@ -29,7 +29,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/search_engine"
+        android:id="@+id/searchEngine"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_marginTop="12dp"
@@ -53,7 +53,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/bigbang_style"
+        android:id="@+id/bigbangStyle"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:layout_marginTop="12dp"

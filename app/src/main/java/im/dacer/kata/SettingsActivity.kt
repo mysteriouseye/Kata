@@ -25,7 +25,7 @@ class SettingsActivity : AppCompatActivity() {
         bigBang = BigBang(this)
         appPref = MultiprocessPref(this)
 
-        search_engine.setOnClickListener {
+        searchEngine.setOnClickListener {
             AlertDialog.Builder(this@SettingsActivity).setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->
                 appPref!!.setSearchEngine(SearchEngine.getSupportSearchEngineList()[which])
                 bigBang!!.registerAction(BigBang.ACTION_SEARCH, SearchEngine.getSearchAction(applicationContext))
@@ -49,7 +49,7 @@ class SettingsActivity : AppCompatActivity() {
             updateUI()
         }
 
-        bigbang_style.setOnClickListener { startActivity(Intent(this@SettingsActivity, StyleActivity::class.java)) }
+        bigbangStyle.setOnClickListener { startActivity(Intent(this@SettingsActivity, StyleActivity::class.java)) }
         mConfig = Treasure.get(this, Config::class.java)
         updateUI()
 
