@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_big_bang.*
 import timber.log.Timber
 
 
-class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataLayout.ItemClickListener {
+class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private var kanjiResultList: List<Token>? = null
     private var db: SQLiteDatabase? = null
@@ -115,18 +115,6 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
                         meaningTv.text = it
                     }
                 }, { Timber.e(it) })
-    }
-
-    override fun onSearch(text: String) {
-        bigBang?.startAction(this, BigBang.ACTION_SEARCH, text)
-    }
-
-    override fun onShare(text: String) {
-        bigBang?.startAction(this, BigBang.ACTION_SHARE, text)
-    }
-
-    override fun onCopy(text: String) {
-        bigBang?.startAction(this, BigBang.ACTION_COPY, text)
     }
 
     private fun resetTopLayout() {
