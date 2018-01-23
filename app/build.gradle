@@ -38,6 +38,11 @@ android {
         debug {
             applicationIdSuffix '.debug'
         }
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "Kata-${variant.name}-${variant.versionName}(${variant.versionCode}).apk"
+            }
+        }
     }
 
     packagingOptions {
