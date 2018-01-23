@@ -1,17 +1,13 @@
 package im.dacer.kata.widget
 
 import android.content.Context
-import android.util.AttributeSet
-import android.view.View
-import android.graphics.drawable.NinePatchDrawable
-import android.R.attr.y
-import android.R.attr.x
 import android.graphics.*
-import android.support.v4.content.ContextCompat
+import android.graphics.drawable.NinePatchDrawable
+import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import im.dacer.kata.R
 import im.dacer.kata.core.util.ViewUtil
-import timber.log.Timber
 
 
 /**

@@ -1,6 +1,5 @@
 package im.dacer.kata.core.util
 
-import android.content.Context
 import android.content.res.Resources
 
 object ViewUtil {

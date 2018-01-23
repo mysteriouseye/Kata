@@ -6,9 +6,6 @@ import com.baoyz.treasure.Treasure
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
-import im.dacer.kata.core.BigBang
-import im.dacer.kata.core.action.CopyAction
-import im.dacer.kata.core.action.ShareAction
 import im.dacer.kata.service.ListenClipboardService
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber

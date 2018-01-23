@@ -153,15 +153,15 @@ object KanaHelper {
      * UPPERCASE if the input was Katakana.
      */
     fun toRomaji(c: Char): String {
-        var c = c
-        if (isHiragana(c)) {
-            return lookupRomaji(c)
-        } else if (isKatakana(c)) {
-            c = toHiragana(c)
-            val str = lookupRomaji(c)
+        var ch = c
+        if (isHiragana(ch)) {
+            return lookupRomaji(ch)
+        } else if (isKatakana(ch)) {
+            ch = toHiragana(ch)
+            val str = lookupRomaji(ch)
             return str.toUpperCase()
         }
-        return c.toString()
+        return ch.toString()
     }
 
     /**

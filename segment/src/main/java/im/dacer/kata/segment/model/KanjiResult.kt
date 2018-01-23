@@ -42,7 +42,6 @@ data class KanjiResult(val surface: String, val baseForm: String = "", val furig
 
         }
 
-        var offset = startCount - endCount.toFloat()
         furiganaStartOffset = startCount
         furiganaEndOffset = endCount
         furiganaForDisplay = result
