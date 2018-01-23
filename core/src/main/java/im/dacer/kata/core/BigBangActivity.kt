@@ -59,7 +59,8 @@ class BigBangActivity : AppCompatActivity(), BigBangLayout.ActionListener, KataL
             finish()
             return
         }
-
+        meaningScrollView.smoothScrollTo(0,0)
+        bigBangScrollView.smoothScrollTo(0,0)
         db = JMDictDbHelper(this).readableDatabase
         searchHelper = SearchHelper(db!!)
 
