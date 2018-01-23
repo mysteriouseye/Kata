@@ -199,4 +199,8 @@ object KanaHelper {
     fun hasKanji(str: String) : Boolean {
         return str.toCharArray().any { isKanji(it) }
     }
+
+    fun hasHiragana(str: String) : Boolean {
+        return str.toCharArray().any { isHiragana(it) }
+    }
 }

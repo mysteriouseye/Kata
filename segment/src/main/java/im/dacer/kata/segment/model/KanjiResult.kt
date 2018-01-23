@@ -20,26 +20,29 @@ data class KanjiResult(val surface: String, val baseForm: String = "", val furig
     val needShowFurigana: Boolean
 
     init {
-        needShowFurigana = KanaHelper.hasKanji(surface)
+        needShowFurigana = KanaHelper.hasKanji(surface) && KanaHelper.hasHiragana(furigana)
 
         var result = furigana
         var startCount = 0
         var endCount = 0
 
-        surface.toCharArray()
-                .takeWhile { it.isKana() }
-                .forEach { startCount+=1 }
-
-        if (result.isNotEmpty()) {
-            result = result.replaceRange(0, startCount, "")
-        }
-        if (result.isNotEmpty()) {
-            surface.toCharArray().reversed()
+        if (needShowFurigana) {
+            surface.toCharArray()
                     .takeWhile { it.isKana() }
-                    .forEach { endCount+=1 }
+                    .forEach { startCount+=1 }
 
-            result = result.replaceRange(result.length - endCount, result.length, "")
+            if (result.isNotEmpty()) {
+                result = result.replaceRange(0, startCount, "")
+            }
+            if (result.isNotEmpty()) {
+                surface.toCharArray().reversed()
+                        .takeWhile { it.isKana() }
+                        .forEach { endCount+=1 }
 
+                if (endCount < result.length) {
+                    result = result.replaceRange(result.length - endCount, result.length, "")
+                }
+            }
         }
 
         furiganaStartOffset = startCount
