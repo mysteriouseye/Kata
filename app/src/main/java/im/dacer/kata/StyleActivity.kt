@@ -23,21 +23,18 @@ class StyleActivity : AppCompatActivity() {
         textSizeSeekBar.setOnProgressChangeListener(object : SimpleListener() {
             override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
                 kataLayout.itemTextSize = value.toFloat()
-                updatePref()
             }
         })
 
         lineSpaceSeekBar.setOnProgressChangeListener(object : SimpleListener() {
             override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
                 kataLayout.lineSpace = value
-                updatePref()
             }
         })
 
         itemSpace.setOnProgressChangeListener(object : SimpleListener() {
             override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
                 kataLayout.itemSpace = value
-                updatePref()
             }
         })
 
@@ -47,6 +44,11 @@ class StyleActivity : AppCompatActivity() {
         itemSpace.progress = multiprocessPref!!.getItemSpace()
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        updatePref()
     }
 
     fun updatePref() {
