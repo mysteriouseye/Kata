@@ -1,7 +1,7 @@
 package im.dacer.kata.core
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
@@ -13,13 +13,15 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_float.*
 import timber.log.Timber
 
+
+
 /**
  * Created by Dacer on 31/01/2018.
  */
 class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private var segmentDis: Disposable? = null
-    private var text: String? = null
+    private var sharedText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,29 +37,34 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     }
 
     override fun onItemClicked(index: Int) {
-        SchemeHelper.startKata(this, text!!, index)
+        SchemeHelper.startKata(this, sharedText!!, index)
         finish()
     }
 
+    @SuppressLint("InlinedApi")
     private fun handleIntent(intent: Intent) {
-        text = intent.data?.getQueryParameter(BigBangActivity.EXTRA_TEXT)
+        sharedText = intent.data?.getQueryParameter(BigBangActivity.EXTRA_TEXT)
 
-        if (text.isNullOrEmpty()) {
-            if (intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT) != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    text = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT).toString()
-                }
+        if (sharedText.isNullOrEmpty() && intent.action == Intent.ACTION_PROCESS_TEXT) {
+            sharedText = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()
+        }
+
+        if (sharedText.isNullOrEmpty() && intent.action == Intent.ACTION_SEND) {
+            sharedText = getIntent().getStringExtra(Intent.EXTRA_TEXT)
+            if (sharedText.isNullOrEmpty()) {
+                sharedText = getIntent().getStringExtra(Intent.EXTRA_SUBJECT)
             }
         }
 
-        if (text.isNullOrEmpty()) {
+
+        if (sharedText.isNullOrEmpty()) {
             finish()
             return
         }
 
         segmentDis?.dispose()
         segmentDis = BigBang.getSegmentParserAsync()
-                .flatMap { it.parse(text!!) }
+                .flatMap { it.parse(sharedText!!) }
                 .flatMap { Observable.fromIterable(it) }
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
