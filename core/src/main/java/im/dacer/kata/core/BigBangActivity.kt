@@ -5,8 +5,10 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.PopupMenu
 import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.SearchEngine
+import im.dacer.kata.core.action.SearchAction
 import im.dacer.kata.core.data.JMDictDbHelper
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.data.SearchHelper
@@ -21,6 +23,8 @@ import kotlinx.android.synthetic.main.activity_big_bang.*
 import timber.log.Timber
 
 
+
+
 class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private var kanjiResultList: List<Token>? = null
@@ -29,6 +33,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     private var searchHelper: SearchHelper? = null
     private var dictDisposable: Disposable? = null
     private var currentSelectedToken: Token? = null
+    private var searchAction: SearchAction? = null
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -45,11 +50,20 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
         kataLayout.itemClickListener = this
         kataLayout.showFurigana(!appPre.hideFurigana)
+        searchAction = SearchEngine.getDefaultSearchAction(this)
 
         handleIntent(intent)
-        val searchAction = SearchEngine.getSearchAction(this)
-        searchBtn.setOnClickListener {
-            currentSelectedToken?.run { searchAction.start(baseContext, this.strForSearch()) }
+        searchBtn.setOnClickListener { onClickSearch() }
+        searchBtn.setOnLongClickListener {
+            val popup = PopupMenu(this, it)
+            it.setOnTouchListener(popup.dragToOpenListener)
+            SearchEngine.getSupportSearchEngineList().forEach { popup.menu.add(it) }
+            popup.setOnMenuItemClickListener {
+                searchAction = SearchEngine.getSearchAction(it.title.toString())
+                onClickSearch()
+            }
+            popup.show()
+            true
         }
         eyeBtn.setOnClickListener {
             val showFurigana = !kataLayout.showFurigana
@@ -57,6 +71,11 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
             kataLayout.showFurigana(showFurigana)
             refreshIconStatus()
         }
+    }
+
+    private fun onClickSearch() : Boolean {
+        currentSelectedToken?.run { searchAction!!.start(baseContext, this.strForSearch()) }
+        return true
     }
 
     override fun onResume() {

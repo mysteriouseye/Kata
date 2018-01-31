@@ -6,7 +6,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.baoyz.treasure.Treasure
-import im.dacer.kata.core.BigBang
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.service.ListenClipboardService
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -14,7 +13,6 @@ import kotlinx.android.synthetic.main.activity_settings.*
 class SettingsActivity : AppCompatActivity() {
 
     private var mConfig: Config? = null
-    private var bigBang: BigBang? = null
     private var appPref: MultiprocessPref? = null
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,14 +20,12 @@ class SettingsActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_settings)
 
-        bigBang = BigBang(this)
         appPref = MultiprocessPref(this)
         mConfig = Treasure.get(this, Config::class.java)
 
         searchEngine.setOnClickListener {
             AlertDialog.Builder(this@SettingsActivity).setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->
                 appPref!!.searchEngine = SearchEngine.getSupportSearchEngineList()[which]
-                bigBang!!.registerAction(BigBang.ACTION_SEARCH, SearchEngine.getSearchAction(applicationContext))
                 updateUI()
             }.show()
         }

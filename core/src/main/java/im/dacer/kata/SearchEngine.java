@@ -16,9 +16,27 @@ public class SearchEngine {
     public static final String DUCKDUCKGO = "DuckDuckGo";
     public static final String JISHO = "Jisho";
 
-    public static SearchAction getSearchAction(Context context) {
+    public static SearchAction getDefaultSearchAction(Context context) {
         MultiprocessPref multiprocessPref = new MultiprocessPref(context);
-        switch (multiprocessPref.getSearchEngine()) {
+        return getSearchAction(multiprocessPref.getSearchEngine());
+    }
+
+    public static SearchAction getSearchAction(int index) {
+        switch (getSupportSearchEngineList()[index]) {
+            case GOOGLE:
+                return GoogleSearchAction.create();
+            case BING:
+                return BingSearchAction.create();
+            case DUCKDUCKGO:
+                return DuckDuckGoSearchAction.create();
+            case JISHO:
+                return JishoSearchAction.create();
+        }
+        return null;
+    }
+
+    public static SearchAction getSearchAction(String engine) {
+        switch (engine) {
             case GOOGLE:
                 return GoogleSearchAction.create();
             case BING:
