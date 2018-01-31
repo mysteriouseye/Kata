@@ -7,7 +7,6 @@ package im.dacer.kata.widget;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.util.TypedValue;
@@ -16,7 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import im.dacer.kata.R;
-import im.dacer.kata.core.SchemeHelper;
+import im.dacer.kata.core.util.SchemeHelper;
 import timber.log.Timber;
 
 /**
@@ -49,9 +48,7 @@ public class FloatingView extends android.support.v7.widget.AppCompatImageView {
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, SchemeHelper.Companion.getUri(mText));
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getContext().startActivity(intent);
+                SchemeHelper.Companion.startKata(getContext(), mText, 0);
                 dismiss();
             }
         });

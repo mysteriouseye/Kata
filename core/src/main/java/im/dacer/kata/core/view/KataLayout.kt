@@ -38,6 +38,8 @@ class KataLayout @JvmOverloads constructor(
         }
     var showFurigana = true
     var itemClickListener: ItemClickListener? = null
+
+    private var preselectedIndex = -1
     private var mLines: MutableList<Line> = arrayListOf()
     private var mScaledTouchSlop: Int = ViewConfiguration.get(getContext()).scaledTouchSlop
 
@@ -51,6 +53,21 @@ class KataLayout @JvmOverloads constructor(
 
     fun setTokenData(tokens: List<Token>) {
         setKanjiResultData(tokens.map { it.toKanjiResult() })
+    }
+
+    fun select(index: Int) {
+        preselectedIndex = index
+        var i = 0
+        loop@ for (line in mLines) {
+            for (item in line.itemList) {
+                if (preselectedIndex == i) {
+                    onItemSelected(item)
+                    preselectedIndex = -1
+                    break@loop
+                }
+                i++
+            }
+        }
     }
 
     fun setKanjiResultData(kanjiResults: List<KanjiResult>) {
@@ -145,6 +162,7 @@ class KataLayout @JvmOverloads constructor(
             currentLine!!.addItem(item)
         }
 
+        if (mLines.isNotEmpty() && preselectedIndex != -1) select(preselectedIndex)
         val size = (mLines.size - newLineCount) * childHeight + paddingTop + paddingBottom + (mLines.size - 1 - newLineCount) * lineSpace
         super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(size.toInt(), View.MeasureSpec.EXACTLY))
     }
@@ -172,14 +190,18 @@ class KataLayout @JvmOverloads constructor(
                 }
                 val item = findItemByPoint(event.x.toInt(), event.y.toInt())
                 if (item != null && !item.view.isBlank()) {
-                    lastSelectedItem?.isSelected = false
-                    item.isSelected = true
-                    lastSelectedItem = item
-                    itemClickListener?.onItemClicked(item.index)
+                    onItemSelected(item)
                 }
             }
         }
         return true
+    }
+
+    private fun onItemSelected(item: Item) {
+        lastSelectedItem?.isSelected = false
+        item.isSelected = true
+        lastSelectedItem = item
+        itemClickListener?.onItemClicked(item.index)
     }
 
     private fun findItemByPoint(x: Int, y: Int): Item? {

@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import im.dacer.kata.core.util.RectEvaluator;
+
 /**
  * Created by baoyongzhang on 2016/10/20.
  */

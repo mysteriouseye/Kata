@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import im.dacer.kata.SegmentEngine
+import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.widget.FloatingView
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -20,9 +21,13 @@ class ListenClipboardService : Service() {
         val primaryClip = mClipboardManager!!.primaryClip
         if (primaryClip != null && primaryClip.itemCount > 0 && "BigBang" != primaryClip.description.label) {
             val text = primaryClip.getItemAt(0).coerceToText(this)
-            if (text != null) {
+            if (text.isEmpty()) { return }
+
+            if (text.length > SHOW_FLOAT_MAX_TEXT_COUNT) {
                 mFloatingView!!.setText(text.toString())
                 mFloatingView!!.show()
+            } else {
+                SchemeHelper.startKataFloat(this, text.toString())
             }
         }
     }
@@ -43,6 +48,8 @@ class ListenClipboardService : Service() {
     override fun onBind(intent: Intent): IBinder? = null
 
     companion object {
+
+        const val SHOW_FLOAT_MAX_TEXT_COUNT = 12
 
         fun start(context: Context) {
             val serviceIntent = Intent(context, ListenClipboardService::class.java)

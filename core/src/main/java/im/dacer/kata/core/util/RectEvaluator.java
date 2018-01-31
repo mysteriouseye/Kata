@@ -2,7 +2,7 @@
  * The MIT License (MIT)
  * Copyright (c) 2016 baoyongzhang <baoyz94@gmail.com>
  */
-package im.dacer.kata.core;
+package im.dacer.kata.core.util;
 
 /**
  * Created by baoyongzhang on 2016/10/20.

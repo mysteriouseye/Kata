@@ -28,8 +28,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     private var segmentDis: Disposable? = null
     private var searchHelper: SearchHelper? = null
     private var dictDisposable: Disposable? = null
-    private var bigBang: BigBang? = null
-    var currentSelectedToken: Token? = null
+    private var currentSelectedToken: Token? = null
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -39,7 +38,6 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_big_bang)
-        bigBang = BigBang(this)
         val appPre = MultiprocessPref(this)
 
         kataLayout.itemSpace = appPre.getItemSpace()
@@ -107,6 +105,8 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private fun handleIntent(intent: Intent) {
         val text = intent.data.getQueryParameter(EXTRA_TEXT)
+        val preselectedIndex = intent.data.getQueryParameter(PRESELECTED_INDEX)?.toInt()
+
         if (text.isEmpty()) {
             finish()
             return
@@ -127,6 +127,8 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                     resetTopLayout()
                     kanjiResultList = it
                     kataLayout.setTokenData(it)
+                    preselectedIndex?.let { kataLayout.select(it) }
+
                 }, {
                     Timber.e(it)
 //                    Toast.makeText(this@BigBangActivity, it.message, Toast.LENGTH_SHORT).show()
@@ -141,6 +143,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     companion object {
         const val EXTRA_TEXT = "extra_text"
+        const val PRESELECTED_INDEX = "preselected_index"
     }
 
 }
