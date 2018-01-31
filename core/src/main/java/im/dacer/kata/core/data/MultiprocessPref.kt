@@ -31,7 +31,7 @@ class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
         set(value) { put(HIDE_FURIGANA, value) }
 
     var showFloatDialog: Boolean
-        get() = getBoolean(SHOW_FLOAT_DIALOG, false)
+        get() = getBoolean(SHOW_FLOAT_DIALOG, true)
         set(value) { put(SHOW_FLOAT_DIALOG, value) }
 
     companion object {

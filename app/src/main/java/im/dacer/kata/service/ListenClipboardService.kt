@@ -8,6 +8,7 @@ import android.os.IBinder
 import im.dacer.kata.SegmentEngine
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.util.SchemeHelper
+import im.dacer.kata.segment.util.hasKanjiOrKana
 import im.dacer.kata.widget.FloatingView
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -24,6 +25,8 @@ class ListenClipboardService : Service() {
         if (primaryClip != null && primaryClip.itemCount > 0 && "BigBang" != primaryClip.description.label) {
             val text = primaryClip.getItemAt(0).coerceToText(this)
             if (text.isEmpty()) { return }
+
+            if (!text.toString().hasKanjiOrKana()) { return }
 
             if (!appPref!!.showFloatDialog || text.length > SHOW_FLOAT_MAX_TEXT_COUNT) {
                 mFloatingView!!.setText(text.toString())

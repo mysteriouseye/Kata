@@ -19,7 +19,7 @@ package im.dacer.kata.segment.util
  */
 
 fun Char.isKana(): Boolean = KanaHelper.isKana(this)
-
+fun String.hasKanjiOrKana(): Boolean = this.toCharArray().any { KanaHelper.isKanji(it) || KanaHelper.isKana(it) }
 
 object KanaHelper {
 
