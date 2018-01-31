@@ -25,4 +25,5 @@
     <string name="word_spacing">Word spacing</string>
     <string name="not_found_error">Sorry, couldn\'t find anything matching %1$s</string>
     <string name="permission_error_overlay">\"Draw over other apps\" need to be permitted</string>
+    <string name="show_float_dialog_when_copy_few_words">Show float dialog when copy few words</string>
 </resources>

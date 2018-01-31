@@ -11,29 +11,33 @@ import net.grandcentrix.tray.TrayPreferences
 class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
 
 
-    fun getLineSpace(): Int = getBigBangStyle().lineSpace
+    fun getLineSpace(): Int = bigBangStyle.lineSpace
 
-    fun getItemSpace(): Int = getBigBangStyle().itemSpace
+    fun getItemSpace(): Int = bigBangStyle.itemSpace
 
-    fun getItemTextSize(): Int = getBigBangStyle().textSize
+    fun getItemTextSize(): Int = bigBangStyle.textSize
 
-    fun getBigBangStyle(): BigBangStyle{
-        return BigBangStyle.getFrom(getString(BIG_BANG_STYLE, ""))
-    }
+    var bigBangStyle: BigBangStyle
+        get() = BigBangStyle.getFrom(getString(BIG_BANG_STYLE, ""))
+        set(value) { put(BIG_BANG_STYLE, value.toReadableString()) }
 
-    fun setBigBangStyle(s: BigBangStyle) = put(BIG_BANG_STYLE, s.toReadableString())
+    var searchEngine: String
+        get() = getString(SEARCH_ENGINE, SearchEngine.GOOGLE)!!
+        set(value) { put(SEARCH_ENGINE, value) }
 
-    fun getSearchEngine() = getString(SEARCH_ENGINE, SearchEngine.GOOGLE)!!
 
-    fun setSearchEngine(string: String) = put(SEARCH_ENGINE, string)
+    var hideFurigana: Boolean
+        get() = getBoolean(HIDE_FURIGANA, false)
+        set(value) { put(HIDE_FURIGANA, value) }
 
-    fun isHideFurigana() = getBoolean(HIDE_FURIGANA, false)
-
-    fun setHideFurigana(hide: Boolean) = put(HIDE_FURIGANA, hide)
+    var showFloatDialog: Boolean
+        get() = getBoolean(SHOW_FLOAT_DIALOG, false)
+        set(value) { put(SHOW_FLOAT_DIALOG, value) }
 
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
         private const val SEARCH_ENGINE = "pref_search_engine"
         private const val HIDE_FURIGANA = "pref_hide_furigana"
+        private const val SHOW_FLOAT_DIALOG = "pref_show_float_dialog"
     }
 }

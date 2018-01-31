@@ -44,7 +44,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         kataLayout.lineSpace = appPre.getLineSpace()
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
         kataLayout.itemClickListener = this
-        kataLayout.showFurigana(!appPre.isHideFurigana())
+        kataLayout.showFurigana(!appPre.hideFurigana)
 
         handleIntent(intent)
         val searchAction = SearchEngine.getSearchAction(this)
@@ -53,7 +53,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         }
         eyeBtn.setOnClickListener {
             val showFurigana = !kataLayout.showFurigana
-            appPre.setHideFurigana(!showFurigana)
+            appPre.hideFurigana = !showFurigana
             kataLayout.showFurigana(showFurigana)
             refreshIconStatus()
         }

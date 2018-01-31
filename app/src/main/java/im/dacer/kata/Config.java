@@ -13,10 +13,6 @@ import com.baoyz.treasure.Preferences;
 @Preferences
 public interface Config {
 
-    @Default("false")
-    boolean isAutoCopy();
-    void setAutoCopy(boolean autoCopy);
-
     @Default("true")
     boolean isListenClipboard();
     void setListenClipboard(boolean listenClipboard);

@@ -30,7 +30,7 @@ class App : Application() {
         Stetho.initializeWithDefaults(this)
 
         val config = Treasure.get(this, Config::class.java)
-//        BigBang.registerAction(BigBang.ACTION_BACK, if (config.isAutoCopy) CopyAction.create() else null)
+//        BigBang.registerAction(BigBang.ACTION_BACK, if (config.isShowFloatDialog) CopyAction.create() else null)
 
         if (config.isListenClipboard) {
             ListenClipboardService.start(this)

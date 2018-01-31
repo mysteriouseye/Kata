@@ -52,11 +52,11 @@ class StyleActivity : AppCompatActivity() {
     }
 
     fun updatePref() {
-        multiprocessPref?.setBigBangStyle(BigBangStyle(
+        multiprocessPref?.bigBangStyle = BigBangStyle(
                 itemSpace.progress,
                 lineSpaceSeekBar.progress,
                 textSizeSeekBar.progress
-        ))
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

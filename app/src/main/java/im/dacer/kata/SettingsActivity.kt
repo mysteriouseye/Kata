@@ -24,20 +24,20 @@ class SettingsActivity : AppCompatActivity() {
 
         bigBang = BigBang(this)
         appPref = MultiprocessPref(this)
+        mConfig = Treasure.get(this, Config::class.java)
 
         searchEngine.setOnClickListener {
             AlertDialog.Builder(this@SettingsActivity).setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->
-                appPref!!.setSearchEngine(SearchEngine.getSupportSearchEngineList()[which])
+                appPref!!.searchEngine = SearchEngine.getSupportSearchEngineList()[which]
                 bigBang!!.registerAction(BigBang.ACTION_SEARCH, SearchEngine.getSearchAction(applicationContext))
                 updateUI()
             }.show()
         }
 
-//        autoCopySwitch!!.setOnCheckedChangeListener { _, isChecked ->
-//            mConfig!!.isAutoCopy = isChecked
-//            BigBang.registerAction(BigBang.ACTION_BACK, if (mConfig!!.isAutoCopy) CopyAction.create() else null)
-//            updateUI()
-//        }
+        showFloatDialogSwit.setOnCheckedChangeListener { _, isChecked ->
+            appPref!!.showFloatDialog = isChecked
+            updateUI()
+        }
 
         listenClipboardSwitch.setOnCheckedChangeListener { _, isChecked ->
             mConfig!!.isListenClipboard = isChecked
@@ -50,15 +50,14 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         bigbangStyle.setOnClickListener { startActivity(Intent(this@SettingsActivity, StyleActivity::class.java)) }
-        mConfig = Treasure.get(this, Config::class.java)
         updateUI()
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun updateUI() {
-        searchEngineTv.text = appPref!!.getSearchEngine()
-//        autoCopySwitch?.isChecked = mConfig!!.isAutoCopy
+        searchEngineTv.text = appPref!!.searchEngine
+        showFloatDialogSwit.isChecked = appPref!!.showFloatDialog
         listenClipboardSwitch.isChecked = mConfig!!.isListenClipboard
     }
 

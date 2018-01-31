@@ -18,7 +18,7 @@ class SchemeHelper {
             c.startActivity(intent)
         }
 
-        fun startKataFloat(c: Context, text: String) {
+        fun startKataFloatDialog(c: Context, text: String) {
             val intent = Intent(Intent.ACTION_VIEW, getFloatUri(text))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             c.startActivity(intent)
