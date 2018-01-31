@@ -92,7 +92,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if (it.isBlank()) {
-                        meaningTv.text = getString(R.string.not_found_error, currentSelectedToken?.surface)
+                        meaningTv.text = getString(R.string.not_found_error, strForSearch)
                     } else {
                         meaningTv.text = it
                     }
