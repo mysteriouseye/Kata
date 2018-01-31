@@ -17,35 +17,36 @@
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp">
-            <com.mikepenz.iconics.view.IconicsTextView
-                android:id="@+id/eyeBtn"
+            <LinearLayout
+                android:id="@+id/btnsLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="12dp"
-                android:paddingBottom="12dp"
-                android:textSize="22sp"
-                android:textColor="#757575"
-                android:paddingRight="10dp"
-                android:text="{gmd-visibility}"
-                android:layout_alignParentRight="true"/>
-            <com.mikepenz.iconics.view.IconicsTextView
-                android:id="@+id/searchBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="12dp"
-                android:paddingBottom="12dp"
-                android:textSize="22sp"
-                android:textColor="#757575"
-                android:paddingRight="10dp"
-                android:text="{gmd-search}"
-                android:layout_toLeftOf="@id/eyeBtn"/>
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true">
+
+                <com.mikepenz.iconics.view.IconicsTextView
+                    android:id="@+id/eyeBtn"
+                    style="@style/IconicsBtnStyle"
+                    android:text="{gmd-visibility}" />
+
+                <com.mikepenz.iconics.view.IconicsTextView
+                    android:id="@+id/audioBtn"
+                    style="@style/IconicsBtnStyle"
+                    android:text="{gmd-play-circle-filled}"/>
+
+                <com.mikepenz.iconics.view.IconicsTextView
+                    android:id="@+id/searchBtn"
+                    style="@style/IconicsBtnStyle"
+                    android:text="{gmd-search}"/>
+
+            </LinearLayout>
             <TextView
                 android:id="@+id/descTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textColor="#fff"
-                android:layout_toLeftOf="@id/searchBtn"
+                android:layout_toLeftOf="@id/btnsLayout"
                 apps:text="片" />
             <TextView
                 android:id="@+id/meaningTv"

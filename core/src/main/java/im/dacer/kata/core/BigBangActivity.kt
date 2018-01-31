@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.PopupMenu
+import android.widget.Toast
 import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.SearchEngine
 import im.dacer.kata.core.action.SearchAction
@@ -15,14 +16,13 @@ import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
 import im.dacer.kata.core.extension.strForSearch
 import im.dacer.kata.core.view.KataLayout
+import im.dacer.kata.segment.util.TTSHelper
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_big_bang.*
 import timber.log.Timber
-
-
 
 
 class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
@@ -34,6 +34,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     private var dictDisposable: Disposable? = null
     private var currentSelectedToken: Token? = null
     private var searchAction: SearchAction? = null
+    private val ttsHelper = TTSHelper()
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -54,6 +55,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
         handleIntent(intent)
         searchBtn.setOnClickListener { onClickSearch() }
+        audioBtn.setOnClickListener { onClickAudio() }
         searchBtn.setOnLongClickListener {
             val popup = PopupMenu(this, it)
             it.setOnTouchListener(popup.dragToOpenListener)
@@ -78,6 +80,16 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         return true
     }
 
+    private fun onClickAudio() : Boolean {
+        try {
+            currentSelectedToken?.run { ttsHelper.play(this.strForSearch()) }
+        } catch (e: Exception) {
+            Timber.e(e)
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        }
+        return true
+    }
+
     override fun onResume() {
         super.onResume()
         refreshIconStatus()
@@ -86,6 +98,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     override fun onDestroy() {
         super.onDestroy()
         db?.close()
+        ttsHelper.onDestroy()
         segmentDis?.dispose()
     }
 
