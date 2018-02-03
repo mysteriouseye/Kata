@@ -1,8 +1,7 @@
 CREATE TABLE entry (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     gloss TEXT,
-    position TEXT,
-    gloss_cn TEXT
+    position TEXT
 );
 
 select_all:
