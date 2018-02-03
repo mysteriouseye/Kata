@@ -17,7 +17,7 @@ import im.dacer.kata.core.extension.getSubtitle
 import im.dacer.kata.core.extension.strForSearch
 import im.dacer.kata.core.util.LangUtils
 import im.dacer.kata.core.view.KataLayout
-import im.dacer.kata.segment.util.TTSHelper
+import im.dacer.kata.core.util.TTSHelper
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -35,7 +35,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     private var dictDisposable: Disposable? = null
     private var currentSelectedToken: Token? = null
     private var searchAction: SearchAction? = null
-    private val ttsHelper = TTSHelper()
+    private var ttsHelper: TTSHelper? = null
     private val appPre by lazy { MultiprocessPref(this) }
     private val langUtils by lazy { LangUtils(appPre) }
 
@@ -47,7 +47,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_big_bang)
-
+        ttsHelper = TTSHelper(this)
         kataLayout.itemSpace = appPre.getItemSpace()
         kataLayout.lineSpace = appPre.getLineSpace()
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
@@ -84,7 +84,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private fun onClickAudio() : Boolean {
         try {
-            currentSelectedToken?.run { ttsHelper.play(this.strForSearch()) }
+            currentSelectedToken?.run { ttsHelper?.play(this.reading) }
         } catch (e: Exception) {
             Timber.e(e)
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
@@ -100,7 +100,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     override fun onDestroy() {
         super.onDestroy()
         db?.close()
-        ttsHelper.onDestroy()
+        ttsHelper?.onDestroy()
         segmentDis?.dispose()
     }
 
