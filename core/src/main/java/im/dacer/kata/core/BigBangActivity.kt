@@ -3,9 +3,12 @@ package im.dacer.kata.core
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.PopupMenu
+import android.view.View
 import android.widget.Toast
 import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.SearchEngine
@@ -16,8 +19,8 @@ import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
 import im.dacer.kata.core.extension.strForSearch
 import im.dacer.kata.core.util.LangUtils
-import im.dacer.kata.core.view.KataLayout
 import im.dacer.kata.core.util.TTSHelper
+import im.dacer.kata.core.view.KataLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -53,6 +56,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
         kataLayout.itemClickListener = this
         kataLayout.showFurigana(!appPre.hideFurigana)
+        loadingProgressBar.indeterminateDrawable.setColorFilter(Color.parseColor("#EEEEEE"), PorterDuff.Mode.MULTIPLY)
         searchAction = SearchEngine.getDefaultSearchAction(this)
 
         handleIntent(intent)
@@ -128,6 +132,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    loadingProgressBar.visibility = View.GONE
                     if (it.isBlank()) {
                         meaningTv.text = getString(R.string.not_found_error, strForSearch)
                     } else {
