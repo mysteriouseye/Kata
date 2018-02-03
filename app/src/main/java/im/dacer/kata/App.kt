@@ -2,12 +2,15 @@ package im.dacer.kata
 
 import android.app.Application
 import android.util.Log
+import com.androidnetworking.AndroidNetworking
 import com.baoyz.treasure.Treasure
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.squareup.leakcanary.LeakCanary
 import im.dacer.kata.service.ListenClipboardService
 import io.fabric.sdk.android.Fabric
+import okhttp3.OkHttpClient
 import timber.log.Timber
 
 class App : Application() {
@@ -21,6 +24,12 @@ class App : Application() {
         }
         LeakCanary.install(this)
         Fabric.with(this, Crashlytics())
+
+
+        val okHttpClient = OkHttpClient().newBuilder()
+                .addNetworkInterceptor(StethoInterceptor())
+                .build()
+        AndroidNetworking.initialize(applicationContext, okHttpClient)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

@@ -3,6 +3,7 @@ package im.dacer.kata.core.data
 import android.content.Context
 import im.dacer.kata.SearchEngine
 import im.dacer.kata.core.model.BigBangStyle
+import im.dacer.kata.core.util.LangUtils
 import net.grandcentrix.tray.TrayPreferences
 
 /**
@@ -34,10 +35,15 @@ class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
         get() = getBoolean(SHOW_FLOAT_DIALOG, true)
         set(value) { put(SHOW_FLOAT_DIALOG, value) }
 
+    var targetLang: String
+        get() = getString(TARGET_LANG, LangUtils.DEFAULT_TARGET_LANG_KEY)!!
+        set(value) { put(TARGET_LANG, value) }
+
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
         private const val SEARCH_ENGINE = "pref_search_engine"
         private const val HIDE_FURIGANA = "pref_hide_furigana"
         private const val SHOW_FLOAT_DIALOG = "pref_show_float_dialog"
+        private const val TARGET_LANG = "pref_target_lang"
     }
 }

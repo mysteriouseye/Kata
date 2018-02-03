@@ -15,6 +15,7 @@ import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
 import im.dacer.kata.core.extension.strForSearch
+import im.dacer.kata.core.util.LangUtils
 import im.dacer.kata.core.view.KataLayout
 import im.dacer.kata.segment.util.TTSHelper
 import io.reactivex.Observable
@@ -35,6 +36,8 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     private var currentSelectedToken: Token? = null
     private var searchAction: SearchAction? = null
     private val ttsHelper = TTSHelper()
+    private val appPre by lazy { MultiprocessPref(this) }
+    private val langUtils by lazy { LangUtils(appPre) }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -44,7 +47,6 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_big_bang)
-        val appPre = MultiprocessPref(this)
 
         kataLayout.itemSpace = appPre.getItemSpace()
         kataLayout.lineSpace = appPre.getLineSpace()
@@ -119,7 +121,10 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
         dictDisposable?.dispose()
         dictDisposable = Observable.fromCallable{ searchHelper!!.search(strForSearch) }
-                .map { it.joinToString("\n\n") { "· ${it.gloss()}" } }
+                .flatMap { Observable.fromIterable(it) }
+                .flatMap { langUtils.fetchTranslation(it) }
+                .toList()
+                .map { it.joinToString("\n\n") { "· $it" } }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
