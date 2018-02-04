@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.core.extension.timberAndToast
@@ -23,14 +24,15 @@ import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.widget.PopupView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-
-
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity(), PopupView.PopupListener {
     private val treasure by lazy { Treasure.get(this, Config::class.java) }
+    private var nothingHappenedCountdown: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +70,12 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        nothingHappenedCountdown?.dispose()
+        nothingHappenedView.visibility = View.GONE
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {
@@ -79,6 +87,14 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
         val service = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         service.primaryClip = ClipData.newPlainText("", clipTv.text.toString())
         Toast.makeText(this, getString(im.dacer.kata.core.R.string.copied), Toast.LENGTH_SHORT).show()
+
+        nothingHappenedCountdown = Observable.timer(3, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+                    nothingHappenedView.visibility = View.VISIBLE
+                    nothingHappenedView.startAnimation(slideUp)
+                }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

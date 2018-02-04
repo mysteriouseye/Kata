@@ -5,6 +5,8 @@
     <string name="initializing_database">Initializing database…</string>
     <string name="example_sentence">日本語は、主に日本国内や日本人同士の間で使われている言語である。日本は法令によって公用語を規定していないが、法令その他の公用文は全て日本語で記述され、各種法令において日本語を用いることが定められ、学校教育においては「国語」として教えられるなど、事実上、唯一の公用語となっている。</string>
     <string name="copy">Copy</string>
+    <string name="nothing_happened">Nothing happened?</string>
+    <string name="nothing_happened_detail">Try to\n\n- Go phone settings\n- Apps\n- Kata\n- Draw over other apps\n- ENABLE IT!</string>
 
     <string name="about">About</string>
     <string name="description">Kata (片) - A Japanese text segmentation app\n</string>
