@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
     @SuppressLint("NewApi")
     override fun onResume() {
         super.onResume()
-        startListenServiceIfNeed()
+        restartListenService()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val canDraw = Settings.canDrawOverlays(this)
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
