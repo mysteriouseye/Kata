@@ -31,4 +31,11 @@
 
     <string name="tts_error_title">Text-to-speech not work</string>
     <string name="tts_error_content">Try to:\n\nSettings - Accessibility - Text-to-speech output - Select Google TTS Engine and install Japanese voice data</string>
+
+    <string name="fetching_content_from_web_page">Fetching content from web page…</string>
+    <string name="it_is_not_web_page">It\'s not web page</string>
+    <string name="web_page_parser">Web page parser</string>
+    <string name="web_page_parser_mercury">Mercury</string>
+    <string name="web_page_parser_url2io">URL2io</string>
+    <string name="web_page_parser_not_use">Do not use</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.MenuItem
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.util.LangUtils
+import im.dacer.kata.core.util.WebParser
 import im.dacer.kata.service.ListenClipboardService
 import kotlinx.android.synthetic.main.activity_settings.*
 
@@ -21,15 +22,25 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         searchEngine.setOnClickListener {
-            AlertDialog.Builder(this@SettingsActivity).setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->
+            AlertDialog.Builder(this@SettingsActivity)
+                    .setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->
                 appPref.searchEngine = SearchEngine.getSupportSearchEngineList()[which]
                 updateUI()
             }.show()
         }
 
         translationTarget.setOnClickListener {
-            AlertDialog.Builder(this@SettingsActivity).setItems(LangUtils.LANG_LIST) { _, which ->
+            AlertDialog.Builder(this@SettingsActivity)
+                    .setItems(LangUtils.LANG_LIST) { _, which ->
                 appPref.targetLang = LangUtils.LANG_KEY_LIST[which]
+                updateUI()
+            }.show()
+        }
+
+        webPageParser.setOnClickListener {
+            AlertDialog.Builder(this@SettingsActivity)
+                    .setItems(WebParser.getParserNameArray(this)) { _, which ->
+                appPref.webParser = WebParser.Parser.values()[which]
                 updateUI()
             }.show()
         }
@@ -59,6 +70,7 @@ class SettingsActivity : AppCompatActivity() {
         searchEngineTv.text = appPref.searchEngine
         showFloatDialogSwit.isChecked = appPref.showFloatDialog
         listenClipboardSwitch.isChecked = mConfig.isListenClipboard
+        webPageParserTv.setText(appPref.webParser.stringRes)
         translationTargetTv.text = LangUtils.getLangByKey(appPref.targetLang)
     }
 

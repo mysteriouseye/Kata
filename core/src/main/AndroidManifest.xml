@@ -4,7 +4,7 @@
     <application>
 
         <activity
-            android:name=".BigBangActivity"
+            android:name=".ui.BigBangActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/BigBangTheme"
@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".FloatActivity"
+        <activity android:name=".ui.FloatActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/FloatTheme"

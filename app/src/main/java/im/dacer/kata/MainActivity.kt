@@ -17,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.baoyz.treasure.Treasure
+import im.dacer.kata.core.extension.timberAndToast
 import im.dacer.kata.data.DictImporter
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.widget.PopupView
@@ -24,7 +25,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 
 
 
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
             Observable.fromCallable{ dbImporter.importDataBaseFromAssets() }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ bigbangTipTv.setText(R.string.bigbang_hold_tip) }, { Timber.e(it) })
+                    .subscribe({ bigbangTipTv.setText(R.string.bigbang_hold_tip) }, { timberAndToast(it) })
         }
         permissionErrorLayout.setOnClickListener {
             val requestIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,

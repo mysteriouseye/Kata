@@ -2,11 +2,11 @@ package im.dacer.kata.core.util
 
 import com.rx2androidnetworking.Rx2AndroidNetworking
 import im.dacer.kata.core.data.MultiprocessPref
+import im.dacer.kata.core.extension.urlEncode
 import im.dacer.kata.core.model.DictEntry
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
-import java.net.URLEncoder
 import java.util.*
 
 /**
@@ -48,9 +48,6 @@ class LangUtils(private val appPre: MultiprocessPref) {
     companion object {
         fun getTranslationUrl(target: String, source: String) =
                 "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=$target&dt=t&q=${source.urlEncode()}"
-
-
-        private fun String.urlEncode() = URLEncoder.encode(this, "UTF-8")
 
         fun isZhCN(): Boolean = Locale.getDefault().language == "zh" && Locale.getDefault().country == "CN"
 

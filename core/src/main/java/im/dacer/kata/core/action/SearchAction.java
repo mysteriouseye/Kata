@@ -21,6 +21,7 @@ public abstract class SearchAction implements Action {
     public void start(Context context, String text) {
         if (!TextUtils.isEmpty(text)) {
             Intent intent = new Intent(Intent.ACTION_VIEW, createSearchUri(text));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
     }

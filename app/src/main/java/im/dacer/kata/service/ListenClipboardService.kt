@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.IBinder
 import im.dacer.kata.SegmentEngine
 import im.dacer.kata.core.data.MultiprocessPref
+import im.dacer.kata.core.extension.findUrl
 import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.segment.util.hasKanjiOrKana
 import im.dacer.kata.widget.FloatingView
@@ -18,7 +19,7 @@ class ListenClipboardService : Service() {
     private var mClipboardManager: ClipboardManager? = null
     private val mOnPrimaryClipChangedListener = ClipboardManager.OnPrimaryClipChangedListener { showAction() }
     private var mFloatingView: FloatingView? = null
-    private var appPref: MultiprocessPref? = null
+    private val appPref: MultiprocessPref by lazy { MultiprocessPref(this) }
 
     private fun showAction() {
         val primaryClip = mClipboardManager!!.primaryClip
@@ -26,9 +27,15 @@ class ListenClipboardService : Service() {
             val text = primaryClip.getItemAt(0).coerceToText(this)
             if (text.isEmpty()) { return }
 
+            if (appPref.useWebParser && text.toString().findUrl() != null) {
+                SchemeHelper.startKataFloatDialog(this, text.toString())
+                return
+            }
+
+
             if (!text.toString().hasKanjiOrKana()) { return }
 
-            if (!appPref!!.showFloatDialog || text.length > SHOW_FLOAT_MAX_TEXT_COUNT) {
+            if (!appPref.showFloatDialog || text.length > SHOW_FLOAT_MAX_TEXT_COUNT) {
                 mFloatingView!!.setText(text.toString())
                 mFloatingView!!.show()
             } else {
@@ -38,7 +45,6 @@ class ListenClipboardService : Service() {
     }
 
     override fun onCreate() {
-        appPref = MultiprocessPref(this)
         mClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         mClipboardManager!!.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
         mFloatingView = FloatingView(this)

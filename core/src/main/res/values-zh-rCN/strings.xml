@@ -31,4 +31,11 @@
 
     <string name="tts_error_title">你设备的 TTS 发音功能无法正常工作</string>
     <string name="tts_error_content">"请尝试：\n\n手机设置 - ︎无障碍 - ︎TTS - ︎勾选GoogleTTS引擎 -︎ 下载日文语音包"</string>
+
+    <string name="fetching_content_from_web_page">Fetching content from web page…</string>
+    <string name="it_is_not_web_page">It\'s not web page</string>
+    <string name="web_page_parser">网页链接分析器</string>
+    <string name="web_page_parser_mercury">Mercury</string>
+    <string name="web_page_parser_url2io">URL2io(推荐)</string>
+    <string name="web_page_parser_not_use">不使用</string>
 </resources>

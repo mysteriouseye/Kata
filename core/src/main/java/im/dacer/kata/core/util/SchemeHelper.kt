@@ -3,7 +3,7 @@ package im.dacer.kata.core.util
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import im.dacer.kata.core.BigBangActivity
+import im.dacer.kata.core.ui.BigBangActivity
 import java.net.URLEncoder
 
 /**

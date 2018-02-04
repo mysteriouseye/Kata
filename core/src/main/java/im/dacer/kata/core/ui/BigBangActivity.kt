@@ -1,4 +1,4 @@
-package im.dacer.kata.core
+package im.dacer.kata.core.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,15 +9,17 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.PopupMenu
 import android.view.View
-import android.widget.Toast
 import com.atilika.kuromoji.ipadic.Token
 import im.dacer.kata.SearchEngine
+import im.dacer.kata.core.BigBang
+import im.dacer.kata.core.R
 import im.dacer.kata.core.action.SearchAction
 import im.dacer.kata.core.data.JMDictDbHelper
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
 import im.dacer.kata.core.extension.strForSearch
+import im.dacer.kata.core.extension.timberAndToast
 import im.dacer.kata.core.util.LangUtils
 import im.dacer.kata.core.util.TTSHelper
 import im.dacer.kata.core.view.KataLayout
@@ -90,8 +92,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         try {
             currentSelectedToken?.run { ttsHelper?.play(this.reading) }
         } catch (e: Exception) {
-            Timber.e(e)
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            timberAndToast(e)
         }
         return true
     }
@@ -113,6 +114,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         currentSelectedToken = kanjiResultList?.get(index)
         val strForSearch: String
 
+        Timber.e(currentSelectedToken.toString())
         if (currentSelectedToken?.isKnown == true) {
             descTv.text = "[${currentSelectedToken?.baseForm}] ${currentSelectedToken?.getSubtitle()}"
             meaningTv.text = ""
@@ -138,7 +140,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                     } else {
                         meaningTv.text = it
                     }
-                }, { Timber.e(it) })
+                }, { timberAndToast(it) })
     }
 
     private fun refreshIconStatus() {
@@ -171,10 +173,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                     kataLayout.setTokenData(it)
                     preselectedIndex?.let { kataLayout.select(it) }
 
-                }, {
-                    Timber.e(it)
-//                    Toast.makeText(this@BigBangActivity, it.message, Toast.LENGTH_SHORT).show()
-                })
+                }, { timberAndToast(it) })
 
     }
 
