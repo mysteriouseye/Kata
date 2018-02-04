@@ -7,6 +7,8 @@
     <string name="copy">复制</string>
     <string name="nothing_happened">什么事都没发生?</string>
     <string name="nothing_happened_detail">请尝试:\n\n- 手机设置\n- 应用\n- Kata\n- 出现在其他应用上\n- 启用!\n\n(部分手机可能会有剪切板权限，后台运行权限等，烦请一并启用)</string>
+    <string name="cannot_open_overlay_permission_settings">无法打开\"出现在其他应用上\" 权限设置，请在手机的设置中手动开启这个选项</string>
+
 
     <string name="about">关于</string>
     <string name="description">Kata (片) - 一个比较好用的日语阅读帮助软件\n</string>

@@ -7,6 +7,7 @@
     <string name="copy">Copy</string>
     <string name="nothing_happened">Nothing happened?</string>
     <string name="nothing_happened_detail">Try to\n\n- Go phone settings\n- Apps\n- Kata\n- Draw over other apps\n- ENABLE IT!</string>
+    <string name="cannot_open_overlay_permission_settings">Can\'t open \"Draw over other apps\" settings, please enable it in your phone\'s settings manually</string>
 
     <string name="about">About</string>
     <string name="description">Kata (片) - A Japanese text segmentation app\n</string>

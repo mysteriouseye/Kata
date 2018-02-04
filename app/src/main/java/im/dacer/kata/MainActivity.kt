@@ -19,6 +19,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.core.extension.timberAndToast
+import im.dacer.kata.core.extension.toast
 import im.dacer.kata.data.DictImporter
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.widget.PopupView
@@ -55,7 +56,11 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
             val requestIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + packageName))
             ListenClipboardService.stop(this)
-            startActivityForResult(requestIntent, REQUEST_CODE_OVERLAY_PERMISSION)
+            try {
+                startActivityForResult(requestIntent, REQUEST_CODE_OVERLAY_PERMISSION)
+            } catch (e: Exception) {
+                toast(getString(R.string.cannot_open_overlay_permission_settings))
+            }
         }
 
     }
