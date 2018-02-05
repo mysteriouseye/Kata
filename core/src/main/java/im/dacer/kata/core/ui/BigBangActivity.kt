@@ -52,7 +52,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_big_bang)
-        ttsHelper = TTSHelper(this)
+        ttsHelper = TTSHelper(applicationContext)
         kataLayout.itemSpace = appPre.getItemSpace()
         kataLayout.lineSpace = appPre.getLineSpace()
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
@@ -100,6 +100,11 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     override fun onResume() {
         super.onResume()
         refreshIconStatus()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        finish()
     }
 
     override fun onDestroy() {
