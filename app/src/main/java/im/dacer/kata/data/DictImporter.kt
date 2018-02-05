@@ -19,7 +19,6 @@ class DictImporter(private val context: Context) : JMDictDbHelper(context) {
      * return false if db is existed
      */
     fun importDataBaseFromAssets(): Boolean {
-        if (isDataBaseExists) return false
         val myInput = getFileFromZip(context.assets.open(ASSET_DB_FILE_NAME))
 
         val myOutput = FileOutputStream(dbFile)

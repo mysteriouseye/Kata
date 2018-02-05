@@ -17,6 +17,10 @@ public interface Config {
     boolean isListenClipboard();
     void setListenClipboard(boolean listenClipboard);
 
+    @Default("false")
+    boolean isDatabaseImported();
+    void setDatabaseImported(boolean imported);
+
     @Default(SegmentEngine.TYPE_THIRD)
     String getSegmentEngine();
     void setSegmentEngine(String segmentEngine);

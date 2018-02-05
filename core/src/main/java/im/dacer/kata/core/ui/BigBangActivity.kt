@@ -139,7 +139,6 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    loadingProgressBar.visibility = View.GONE
                     if (it.isBlank()) {
                         meaningTv.text = getString(R.string.not_found_error, strForSearch)
                     } else {
@@ -172,6 +171,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
+                    loadingProgressBar.visibility = View.GONE
                     kataLayout.reset()
                     resetTopLayout()
                     kanjiResultList = it

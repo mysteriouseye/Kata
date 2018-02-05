@@ -45,12 +45,15 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
             return@setOnLongClickListener true
         }
         val dbImporter = DictImporter(applicationContext)
-        if (!dbImporter.isDataBaseExists) {
+        if (!dbImporter.isDataBaseExists || !treasure.isDatabaseImported) {
             bigbangTipTv.setText(R.string.initializing_database)
             Observable.fromCallable{ dbImporter.importDataBaseFromAssets() }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ bigbangTipTv.setText(R.string.bigbang_hold_tip) }, { timberAndToast(it) })
+                    .subscribe({
+                        bigbangTipTv.setText(R.string.bigbang_hold_tip)
+                        treasure.isDatabaseImported = true
+                    }, { timberAndToast(it) })
         }
         permissionErrorLayout.setOnClickListener {
             val requestIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,

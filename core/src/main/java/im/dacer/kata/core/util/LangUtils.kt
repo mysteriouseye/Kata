@@ -26,9 +26,9 @@ class LangUtils(private val appPre: MultiprocessPref) {
         }
 
         //since people in China cannot use Google..
-//        if (targetLang == "zh-CN") {
-//            return Observable.just(dictEntry.gloss_cn())
-//        }
+        if (targetLang == "zh-CN") {
+            return Observable.just(dictEntry.gloss_cn())
+        }
 
         return Rx2AndroidNetworking.get(getTranslationUrl(targetLang, dictEntry.gloss()!!))
                 .build()

@@ -12,7 +12,7 @@ import java.net.URLEncoder
 class SchemeHelper {
     companion object {
 
-        fun startKata(c: Context, text: String, preselectedIndex: Int = 0) {
+        fun startKata(c: Context, text: String, preselectedIndex: Int = -1) {
             val intent = Intent(Intent.ACTION_VIEW, getUri(text, preselectedIndex))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             c.startActivity(intent)
