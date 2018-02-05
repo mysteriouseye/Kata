@@ -9,8 +9,8 @@ import im.dacer.kata.SegmentEngine
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.findUrl
 import im.dacer.kata.core.util.SchemeHelper
+import im.dacer.kata.core.view.FloatingView
 import im.dacer.kata.segment.util.hasKanjiOrKana
-import im.dacer.kata.widget.FloatingView
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
@@ -35,7 +35,7 @@ class ListenClipboardService : Service() {
 
             if (!text.toString().hasKanjiOrKana()) { return }
 
-            if (!appPref.showFloatDialog || text.length > SHOW_FLOAT_MAX_TEXT_COUNT) {
+            if (!appPref.showFloatDialog || text.length > SchemeHelper.SHOW_FLOAT_MAX_TEXT_COUNT) {
                 mFloatingView!!.setText(text.toString())
                 mFloatingView!!.show()
             } else {
@@ -60,8 +60,6 @@ class ListenClipboardService : Service() {
     override fun onBind(intent: Intent): IBinder? = null
 
     companion object {
-
-        const val SHOW_FLOAT_MAX_TEXT_COUNT = 12
 
         fun start(context: Context) {
             val serviceIntent = Intent(context, ListenClipboardService::class.java)

@@ -31,6 +31,7 @@
     <string name="show_float_dialog_when_copy_few_words">Show float dialog when copy few words</string>
     <string name="translate_to">Dictionary language</string>
     <string name="how_it_works">How it works</string>
+    <string name="listen_to_clipboard">Listen to clipboard</string>
 
     <string name="tts_error_title">Text-to-speech not work</string>
     <string name="tts_error_content">Try to:\n\nSettings - Accessibility - Text-to-speech output - Select Google TTS Engine and install Japanese voice data</string>

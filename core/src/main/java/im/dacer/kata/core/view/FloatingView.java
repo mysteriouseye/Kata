@@ -2,7 +2,7 @@
  * The MIT License (MIT)
  * Copyright (c) 2016 baoyongzhang <baoyz94@gmail.com>
  */
-package im.dacer.kata.widget;
+package im.dacer.kata.core.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,7 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
-import im.dacer.kata.R;
+import im.dacer.kata.core.R;
 import im.dacer.kata.core.util.SchemeHelper;
 import timber.log.Timber;
 

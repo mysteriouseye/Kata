@@ -13,6 +13,7 @@ import im.dacer.kata.core.extension.findUrl
 import im.dacer.kata.core.extension.timberAndToast
 import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.core.util.WebParser
+import im.dacer.kata.core.view.FloatingView
 import im.dacer.kata.core.view.KataLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -74,6 +75,14 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
         sharedText!!.findUrl()?.run {
             fetchUrlContent(this)
+            return
+        }
+
+        if (sharedText!!.length > SchemeHelper.SHOW_FLOAT_MAX_TEXT_COUNT) {
+            val mFloatingView = FloatingView(this)
+            mFloatingView.setText(sharedText)
+            mFloatingView.show()
+            finish()
             return
         }
 
