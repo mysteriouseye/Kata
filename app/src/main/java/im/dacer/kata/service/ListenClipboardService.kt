@@ -36,7 +36,7 @@ class ListenClipboardService : Service() {
             if (!text.toString().hasKanjiOrKana()) { return }
 
             if (!appPref.showFloatDialog || text.length > SchemeHelper.SHOW_FLOAT_MAX_TEXT_COUNT) {
-                mFloatingView!!.setText(text.toString())
+                mFloatingView!!.mText = text.toString()
                 mFloatingView!!.show()
             } else {
                 SchemeHelper.startKataFloatDialog(this, text.toString())

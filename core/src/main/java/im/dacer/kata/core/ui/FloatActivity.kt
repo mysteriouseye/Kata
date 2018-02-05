@@ -80,7 +80,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
         if (sharedText!!.length > SchemeHelper.SHOW_FLOAT_MAX_TEXT_COUNT) {
             val mFloatingView = FloatingView(this)
-            mFloatingView.setText(sharedText)
+            mFloatingView.mText = sharedText
             mFloatingView.show()
             finish()
             return
