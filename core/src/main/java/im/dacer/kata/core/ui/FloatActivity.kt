@@ -55,13 +55,17 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     @SuppressLint("InlinedApi")
     private fun handleIntent(intent: Intent) {
+        var skipFloatBtn = false
+
         sharedText = intent.data?.getQueryParameter(BigBangActivity.EXTRA_TEXT)
 
         if (sharedText.isNullOrEmpty() && intent.action == Intent.ACTION_PROCESS_TEXT) {
+            skipFloatBtn = true
             sharedText = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()
         }
 
         if (sharedText.isNullOrEmpty() && intent.action == Intent.ACTION_SEND) {
+            skipFloatBtn = true
             sharedText = getIntent().getStringExtra(Intent.EXTRA_TEXT)
             if (sharedText.isNullOrEmpty()) {
                 sharedText = getIntent().getStringExtra(Intent.EXTRA_SUBJECT)
@@ -79,9 +83,13 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         }
 
         if (sharedText!!.length > SchemeHelper.SHOW_FLOAT_MAX_TEXT_COUNT) {
-            val mFloatingView = FloatingView(this)
-            mFloatingView.mText = sharedText
-            mFloatingView.show()
+            if (skipFloatBtn) {
+                SchemeHelper.startKata(this, sharedText!!, 0)
+            } else {
+                val mFloatingView = FloatingView(this)
+                mFloatingView.mText = sharedText
+                mFloatingView.show()
+            }
             finish()
             return
         }

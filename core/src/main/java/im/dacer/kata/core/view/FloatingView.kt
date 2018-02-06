@@ -65,8 +65,6 @@ class FloatingView(context: Context) : android.support.v7.widget.AppCompatImageV
             scaleY = 0f
             animate().cancel()
             animate().scaleY(1f).scaleX(1f).setDuration(ANIMATION_DURATION.toLong()).setListener(null).start()
-
-            animate().rotation(999f).setDuration(10000).start()
         }
 
         removeCallbacks(mDismissTask)
