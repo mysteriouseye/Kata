@@ -9,7 +9,6 @@ import im.dacer.kata.SegmentEngine
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.findUrl
 import im.dacer.kata.core.util.SchemeHelper
-import im.dacer.kata.core.view.FloatingView
 import im.dacer.kata.segment.util.hasKanjiOrKana
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
@@ -18,7 +17,6 @@ class ListenClipboardService : Service() {
 
     private var mClipboardManager: ClipboardManager? = null
     private val mOnPrimaryClipChangedListener = ClipboardManager.OnPrimaryClipChangedListener { showAction() }
-    private var mFloatingView: FloatingView? = null
     private val appPref: MultiprocessPref by lazy { MultiprocessPref(this) }
 
     private fun showAction() {
@@ -32,22 +30,16 @@ class ListenClipboardService : Service() {
                 return
             }
 
-
+            //Only data from clipboard need check whether kanji inside
             if (!text.toString().hasKanjiOrKana()) { return }
 
-            if (!appPref.showFloatDialog || text.length > SchemeHelper.SHOW_FLOAT_MAX_TEXT_COUNT) {
-                mFloatingView!!.mText = text.toString()
-                mFloatingView!!.show()
-            } else {
-                SchemeHelper.startKataFloatDialog(this, text.toString())
-            }
+            SchemeHelper.startKataFloatDialog(this, text.toString())
         }
     }
 
     override fun onCreate() {
         mClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         mClipboardManager!!.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
-        mFloatingView = FloatingView(this)
 
         Observable.fromCallable { SegmentEngine.setup(this) }.subscribeOn(Schedulers.io()).subscribe()
     }
