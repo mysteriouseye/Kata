@@ -38,17 +38,8 @@ class FloatingView(context: Context) : android.support.v7.widget.AppCompatImageV
         if (!isShow) {
             val w = WindowManager.LayoutParams.WRAP_CONTENT
             val h = WindowManager.LayoutParams.WRAP_CONTENT
-            val flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
 
-            val type: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
-                WindowManager.LayoutParams.TYPE_TOAST
-            } else {
-                WindowManager.LayoutParams.TYPE_PHONE
-            }
-
-            val layoutParams = WindowManager.LayoutParams(w, h, type, flags, PixelFormat.TRANSLUCENT)
+            val layoutParams = WindowManager.LayoutParams(w, h, WINDOW_TYPE, WINDOW_FLAG, PixelFormat.TRANSLUCENT)
             layoutParams.gravity = Gravity.RIGHT or Gravity.BOTTOM
             layoutParams.x = mMargin
             layoutParams.y = mMarginY
@@ -92,6 +83,14 @@ class FloatingView(context: Context) : android.support.v7.widget.AppCompatImageV
     }
 
     companion object {
+        const val WINDOW_FLAG = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        var WINDOW_TYPE = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT <= Build.VERSION_CODES.N) {
+            WindowManager.LayoutParams.TYPE_TOAST
+        } else {
+            WindowManager.LayoutParams.TYPE_PHONE
+        }
 
         private const val ANIMATION_DURATION = 500
     }
