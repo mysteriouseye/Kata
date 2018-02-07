@@ -100,7 +100,7 @@ class KataLayout @JvmOverloads constructor(
                 val item = items[j]
                 top = (paddingTop + (i - newLineCount) * (item.height + lineSpace) + offsetTop).toInt()
                 val child = item.view
-                val oldTop = child.top
+//                val oldTop = child.top
 
                 // \n
                 if (child.isNewLine() == 1) {
@@ -114,11 +114,11 @@ class KataLayout @JvmOverloads constructor(
 
                 child.layout(left, top, left + child.measuredWidth, top + child.measuredHeight)
 
-                if (oldTop != top) {
-                    val translationY = oldTop - top
-                    child.translationY = translationY.toFloat()
-                    child.animate().translationYBy((-translationY).toFloat()).setDuration(200).start()
-                }
+//                if (oldTop != top) {
+//                    val translationY = oldTop - top
+//                    child.translationY = translationY.toFloat()
+//                    child.animate().translationYBy((-translationY).toFloat()).setDuration(200).start()
+//                }
                 left += child.measuredWidth + itemSpace
             }
         }
