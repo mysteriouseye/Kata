@@ -119,7 +119,6 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         currentSelectedToken = kanjiResultList?.get(index)
         val strForSearch: String
 
-        Timber.e(currentSelectedToken.toString())
         if (currentSelectedToken?.isKnown == true) {
             descTv.text = "[${currentSelectedToken?.baseForm}] ${currentSelectedToken?.getSubtitle()}"
             meaningTv.text = ""

@@ -44,6 +44,8 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".service.UrlAnalysisService"
+            android:process=":listener" />
     </application>
 
 </manifest>

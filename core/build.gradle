@@ -53,5 +53,6 @@ dependencies {
     implementation "com.mikepenz:iconics-views:3.0.0@aar"
     implementation 'com.mikepenz:google-material-typeface:3.0.1.2.original@aar'
     compile 'com.amitshekhar.android:rx2-android-networking:1.0.1'
+    compile 'com.wang.avi:library:2.1.3'
 
 }

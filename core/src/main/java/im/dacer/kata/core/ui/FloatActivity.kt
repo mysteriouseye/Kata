@@ -5,21 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
-import android.view.View
 import im.dacer.kata.core.BigBang
 import im.dacer.kata.core.R
-import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.findUrl
 import im.dacer.kata.core.extension.timberAndToast
+import im.dacer.kata.core.service.UrlAnalysisService
 import im.dacer.kata.core.util.SchemeHelper
-import im.dacer.kata.core.util.WebParser
 import im.dacer.kata.core.view.FloatingView
 import im.dacer.kata.core.view.KataLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_float.*
-
 
 /**
  * Created by Dacer on 31/01/2018.
@@ -28,7 +25,6 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private var disposable: Disposable? = null
     private var sharedText: String? = null
-    private val pref by lazy { MultiprocessPref(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +74,8 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         }
 
         sharedText!!.findUrl()?.run {
-            fetchUrlContent(this)
+            startService(UrlAnalysisService.getIntent(this@FloatActivity, this))
+            finish()
             return
         }
 
@@ -97,15 +94,6 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         applyData()
     }
 
-    private fun fetchUrlContent(url: String) {
-        fetchWebPageLayout.visibility = View.VISIBLE
-        disposable?.dispose()
-        disposable = WebParser.fetchContent(url, pref)
-                .subscribe({
-                    SchemeHelper.startKata(this, it)
-                    finish()
-                }, { timberAndToast(it) })
-    }
 
     private fun applyData() {
         disposable?.dispose()

@@ -37,3 +37,7 @@
 -keep class **.R$* {
     <fields>;
 }
+
+#https://github.com/81813780/AVLoadingIndicatorView
+-keep class com.wang.avi.** { *; }
+-keep class com.wang.avi.indicators.** { *; }
