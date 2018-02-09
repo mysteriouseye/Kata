@@ -6,15 +6,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
-import im.dacer.kata.R
 import im.dacer.kata.SegmentEngine
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.findUrl
+import im.dacer.kata.core.util.NotificationUtil
 import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.segment.util.hasKanjiOrKana
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+
 
 class ListenClipboardService : Service() {
 
@@ -40,16 +40,21 @@ class ListenClipboardService : Service() {
         }
     }
 
-    override fun onCreate() {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (appPref.enhancedMode) {
-            startForeground(NOTIFICATION_ID, getNotification())
+            startForeground(NotificationUtil.NOTIFICATION_ID, NotificationUtil.getNotification(this))
         }
+        return START_STICKY
+    }
 
+    override fun onCreate() {
         mClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         mClipboardManager!!.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
 
         Observable.fromCallable { SegmentEngine.setup(this) }.subscribeOn(Schedulers.io()).subscribe()
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -58,13 +63,6 @@ class ListenClipboardService : Service() {
 
     override fun onBind(intent: Intent): IBinder? = null
 
-
-    private fun getNotification() =
-            NotificationCompat
-                    .Builder(this, "")
-                    .setSmallIcon(R.drawable.ic_stat_gesture)
-                    .setPriority(NotificationCompat.PRIORITY_MIN)
-                    .build()
 
     companion object {
 
@@ -87,8 +85,6 @@ class ListenClipboardService : Service() {
             stop(context)
             start(context)
         }
-
-        const val NOTIFICATION_ID = 111
 
     }
 
