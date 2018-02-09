@@ -29,6 +29,38 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/enhancedModeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@android:color/white"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+        <TextView
+            android:id="@+id/enhancedModeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enhanced_mode"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enhancedModeTv"
+            android:textColor="#BDBDBD"
+            android:text="@string/enhanced_mode_summary"/>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/enhancedModeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/searchEngine"
         android:layout_width="match_parent"
         android:layout_height="46dp"

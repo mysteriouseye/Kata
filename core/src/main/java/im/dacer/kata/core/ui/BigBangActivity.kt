@@ -28,7 +28,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_big_bang.*
-import timber.log.Timber
 
 
 class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
@@ -102,10 +101,10 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         refreshIconStatus()
     }
 
-    override fun onStop() {
-        super.onStop()
-        finish()
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        finish()
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -38,12 +38,6 @@ class App : Application() {
         }
         Stetho.initializeWithDefaults(this)
 
-        val config = Treasure.get(this, Config::class.java)
-//        BigBang.registerAction(BigBang.ACTION_BACK, if (config.isShowFloatDialog) CopyAction.create() else null)
-
-        if (config.isListenClipboard) {
-            ListenClipboardService.start(this)
-        }
     }
 
     private class CrashReportingTree : Timber.Tree() {

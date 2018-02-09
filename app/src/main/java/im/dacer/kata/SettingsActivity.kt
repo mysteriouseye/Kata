@@ -21,12 +21,19 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+
         searchEngine.setOnClickListener {
             AlertDialog.Builder(this@SettingsActivity)
                     .setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->
                 appPref.searchEngine = SearchEngine.getSupportSearchEngineList()[which]
                 updateUI()
             }.show()
+        }
+
+        enhancedModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            appPref.enhancedMode = isChecked
+            refreshService()
+            updateUI()
         }
 
         translationTarget.setOnClickListener {
@@ -52,11 +59,7 @@ class SettingsActivity : AppCompatActivity() {
 
         listenClipboardSwitch.setOnCheckedChangeListener { _, isChecked ->
             mConfig.isListenClipboard = isChecked
-            if (mConfig.isListenClipboard) {
-                ListenClipboardService.start(applicationContext)
-            } else {
-                ListenClipboardService.stop(applicationContext)
-            }
+            refreshService()
             updateUI()
         }
 
@@ -66,12 +69,23 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun refreshService() {
+        if (mConfig.isListenClipboard) {
+            ListenClipboardService.restart(applicationContext)
+        } else {
+            ListenClipboardService.stop(applicationContext)
+        }
+    }
+
     private fun updateUI() {
         searchEngineTv.text = appPref.searchEngine
         showFloatDialogSwit.isChecked = appPref.showFloatDialog
         listenClipboardSwitch.isChecked = mConfig.isListenClipboard
         webPageParserTv.setText(appPref.webParser.stringRes)
+        enhancedModeSwitch.isChecked = appPref.enhancedMode
         translationTargetTv.text = LangUtils.getLangByKey(appPref.targetLang)
+
+        enhancedModeSwitch.isEnabled = listenClipboardSwitch.isChecked
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

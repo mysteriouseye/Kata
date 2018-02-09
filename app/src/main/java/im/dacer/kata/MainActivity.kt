@@ -1,7 +1,6 @@
 package im.dacer.kata
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -125,21 +124,10 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun startListenServiceIfNeed() {
-        if (treasure.isListenClipboard && !isMyServiceRunning(ListenClipboardService::class.java)) {
-            ListenClipboardService.start(this)
-        }
-    }
     private fun restartListenService() {
-        if (treasure.isListenClipboard && !isMyServiceRunning(ListenClipboardService::class.java)) {
-            ListenClipboardService.stop(this)
+        if (treasure.isListenClipboard) {
+            ListenClipboardService.restart(this)
         }
-        ListenClipboardService.start(this)
-    }
-
-    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
-        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        return manager.getRunningServices(Integer.MAX_VALUE).any { serviceClass.name == it.service.className }
     }
 
     companion object {

@@ -47,6 +47,10 @@ class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
     var useWebParser: Boolean = false
         get() = webParser != WebParser.Parser.DO_NOT_USE
 
+    var enhancedMode: Boolean
+        get() = getBoolean(ENHANCED_MODE, false)
+        set(value) { put(ENHANCED_MODE, value) }
+
     companion object {
         private const val BIG_BANG_STYLE = "pref_big_bang_style"
         private const val SEARCH_ENGINE = "pref_search_engine"
@@ -54,6 +58,7 @@ class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
         private const val SHOW_FLOAT_DIALOG = "pref_show_float_dialog"
         private const val TARGET_LANG = "pref_target_lang"
         private const val WEB_PARSER = "pref_web_parser"
+        private const val ENHANCED_MODE = "pref_enhanced_mode"
 
     }
 

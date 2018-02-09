@@ -4,7 +4,10 @@ import android.app.Service
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
+import android.support.v4.app.NotificationCompat
+import im.dacer.kata.R
 import im.dacer.kata.SegmentEngine
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.findUrl
@@ -38,6 +41,10 @@ class ListenClipboardService : Service() {
     }
 
     override fun onCreate() {
+        if (appPref.enhancedMode) {
+            startForeground(NOTIFICATION_ID, getNotification())
+        }
+
         mClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         mClipboardManager!!.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
 
@@ -51,17 +58,38 @@ class ListenClipboardService : Service() {
 
     override fun onBind(intent: Intent): IBinder? = null
 
+
+    private fun getNotification() =
+            NotificationCompat
+                    .Builder(this, "")
+                    .setSmallIcon(R.drawable.ic_stat_gesture)
+                    .setPriority(NotificationCompat.PRIORITY_MIN)
+                    .build()
+
     companion object {
 
         fun start(context: Context) {
+            val pref = MultiprocessPref(context)
             val serviceIntent = Intent(context, ListenClipboardService::class.java)
-            context.startService(serviceIntent)
+            if (pref.enhancedMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent)
+            } else {
+                context.startService(serviceIntent)
+            }
         }
 
         fun stop(context: Context) {
             val serviceIntent = Intent(context, ListenClipboardService::class.java)
             context.stopService(serviceIntent)
         }
+
+        fun restart(context: Context) {
+            stop(context)
+            start(context)
+        }
+
+        const val NOTIFICATION_ID = 111
+
     }
 
 }
