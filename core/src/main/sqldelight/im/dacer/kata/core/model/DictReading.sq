@@ -12,3 +12,9 @@ search:
 SELECT *
 FROM reading
 WHERE reading IS ?;
+
+search_by_entry_id:
+SELECT *
+FROM reading
+WHERE id_in_entry IS ?;
+

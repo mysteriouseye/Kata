@@ -10,7 +10,6 @@ import im.dacer.kata.core.model.DictReading
  */
 class SearchHelper(private val db: SQLiteDatabase) {
 
-    //todo deal with meanning with comma
     fun search(text: String): List<DictEntry> {
         val idInEntryList = if (kanjiInside(text)) {
             searchKanji(text)
@@ -18,6 +17,17 @@ class SearchHelper(private val db: SQLiteDatabase) {
             searchReading(text)
         }
         return idInEntryList.mapNotNull { it?.let { it1 -> searchEntry(it1) } }
+    }
+
+    fun searchReading(entryId: Long): List<DictReading> {
+        val result = arrayListOf<DictReading>()
+        val query = DictReading.FACTORY.search_by_entry_id(entryId)
+        db.rawQuery(query.statement, query.args).use { cursor ->
+            while (cursor?.moveToNext() == true) {
+                result.add(DictReading.SELECT_ALL_MAPPER.map(cursor))
+            }
+        }
+        return result
     }
 
     private fun searchKanji(kanji: String): List<Long?> {
@@ -51,7 +61,6 @@ class SearchHelper(private val db: SQLiteDatabase) {
         }
         return null
     }
-
 
 
     private fun kanjiInside(text: String): Boolean {
