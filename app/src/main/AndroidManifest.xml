@@ -38,6 +38,33 @@
             android:screenOrientation="portrait">
         </activity>
 
+
+        <activity android:name="im.dacer.kata.ui.FloatActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:theme="@style/FloatTheme"
+            android:process=":listener"
+            android:documentLaunchMode="intoExisting" >
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT"/>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="kata-float"/>
+            </intent-filter>
+        </activity>
+
+        <service android:name="im.dacer.kata.service.UrlAnalysisService"
+            android:process=":listener" />
         <service
             android:name=".service.ListenClipboardService"
             android:enabled="true"

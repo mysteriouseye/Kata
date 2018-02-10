@@ -11,6 +11,8 @@
     <string name="cancelled">已取消</string>
     <string name="enhanced_mode">增强模式</string>
     <string name="enhanced_mode_summary">防止后台进程被系统清除</string>
+    <string name="disable_for_one_minute">暂停检测网址一分钟</string>
+    <string name="disable_for_one_minute_tip">小技巧：长按弹窗来临时禁用网址检测功能</string>
 
     <string name="about">关于</string>
     <string name="description">Kata (片) - 一个比较好用的日语阅读帮助软件\n</string>
@@ -40,8 +42,7 @@
     <string name="tts_error_title">你设备的 TTS 发音功能无法正常工作</string>
     <string name="tts_error_content">"请尝试：\n\n手机设置 - ︎无障碍 - ︎TTS - ︎勾选GoogleTTS引擎 -︎ 下载日文语音包"</string>
 
-    <string name="fetching_content_from_web_page">Fetching content from web page…</string>
-    <string name="it_is_not_web_page">It\'s not web page</string>
+    <string name="fetching_content_from_web_page">正在从网址中获取内容…</string>
     <string name="web_page_parser">网页链接分析器</string>
     <string name="web_page_parser_mercury">Mercury</string>
     <string name="web_page_parser_url2io">URL2io(推荐)</string>

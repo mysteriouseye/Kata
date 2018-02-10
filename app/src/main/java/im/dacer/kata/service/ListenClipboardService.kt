@@ -13,14 +13,17 @@ import im.dacer.kata.core.util.NotificationUtil
 import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.segment.util.hasKanjiOrKana
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 
 class ListenClipboardService : Service() {
 
-    private var mClipboardManager: ClipboardManager? = null
+    private val mClipboardManager: ClipboardManager by lazy { getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
     private val mOnPrimaryClipChangedListener = ClipboardManager.OnPrimaryClipChangedListener { showAction() }
     private val appPref: MultiprocessPref by lazy { MultiprocessPref(this) }
+    private var disableDis: Disposable? = null
 
     private fun showAction() {
         val primaryClip = mClipboardManager!!.primaryClip
@@ -41,16 +44,21 @@ class ListenClipboardService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        disableDis?.dispose()
         if (appPref.enhancedMode) {
             startForeground(NotificationUtil.NOTIFICATION_ID, NotificationUtil.getNotification(this))
+        }
+        val disableTimeInSec = intent?.getLongExtra(EXTRA_TEMP_DISABLE_SECOND, 0L)
+        if (disableTimeInSec != null && disableTimeInSec != 0L) {
+            mClipboardManager.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener)
+            disableDis = Observable.timer(disableTimeInSec, TimeUnit.SECONDS)
+                    .subscribe{ mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener) }
         }
         return START_STICKY
     }
 
     override fun onCreate() {
-        mClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        mClipboardManager!!.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
-
+        mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener)
         Observable.fromCallable { SegmentEngine.setup(this) }.subscribeOn(Schedulers.io()).subscribe()
     }
 
@@ -58,13 +66,14 @@ class ListenClipboardService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mClipboardManager!!.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener)
+        mClipboardManager.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener)
     }
 
     override fun onBind(intent: Intent): IBinder? = null
 
 
     companion object {
+        const val EXTRA_TEMP_DISABLE_SECOND = "extra_temp_disable_second"
 
         fun start(context: Context) {
             val pref = MultiprocessPref(context)
@@ -76,6 +85,12 @@ class ListenClipboardService : Service() {
             }
         }
 
+        fun disable(context: Context, disableTimeInSecond: Long) {
+            val serviceIntent = Intent(context, ListenClipboardService::class.java)
+                    .putExtra(EXTRA_TEMP_DISABLE_SECOND, disableTimeInSecond)
+            context.startService(serviceIntent)
+        }
+
         fun stop(context: Context) {
             val serviceIntent = Intent(context, ListenClipboardService::class.java)
             context.stopService(serviceIntent)
@@ -85,6 +100,7 @@ class ListenClipboardService : Service() {
             stop(context)
             start(context)
         }
+
 
     }
 

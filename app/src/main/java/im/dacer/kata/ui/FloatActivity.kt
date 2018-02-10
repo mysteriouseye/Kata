@@ -1,19 +1,20 @@
-package im.dacer.kata.core.ui
+package im.dacer.kata.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
+import im.dacer.kata.R
 import im.dacer.kata.core.BigBang
-import im.dacer.kata.core.R
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.findUrl
 import im.dacer.kata.core.extension.timberAndToast
-import im.dacer.kata.core.service.UrlAnalysisService
+import im.dacer.kata.core.ui.BigBangActivity
 import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.core.view.FloatingView
 import im.dacer.kata.core.view.KataLayout
+import im.dacer.kata.service.UrlAnalysisService
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

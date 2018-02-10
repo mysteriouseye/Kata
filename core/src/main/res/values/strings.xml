@@ -11,6 +11,8 @@
     <string name="cancelled">Cancelled</string>
     <string name="enhanced_mode">Enhanced mode</string>
     <string name="enhanced_mode_summary">Prevent killed by system</string>
+    <string name="disable_for_one_minute">Disable for one minute</string>
+    <string name="disable_for_one_minute_tip">Tip: Long click icon to disable web page parser temporarily</string>
 
     <string name="about">About</string>
     <string name="description">Kata (片) - A Japanese text segmentation app\n</string>
@@ -41,7 +43,6 @@
     <string name="tts_error_content">Try to:\n\nSettings - Accessibility - Text-to-speech output - Select Google TTS Engine and install Japanese voice data</string>
 
     <string name="fetching_content_from_web_page">Fetching content from web page…</string>
-    <string name="it_is_not_web_page">It\'s not web page</string>
     <string name="web_page_parser">Web page parser</string>
     <string name="web_page_parser_mercury">Mercury</string>
     <string name="web_page_parser_url2io">URL2io</string>
