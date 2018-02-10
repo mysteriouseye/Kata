@@ -25,6 +25,11 @@ class StyleActivity : AppCompatActivity() {
                 kataLayout.itemTextSize = value.toFloat()
             }
         })
+        furiganaTextSizeSeekBar.setOnProgressChangeListener(object : SimpleListener() {
+            override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
+                kataLayout.itemFuriganaTextSize = value.toFloat()
+            }
+        })
 
         lineSpaceSeekBar.setOnProgressChangeListener(object : SimpleListener() {
             override fun onProgressChanged(seekBar: DiscreteSeekBar, value: Int, fromUser: Boolean) {
@@ -40,6 +45,7 @@ class StyleActivity : AppCompatActivity() {
 
 
         textSizeSeekBar.progress = multiprocessPref!!.getItemTextSize()
+        furiganaTextSizeSeekBar.progress = multiprocessPref!!.getFuriganaItemTextSize()
         lineSpaceSeekBar.progress = multiprocessPref!!.getLineSpace()
         itemSpace.progress = multiprocessPref!!.getItemSpace()
 
@@ -51,11 +57,12 @@ class StyleActivity : AppCompatActivity() {
         updatePref()
     }
 
-    fun updatePref() {
+    private fun updatePref() {
         multiprocessPref?.bigBangStyle = BigBangStyle(
                 itemSpace.progress,
                 lineSpaceSeekBar.progress,
-                textSizeSeekBar.progress
+                textSizeSeekBar.progress,
+                furiganaTextSizeSeekBar.progress
         )
     }
 

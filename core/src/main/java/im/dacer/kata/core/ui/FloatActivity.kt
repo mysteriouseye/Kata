@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import im.dacer.kata.core.BigBang
 import im.dacer.kata.core.R
+import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.findUrl
 import im.dacer.kata.core.extension.timberAndToast
 import im.dacer.kata.core.service.UrlAnalysisService
@@ -25,6 +26,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private var disposable: Disposable? = null
     private var sharedText: String? = null
+    private val appPre by lazy { MultiprocessPref(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,7 +119,8 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
         kataLayout.itemSpace = 2
         kataLayout.lineSpace = 10
-        kataLayout.itemTextSize = 22f
+        kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
+        kataLayout.itemFuriganaTextSize = appPre.getFuriganaItemTextSize().toFloat()
         kataLayout.itemClickListener = this
     }
 }

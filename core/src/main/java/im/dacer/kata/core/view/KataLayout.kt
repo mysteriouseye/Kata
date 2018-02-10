@@ -36,6 +36,13 @@ class KataLayout @JvmOverloads constructor(
                     .map { getChildAt(it) }
                     .forEach { (it as? FuriganaView)?.setTextSpSize(itemTextSize) }
         }
+    var itemFuriganaTextSize: Float = 10f
+        set(value) {
+            field = value
+            (0 until childCount)
+                    .map { getChildAt(it) }
+                    .forEach { (it as? FuriganaView)?.setFuriganaTextSpSize(itemFuriganaTextSize) }
+        }
     var showFurigana = true
     var itemClickListener: ItemClickListener? = null
 
@@ -76,6 +83,7 @@ class KataLayout @JvmOverloads constructor(
             view.setText(it)
             view.showFurigana = showFurigana
             if (itemTextSize > 0) view.setTextSpSize(itemTextSize)
+            if (itemFuriganaTextSize > 0) view.setFuriganaTextSpSize(itemFuriganaTextSize)
             addView(view)
         }
     }

@@ -27,6 +27,7 @@
     <string name="bigbang_style">样式</string>
     <string name="copied">已复制</string>
     <string name="text_size">文字大小</string>
+    <string name="furigana_text_size">振り仮名サイズ</string>
     <string name="line_spacing">行距</string>
     <string name="word_spacing">字间距</string>
     <string name="not_found_error">很抱歉，找不到有关 %1$s 的结果，你可以尝试搜索</string>

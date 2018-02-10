@@ -55,6 +55,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         kataLayout.itemSpace = appPre.getItemSpace()
         kataLayout.lineSpace = appPre.getLineSpace()
         kataLayout.itemTextSize = appPre.getItemTextSize().toFloat()
+        kataLayout.itemFuriganaTextSize = appPre.getFuriganaItemTextSize().toFloat()
         kataLayout.itemClickListener = this
         kataLayout.showFurigana(!appPre.hideFurigana)
         loadingProgressBar.indeterminateDrawable.setColorFilter(Color.parseColor("#EEEEEE"), PorterDuff.Mode.MULTIPLY)

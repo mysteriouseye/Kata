@@ -43,9 +43,6 @@ class FuriganaView @JvmOverloads constructor(
         furiganaPaint.color = GRAY
         normalPaint.color = Color.BLACK
 
-        furiganaPaint.textSize = 16f
-        normalPaint.textSize = 22f
-
         furiganaPaint.textAlign = Paint.Align.CENTER
         normalPaint.textAlign = Paint.Align.CENTER
 
@@ -59,6 +56,12 @@ class FuriganaView @JvmOverloads constructor(
 
     fun setTextSpSize(sizeInSp: Float) {
         normalPaint.textSize = ViewUtil.sp2px(sizeInSp)
+        requestLayout()
+        invalidate()
+    }
+
+    fun setFuriganaTextSpSize(sizeInSp: Float) {
+        furiganaPaint.textSize = ViewUtil.sp2px(sizeInSp)
         requestLayout()
         invalidate()
     }

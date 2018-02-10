@@ -19,6 +19,9 @@ class MultiprocessPref(context: Context): TrayPreferences(context, "Kata", 1) {
 
     fun getItemTextSize(): Int = bigBangStyle.textSize
 
+    fun getFuriganaItemTextSize(): Int = bigBangStyle.furiganaTextSize
+
+
     var bigBangStyle: BigBangStyle
         get() = BigBangStyle.getFrom(getString(BIG_BANG_STYLE, ""))
         set(value) { put(BIG_BANG_STYLE, value.toReadableString()) }
