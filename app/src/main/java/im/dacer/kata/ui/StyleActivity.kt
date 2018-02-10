@@ -1,8 +1,9 @@
-package im.dacer.kata
+package im.dacer.kata.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import im.dacer.kata.R
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.model.BigBangStyle
 import im.dacer.kata.segment.model.KanjiResult

@@ -1,4 +1,4 @@
-package im.dacer.kata
+package im.dacer.kata.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -7,6 +7,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import im.dacer.kata.BuildConfig
+import im.dacer.kata.R
 
 import me.drakeet.multitype.Items
 import me.drakeet.support.about.*

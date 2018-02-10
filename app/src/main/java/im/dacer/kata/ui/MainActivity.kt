@@ -1,4 +1,4 @@
-package im.dacer.kata
+package im.dacer.kata.ui
 
 import android.annotation.SuppressLint
 import android.content.ClipData
@@ -17,6 +17,8 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.baoyz.treasure.Treasure
+import im.dacer.kata.Config
+import im.dacer.kata.R
 import im.dacer.kata.core.extension.timberAndToast
 import im.dacer.kata.core.extension.toast
 import im.dacer.kata.data.DictImporter
