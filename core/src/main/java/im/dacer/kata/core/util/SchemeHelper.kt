@@ -11,7 +11,7 @@ import java.net.URLEncoder
  */
 class SchemeHelper {
     companion object {
-        const val SHOW_FLOAT_MAX_TEXT_COUNT = 12
+        const val SHOW_FLOAT_MAX_TEXT_COUNT = 99
 
         fun startKata(c: Context, text: String, preselectedIndex: Int = -1) {
             val intent = Intent(Intent.ACTION_VIEW, getUri(text, preselectedIndex))

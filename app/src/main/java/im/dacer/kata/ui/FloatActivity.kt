@@ -82,7 +82,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
             return
         }
 
-        if (sharedText!!.length > SchemeHelper.SHOW_FLOAT_MAX_TEXT_COUNT) {
+        if (!sharedText!!.isFewWords()) {
             if (skipFloatBtn) {
                 SchemeHelper.startKata(this, sharedText!!, 0)
             } else {
@@ -97,6 +97,8 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         applyData()
     }
 
+    private fun String.isFewWords(): Boolean =
+            this.count{ it == '。' } <= 1 && this.length < SchemeHelper.SHOW_FLOAT_MAX_TEXT_COUNT
 
     private fun applyData() {
         disposable?.dispose()
