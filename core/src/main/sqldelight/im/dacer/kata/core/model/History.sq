@@ -15,3 +15,8 @@ LIMIT ?;
 insert_row:
 INSERT INTO history(text)
 VALUES (?);
+
+delete_row:
+DELETE
+FROM history
+WHERE id = ?;

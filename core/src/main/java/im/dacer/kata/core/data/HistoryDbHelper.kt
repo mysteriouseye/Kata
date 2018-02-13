@@ -10,7 +10,6 @@ import im.dacer.kata.core.model.HistoryModel
  */
 
 open class HistoryDbHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
-    protected val dbFile = context.getDatabasePath(DB_NAME)!!
 
     override fun onCreate(db: SQLiteDatabase) {
         db.beginTransaction()

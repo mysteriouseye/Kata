@@ -13,6 +13,8 @@
     <string name="enhanced_mode_summary">Prevent killed by system</string>
     <string name="disable_for_one_minute">Disable for one minute</string>
     <string name="disable_for_one_minute_tip">Tip: Long click icon to disable web page parser temporarily</string>
+    <string name="deleted_sth">Deleted %1$s</string>
+    <string name="redo">Redo</string>
 
     <string name="about">About</string>
     <string name="description">Kata (片) - A Japanese text segmentation app\n</string>

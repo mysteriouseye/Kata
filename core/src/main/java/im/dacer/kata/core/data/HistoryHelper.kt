@@ -7,7 +7,7 @@ import im.dacer.kata.core.model.HistoryModel
 /**
  * Created by Dacer on 13/02/2018.
  */
-class HistoryHelper() {
+class HistoryHelper {
 
     companion object {
 
@@ -16,6 +16,16 @@ class HistoryHelper() {
             insertRow.bind(text)
             try {
                 insertRow.program.executeInsert()
+            } catch (e: Exception) {
+                throw e
+            }
+        }
+
+        fun delete(db: SQLiteDatabase, id: Long) {
+            val deleteRow = HistoryModel.Delete_row(db)
+            deleteRow.bind(id)
+            try {
+                deleteRow.program.executeUpdateDelete()
             } catch (e: Exception) {
                 throw e
             }
