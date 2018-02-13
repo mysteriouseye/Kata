@@ -1,9 +1,6 @@
-package im.dacer.kata.ui
+package im.dacer.kata.ui.main
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.net.Uri
@@ -15,46 +12,29 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.Toast
-import com.baoyz.treasure.Treasure
-import im.dacer.kata.Config
 import im.dacer.kata.R
 import im.dacer.kata.core.extension.timberAndToast
 import im.dacer.kata.core.extension.toast
-import im.dacer.kata.data.DictImporter
 import im.dacer.kata.service.ListenClipboardService
-import im.dacer.kata.widget.PopupView
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
+import im.dacer.kata.ui.AboutActivity
+import im.dacer.kata.ui.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.concurrent.TimeUnit
 
 
-class MainActivity : AppCompatActivity(), PopupView.PopupListener {
-    private val treasure by lazy { Treasure.get(this, Config::class.java) }
-    private var nothingHappenedCountdown: Disposable? = null
+class MainActivity : AppCompatActivity(), MainMvp {
+
+    private val mainPresenter by lazy { MainPresenter(baseContext, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        popupView.listener = this
+        popupView.listener = mainPresenter
+        mainPresenter.importDictDb()
+
         clipTv.setOnLongClickListener {
             popupView.show(Point((clipTv.width / 2), clipTv.y.toInt()- bigbangTipTv.height))
             return@setOnLongClickListener true
-        }
-        val dbImporter = DictImporter(applicationContext)
-        if (!dbImporter.isDataBaseExists || !treasure.isDatabaseImported) {
-            bigbangTipTv.setText(R.string.initializing_database)
-            Observable.fromCallable{ dbImporter.importDataBaseFromAssets() }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        bigbangTipTv.setText(R.string.bigbang_hold_tip)
-                        treasure.isDatabaseImported = true
-                    }, { timberAndToast(it) })
         }
         permissionErrorLayout.setOnClickListener {
             val requestIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -72,7 +52,7 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
     @SuppressLint("NewApi")
     override fun onResume() {
         super.onResume()
-        restartListenService()
+        mainPresenter.restartListenService()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val canDraw = Settings.canDrawOverlays(this)
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
@@ -81,30 +61,28 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
 
     override fun onStop() {
         super.onStop()
-        nothingHappenedCountdown?.dispose()
+        mainPresenter.onStop()
         nothingHappenedView.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {
-            restartListenService()
+            mainPresenter.restartListenService()
         }
     }
 
-    override fun popupClicked() {
-        val service = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        service.primaryClip = ClipData.newPlainText("", clipTv.text.toString())
-        Toast.makeText(this, getString(im.dacer.kata.core.R.string.copied), Toast.LENGTH_SHORT).show()
-
-        nothingHappenedCountdown = Observable.timer(3, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
-                    nothingHappenedView.visibility = View.VISIBLE
-                    nothingHappenedView.startAnimation(slideUp)
-                }
+    override fun showNothingHappenedView() {
+        val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+        nothingHappenedView.visibility = View.VISIBLE
+        nothingHappenedView.startAnimation(slideUp)
     }
+
+
+    override fun setBigbangTipTv(strId: Int) = bigbangTipTv.setText(strId)
+    override fun catchError(throwable: Throwable) = timberAndToast(throwable)
+    override fun getClipTvText() = clipTv.text.toString()
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -124,12 +102,6 @@ class MainActivity : AppCompatActivity(), PopupView.PopupListener {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun restartListenService() {
-        if (treasure.isListenClipboard) {
-            ListenClipboardService.restart(this)
-        }
     }
 
     companion object {

@@ -73,7 +73,7 @@ class PopupView @JvmOverloads constructor(
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event?.action == MotionEvent.ACTION_UP) {
             if (popupRect?.contains(event.x.toInt(), event.y.toInt()) == true) {
-                listener?.popupClicked()
+                listener?.onPopupClicked()
             }
             hide()
         }
@@ -82,7 +82,7 @@ class PopupView @JvmOverloads constructor(
 
 
     interface PopupListener {
-        fun popupClicked()
+        fun onPopupClicked()
     }
 
     companion object {
