@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.activity_big_bang.*
 class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private var kanjiResultList: List<Token>? = null
-    private var db: SQLiteDatabase? = null
+    private var dictDb: SQLiteDatabase? = null
     private var segmentDis: Disposable? = null
     private var searchHelper: SearchHelper? = null
     private var dictDisposable: Disposable? = null
@@ -102,14 +102,9 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         refreshIconStatus()
     }
 
-//    override fun onStop() {
-//        super.onStop()
-//        finish()
-//    }
-
     override fun onDestroy() {
         super.onDestroy()
-        db?.close()
+        dictDb?.close()
         ttsHelper?.onDestroy()
         segmentDis?.dispose()
     }
@@ -160,8 +155,8 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         }
         meaningScrollView.smoothScrollTo(0,0)
         bigBangScrollView.smoothScrollTo(0,0)
-        db = JMDictDbHelper(this).readableDatabase
-        searchHelper = SearchHelper(db!!)
+        dictDb = JMDictDbHelper(this).readableDatabase
+        searchHelper = SearchHelper(dictDb!!)
 
         segmentDis?.dispose()
         segmentDis = BigBang.getSegmentParserAsync()
@@ -178,7 +173,6 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                     preselectedIndex?.let { kataLayout.select(it) }
 
                 }, { timberAndToast(it) })
-
     }
 
     private fun resetTopLayout() {

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import im.dacer.kata.core.R
+import im.dacer.kata.core.data.HistoryDbHelper
+import im.dacer.kata.core.data.HistoryHelper
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.timberAndToast
 import im.dacer.kata.core.extension.toast
@@ -13,6 +15,7 @@ import im.dacer.kata.core.util.WebParser
 import im.dacer.kata.core.view.FloatingLoadingView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 /**
@@ -63,12 +66,19 @@ class UrlAnalysisService : Service() {
         toast(R.string.fetching_content_from_web_page, Toast.LENGTH_SHORT)
         disposable?.dispose()
         disposable = WebParser.fetchContent(url, pref)
+                .doOnNext {
+                    val historyDb = HistoryDbHelper(this).writableDatabase
+                    HistoryHelper.save(historyDb, it)
+                    historyDb.close()
+                }
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     floatingView.dismiss()
                     SchemeHelper.startKata(this, it)
                     stopSelf()
                 }, { timberAndToast(it) })
+
     }
 
     override fun onDestroy() {
