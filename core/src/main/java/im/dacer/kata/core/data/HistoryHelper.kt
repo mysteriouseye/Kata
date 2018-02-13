@@ -1,8 +1,12 @@
 package im.dacer.kata.core.data
 
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import im.dacer.kata.core.model.History
 import im.dacer.kata.core.model.HistoryModel
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
 /**
  * Created by Dacer on 13/02/2018.
@@ -11,9 +15,17 @@ class HistoryHelper {
 
     companion object {
 
+        fun saveAsync(context: Context, string: String) {
+            Observable.fromCallable {
+                val historyDb = HistoryDbHelper(context).writableDatabase
+                HistoryHelper.save(historyDb, string)
+                historyDb.close()
+            }.subscribeOn(Schedulers.io()).subscribe({}, { Timber.e(it) })
+        }
+
         fun save(db: SQLiteDatabase, text: String) {
             val insertRow = HistoryModel.Insert_row(db)
-            insertRow.bind(text)
+            insertRow.bind(text, null, null, System.currentTimeMillis())
             try {
                 insertRow.program.executeInsert()
             } catch (e: Exception) {

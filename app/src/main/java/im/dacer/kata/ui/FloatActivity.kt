@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity
 import android.util.DisplayMetrics
 import im.dacer.kata.R
 import im.dacer.kata.core.BigBang
-import im.dacer.kata.core.data.HistoryDbHelper
 import im.dacer.kata.core.data.HistoryHelper
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.extension.findUrl
@@ -20,7 +19,6 @@ import im.dacer.kata.service.UrlAnalysisService
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_float.*
 
 /**
@@ -85,14 +83,6 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
             return
         }
 
-        //save history
-        Observable.fromCallable {
-            val historyDb = HistoryDbHelper(this).writableDatabase
-            HistoryHelper.save(historyDb, sharedText!!)
-            historyDb.close()
-        }.subscribeOn(Schedulers.io()).subscribe({}, { timberAndToast(it) })
-
-
         if (!sharedText!!.isFewWords()) {
             if (skipFloatBtn) {
                 SchemeHelper.startKata(this, sharedText!!, 0)
@@ -105,6 +95,7 @@ class FloatActivity : AppCompatActivity(), KataLayout.ItemClickListener {
             return
         }
 
+        HistoryHelper.saveAsync(this, sharedText!!)
         applyData()
     }
 

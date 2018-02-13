@@ -13,8 +13,8 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import com.chad.library.adapter.base.animation.SlideInBottomAnimation
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback
 import im.dacer.kata.R
 import im.dacer.kata.adapter.HistoryAdapter
@@ -44,11 +44,13 @@ class MainActivity : AppCompatActivity(), MainMvp {
 
         val itemDragAndSwipeCallback = ItemDragAndSwipeCallback(historyAdapter)
         val itemTouchHelper = ItemTouchHelper(itemDragAndSwipeCallback)
-        historyAdapter.openLoadAnimation(SlideInBottomAnimation())
+        historyAdapter.openLoadAnimation()
         historyAdapter.bindToRecyclerView(historyRecyclerView)
         itemTouchHelper.attachToRecyclerView(historyRecyclerView)
         historyAdapter.setOnItemClickListener { _, _, pos -> mainPresenter.onHistoryClicked(pos)}
         historyAdapter.setEmptyView(R.layout.empty_history)
+        val bottomView = layoutInflater.inflate(R.layout.item_history_bottom, historyRecyclerView.parent as ViewGroup, false)
+        historyAdapter.setFooterView(bottomView)
         historyAdapter.enableSwipeItem()
         historyAdapter.setOnItemSwipeListener(mainPresenter.swipeListener)
 
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity(), MainMvp {
             ListenClipboardService.stop(this)
             try {
                 startActivityForResult(requestIntent, REQUEST_CODE_OVERLAY_PERMISSION)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 toast(getString(R.string.cannot_open_overlay_permission_settings))
             }
         }
@@ -77,12 +79,12 @@ class MainActivity : AppCompatActivity(), MainMvp {
             val canDraw = Settings.canDrawOverlays(this)
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
         }
+        nothingHappenedView.visibility = View.GONE
     }
 
     override fun onStop() {
         super.onStop()
         mainPresenter.onStop()
-        nothingHappenedView.visibility = View.GONE
     }
 
     override fun onDestroy() {

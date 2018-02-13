@@ -1,6 +1,9 @@
 CREATE TABLE history (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    text TEXT
+    text TEXT,
+    alias TEXT,
+    star INTEGER AS Boolean DEFAULT 0,
+    createdAt INTEGER
 );
 
 select_all:
@@ -10,11 +13,12 @@ FROM history;
 select_limit:
 SELECT *
 FROM history
+ORDER BY createdAt DESC
 LIMIT ?;
 
 insert_row:
-INSERT INTO history(text)
-VALUES (?);
+INSERT INTO history(text, alias, star, createdAt)
+VALUES (?, ?, ?, ?);
 
 delete_row:
 DELETE

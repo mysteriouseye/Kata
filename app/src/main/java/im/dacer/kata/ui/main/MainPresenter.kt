@@ -13,6 +13,7 @@ import im.dacer.kata.Config
 import im.dacer.kata.R
 import im.dacer.kata.core.data.HistoryDbHelper
 import im.dacer.kata.core.data.HistoryHelper
+import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.model.History
 import im.dacer.kata.core.util.SchemeHelper
 import im.dacer.kata.data.DictImporter
@@ -30,6 +31,8 @@ import java.util.concurrent.TimeUnit
 class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupView.PopupListener {
     private var nothingHappenedCountdown: Disposable? = null
     private val treasure by lazy { Treasure.get(context, Config::class.java) }
+    private val appPref by lazy { MultiprocessPref(context) }
+    private var refreshHistoryDis: Disposable? = null
 
     private val historyDbHelper by lazy { HistoryDbHelper(context) }
     private val db by lazy { historyDbHelper.readableDatabase }
@@ -62,6 +65,7 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
 
     fun onStop() {
         nothingHappenedCountdown?.dispose()
+        refreshHistoryDis?.dispose()
     }
 
     fun onDestroy() {
@@ -69,11 +73,20 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
     }
 
     fun refreshHistoryList() {
-        historyList = HistoryHelper.get(db, 10)
-        if (historyList?.isNotEmpty() == true) {
-            mainMvp.showHistory(historyList!!)
+        refreshHistoryDis?.dispose()
+        if (appPref.tutorialFinished) {
+            refreshHistoryDis = Observable.fromCallable { HistoryHelper.get(db, 10) }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        historyList = it
+                        if (historyList?.isNotEmpty() == true) {
+                            mainMvp.showHistory(historyList!!)
+                        }
+                    }
         }
     }
+
     fun importDictDb() {
         val dbImporter = DictImporter(context)
         if (!dbImporter.isDataBaseExists || !treasure.isDatabaseImported) {

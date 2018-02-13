@@ -16,8 +16,8 @@ public abstract class History implements Parcelable, HistoryModel {
     public static final Factory<History> FACTORY =
             new Factory<>(new HistoryModel.Creator<History>() {
                 @Override
-                public History create(long id, @Nullable String text) {
-                    return new AutoValue_History(id, text);
+                public History create(long id, @Nullable String text, @Nullable String alias, @Nullable Boolean star, @Nullable Long createdAt) {
+                    return new AutoValue_History(id, text, alias, star, createdAt);
                 }
             });
 

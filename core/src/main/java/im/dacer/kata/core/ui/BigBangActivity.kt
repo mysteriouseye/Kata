@@ -14,6 +14,7 @@ import im.dacer.kata.SearchEngine
 import im.dacer.kata.core.BigBang
 import im.dacer.kata.core.R
 import im.dacer.kata.core.action.SearchAction
+import im.dacer.kata.core.data.HistoryHelper
 import im.dacer.kata.core.data.JMDictDbHelper
 import im.dacer.kata.core.data.MultiprocessPref
 import im.dacer.kata.core.data.SearchHelper
@@ -58,6 +59,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         kataLayout.itemFuriganaTextSize = appPre.getFuriganaItemTextSize().toFloat()
         kataLayout.itemClickListener = this
         kataLayout.showFurigana(!appPre.hideFurigana)
+        appPre.tutorialFinished = true
         loadingProgressBar.indeterminateDrawable.setColorFilter(Color.parseColor("#EEEEEE"), PorterDuff.Mode.MULTIPLY)
         searchAction = SearchEngine.getDefaultSearchAction(this)
 
@@ -173,6 +175,8 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
                     preselectedIndex?.let { kataLayout.select(it) }
 
                 }, { timberAndToast(it) })
+
+        HistoryHelper.saveAsync(this, text)
     }
 
     private fun resetTopLayout() {
