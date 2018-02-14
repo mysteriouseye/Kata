@@ -1,179 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/listen_to_clipboard"/>
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/listenClipboardSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/enhancedModeLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/enhancedModeTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/enhanced_mode"/>
+        <RelativeLayout style="@style/SettingsItem">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/enhancedModeTv"
-            android:textColor="#BDBDBD"
-            android:text="@string/enhanced_mode_summary"/>
+            <TextView
+                style="@style/SettingsItemLeft.Title"
+                android:text="@string/listen_to_clipboard"/>
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/enhancedModeSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/listenClipboardSwitch"
+                style="@style/SettingsItemRight"/>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/searchEngine"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        <RelativeLayout
+            android:id="@+id/enhancedModeLayout"
+            style="@style/SettingsItem">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/default_search_engine"/>
+            <LinearLayout
+                style="@style/SettingsItemLeft"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/enhancedModeTv"
+                    android:text="@string/enhanced_mode"
+                    style="@style/SettingsItemLeft.Title"/>
 
-        <TextView
-            android:id="@+id/searchEngineTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            tools:text="Google"/>
-    </RelativeLayout>
+                <TextView
+                    style="@style/SettingsItemSummary"
+                    android:text="@string/enhanced_mode_summary"/>
+            </LinearLayout>
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/enhancedModeSwitch"
+                style="@style/SettingsItemRight"/>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/translationTarget"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        <RelativeLayout
+            android:id="@+id/searchEngine"
+            style="@style/SettingsItem">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/translate_to"/>
+            <TextView
+                style="@style/SettingsItemLeft.Title"
+                android:text="@string/default_search_engine"/>
 
-        <TextView
-            android:id="@+id/translationTargetTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            tools:text="English"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/searchEngineTv"
+                style="@style/SettingsItemRight"
+                tools:text="Google"/>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/webPageParser"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        <RelativeLayout
+            android:id="@+id/translationTarget"
+            style="@style/SettingsItem">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/web_page_parser"/>
+            <TextView
+                style="@style/SettingsItemLeft.Title"
+                android:text="@string/translate_to"/>
 
-        <TextView
-            android:id="@+id/webPageParserTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/translationTargetTv"
+                style="@style/SettingsItemRight"
+                tools:text="English"/>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/bigbangStyle"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        <RelativeLayout
+            android:id="@+id/webPageParser"
+            style="@style/SettingsItem">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/bigbang_style"/>
+            <TextView
+                style="@style/SettingsItemLeft.Title"
+                android:text="@string/web_page_parser"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            tools:text=">"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/webPageParserTv"
+                style="@style/SettingsItemRight"/>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/white"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            style="@style/SettingsItem">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/show_float_dialog_when_copy_few_words"/>
+            <TextView
+                style="@style/SettingsItemLeft.Title"
+                android:text="@string/show_float_dialog_when_copy_few_words"/>
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/showFloatDialogSwit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/showFloatDialogSwit"
+                style="@style/SettingsItemRight"/>
+        </RelativeLayout>
 
-</LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/bigbangStyle"
+            style="@style/SettingsItem.MoreTopDivider">
+
+            <TextView
+                style="@style/SettingsItemLeft.Title"
+                android:text="@string/bigbang_style"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/cacheLayout"
+            style="@style/SettingsItem">
+
+            <TextView
+                style="@style/SettingsItemLeft.Title"
+                android:text="@string/cache"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>
