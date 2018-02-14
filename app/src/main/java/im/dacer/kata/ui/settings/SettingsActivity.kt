@@ -1,4 +1,4 @@
-package im.dacer.kata.ui
+package im.dacer.kata.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -65,7 +65,7 @@ class SettingsActivity : AppCompatActivity() {
             refreshService()
             updateUI()
         }
-
+        cacheLayout.setOnClickListener { startActivity(Intent(this@SettingsActivity, CacheSettingsActivity::class.java)) }
         bigbangStyle.setOnClickListener { startActivity(Intent(this@SettingsActivity, StyleActivity::class.java)) }
         updateUI()
 

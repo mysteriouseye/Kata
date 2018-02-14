@@ -25,4 +25,8 @@ public interface Config {
     String getSegmentEngine();
     void setSegmentEngine(String segmentEngine);
 
+    @Default("10")
+    int getCacheMax();
+    void setCacheMax(int max);
+
 }

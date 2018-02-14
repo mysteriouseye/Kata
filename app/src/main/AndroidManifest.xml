@@ -28,12 +28,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:label="@string/settings"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".ui.settings.CacheSettingsActivity"
+            android:label="@string/cache"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.StyleActivity"
+            android:name=".ui.settings.StyleActivity"
             android:label="@string/style"
             android:screenOrientation="portrait">
         </activity>

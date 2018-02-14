@@ -23,7 +23,7 @@ import im.dacer.kata.core.extension.toast
 import im.dacer.kata.core.model.History
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
-import im.dacer.kata.ui.SettingsActivity
+import im.dacer.kata.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -105,10 +105,15 @@ class MainActivity : AppCompatActivity(), MainMvp {
         nothingHappenedView.startAnimation(slideUp)
     }
 
-    override fun showHistory(historyList: List<History>) {
-        tutorialLayout.visibility = View.GONE
-        historyRecyclerView.visibility = View.VISIBLE
-        historyAdapter.setNewData(historyList)
+    override fun showHistory(historyList: List<History>?) {
+        if (historyList != null) {
+            tutorialLayout.visibility = View.GONE
+            historyRecyclerView.visibility = View.VISIBLE
+            historyAdapter.setNewData(historyList)
+        } else {
+            tutorialLayout.visibility = View.VISIBLE
+            historyRecyclerView.visibility = View.GONE
+        }
     }
 
     override fun getDecorView() = window.decorView!!

@@ -1,4 +1,4 @@
-package im.dacer.kata.ui
+package im.dacer.kata.ui.settings
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

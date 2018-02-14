@@ -74,8 +74,8 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
 
     fun refreshHistoryList() {
         refreshHistoryDis?.dispose()
-        if (appPref.tutorialFinished) {
-            refreshHistoryDis = Observable.fromCallable { HistoryHelper.get(db, 10) }
+        if (appPref.tutorialFinished && treasure.cacheMax > 0) {
+            refreshHistoryDis = Observable.fromCallable { HistoryHelper.get(db, treasure.cacheMax) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
@@ -84,6 +84,8 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
                             mainMvp.showHistory(historyList!!)
                         }
                     }
+        } else {
+            mainMvp.showHistory(null)
         }
     }
 

@@ -11,6 +11,6 @@ interface MainMvp {
     fun catchError(throwable: Throwable)
     fun showNothingHappenedView()
     fun getClipTvText(): String
-    fun showHistory(historyList: List<History>)
+    fun showHistory(historyList: List<History>?)
     fun getDecorView(): View
 }

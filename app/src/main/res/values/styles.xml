@@ -26,6 +26,11 @@
     <style name="SettingsItem.MoreTopDivider">
         <item name="android:layout_marginTop">16dp</item>
     </style>
+    <style name="SettingsItem.WrapHeight">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
     <style name="SettingsItemLeft">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -45,5 +50,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentRight">true</item>
+    </style>
+    <style name="DiscreteSeekBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="dsb_progressColor">@color/colorPrimary</item>
+        <item name="dsb_indicatorColor">@color/colorPrimary</item>
+    </style>
+    <style name="DiscreteSeekBar.TopMargin">
+        <item name="android:layout_marginTop">10dp</item>
     </style>
 </resources>
