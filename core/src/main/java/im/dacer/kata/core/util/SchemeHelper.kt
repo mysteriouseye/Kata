@@ -13,8 +13,8 @@ class SchemeHelper {
     companion object {
         const val SHOW_FLOAT_MAX_TEXT_COUNT = 99
 
-        fun startKata(c: Context, text: String, preselectedIndex: Int = -1) {
-            val intent = Intent(Intent.ACTION_VIEW, getUri(text, preselectedIndex))
+        fun startKata(c: Context, text: String, preselectedIndex: Int = -1, saveInHistory: Boolean = true) {
+            val intent = Intent(Intent.ACTION_VIEW, getUri(text, preselectedIndex, saveInHistory))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             c.startActivity(intent)
         }
@@ -25,10 +25,11 @@ class SchemeHelper {
             c.startActivity(intent)
         }
 
-        private fun getUri(text: String, preselectedIndex: Int = 0) =
+        private fun getUri(text: String, preselectedIndex: Int = 0, saveInHistory: Boolean = true) =
                 Uri.parse("kata://?" +
                         "${BigBangActivity.EXTRA_TEXT}=${URLEncoder.encode(text, "utf-8")}" +
-                        "&${BigBangActivity.PRESELECTED_INDEX}=$preselectedIndex")
+                        "&${BigBangActivity.PRESELECTED_INDEX}=$preselectedIndex" +
+                        "&${BigBangActivity.SAVE_IN_HISTORY}=$saveInHistory")
         private fun getFloatUri(text: String) =
                 Uri.parse("kata-float://?${BigBangActivity.EXTRA_TEXT}=${URLEncoder.encode(text, "utf-8")}")
     }

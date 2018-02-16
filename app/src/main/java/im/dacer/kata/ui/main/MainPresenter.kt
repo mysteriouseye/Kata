@@ -111,7 +111,7 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
     fun onHistoryClicked(position: Int) {
         val history = historyList?.get(position)
         history?.run {
-            SchemeHelper.startKata(context, this.text()!!)
+            SchemeHelper.startKata(context, this.text()!!, -1, false)
         }
     }
 

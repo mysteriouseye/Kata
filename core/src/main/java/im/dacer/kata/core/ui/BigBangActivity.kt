@@ -150,6 +150,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     private fun handleIntent(intent: Intent) {
         val text = intent.data.getQueryParameter(EXTRA_TEXT)
         val preselectedIndex = intent.data.getQueryParameter(PRESELECTED_INDEX)?.toInt()
+        val saveInHistory = intent.data.getBooleanQueryParameter(SAVE_IN_HISTORY, true)
 
         if (text.isEmpty()) {
             finish()
@@ -176,7 +177,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
                 }, { timberAndToast(it) })
 
-        HistoryHelper.saveAsync(this, text)
+        if(saveInHistory) HistoryHelper.saveAsync(this, text)
     }
 
     private fun resetTopLayout() {
@@ -187,6 +188,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     companion object {
         const val EXTRA_TEXT = "extra_text"
         const val PRESELECTED_INDEX = "preselected_index"
+        const val SAVE_IN_HISTORY = "save_in_history"
     }
 
 }
