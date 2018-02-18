@@ -10,11 +10,18 @@ select_all:
 SELECT *
 FROM history;
 
-select_limit:
+select_unstarred_limit:
 SELECT *
 FROM history
+WHERE star = 0 OR star IS NULL
 ORDER BY createdAt DESC
 LIMIT ?;
+
+select_all_starred:
+SELECT *
+FROM history
+WHERE star = 1
+ORDER BY createdAt DESC;
 
 insert_row:
 INSERT INTO history(text, alias, star, createdAt)

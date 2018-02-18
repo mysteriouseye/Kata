@@ -45,7 +45,13 @@ class HistoryHelper {
 
         fun get(db: SQLiteDatabase, limit: Int): List<History> {
             val result = arrayListOf<History>()
-            val query = History.FACTORY.select_limit(limit.toLong())
+            val queryStarred = History.FACTORY.select_all_starred()
+            db.rawQuery(queryStarred.statement, queryStarred.args).use { cursor ->
+                while (cursor?.moveToNext() == true) {
+                    result.add(History.SELECT_ALL_MAPPER.map(cursor))
+                }
+            }
+            val query = History.FACTORY.select_unstarred_limit(limit.toLong())
             db.rawQuery(query.statement, query.args).use { cursor ->
                 while (cursor?.moveToNext() == true) {
                     result.add(History.SELECT_ALL_MAPPER.map(cursor))
