@@ -1,12 +1,15 @@
 package im.dacer.kata.ui.main
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Canvas
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
+import com.afollestad.materialdialogs.MaterialDialog
 import com.baoyz.treasure.Treasure
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import im.dacer.kata.Config
@@ -115,6 +118,35 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
         }
     }
 
+    fun onHistoryLongClicked(activity: Activity, index: Int): Boolean {
+        val history = historyList?.get(index)!!
+
+        AlertDialog.Builder(activity)
+                .setItems(getLongClickItems(context)) { _, pos ->
+                    when (pos) {
+                        0 -> starHistory(index, history)
+                        1 -> setHistoryAlias(activity, index, history)
+                    }
+                }.show()
+        return true
+    }
+
+    private fun starHistory(index: Int, h: History) {
+        val isStar = h.star() == true
+        mainMvp.updateHistory(index, History.newInstance(h.id(), h.text(), h.alias(), !isStar, h.createdAt()))
+        HistoryHelper.update(db, h.id(), h.alias(), !isStar)
+    }
+
+    private fun setHistoryAlias(activity: Activity, index: Int, h: History) {
+        MaterialDialog.Builder(activity)
+                .input(context.getString(R.string.set_alias), h.alias(), true,
+                        { _, char ->
+                            mainMvp.updateHistory(index, History.newInstance(h.id(), h.text(), char.toString(), h.star(), h.createdAt()))
+                            HistoryHelper.update(db, h.id(), char.toString(), h.star())
+                        })
+                .show()
+    }
+
     override fun onPopupClicked() {
         val service = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         service.primaryClip = ClipData.newPlainText("", mainMvp.getClipTvText())
@@ -125,4 +157,8 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
                 .subscribe { mainMvp.showNothingHappenedView()}
     }
 
+    companion object {
+        fun getLongClickItems(c: Context): Array<String> =
+                arrayOf(c.getString(R.string.star), c.getString(R.string.set_alias))
+    }
 }

@@ -27,10 +27,7 @@ import im.dacer.kata.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-
-
 class MainActivity : AppCompatActivity(), MainMvp {
-
     private val mainPresenter by lazy { MainPresenter(baseContext, this) }
     private val historyAdapter = HistoryAdapter()
 
@@ -48,6 +45,7 @@ class MainActivity : AppCompatActivity(), MainMvp {
         historyAdapter.bindToRecyclerView(historyRecyclerView)
         itemTouchHelper.attachToRecyclerView(historyRecyclerView)
         historyAdapter.setOnItemClickListener { _, _, pos -> mainPresenter.onHistoryClicked(pos)}
+        historyAdapter.setOnItemLongClickListener { _, _, pos -> mainPresenter.onHistoryLongClicked(this, pos) }
         historyAdapter.setEmptyView(R.layout.empty_history)
         val bottomView = layoutInflater.inflate(R.layout.item_history_bottom, historyRecyclerView.parent as ViewGroup, false)
         historyAdapter.setFooterView(bottomView)
@@ -115,6 +113,11 @@ class MainActivity : AppCompatActivity(), MainMvp {
             historyRecyclerView.visibility = View.GONE
         }
     }
+
+    override fun updateHistory(index: Int, history: History) {
+        historyAdapter.setData(index, history)
+    }
+
 
     override fun getDecorView() = window.decorView!!
     override fun setBigbangTipTv(strId: Int) = bigbangTipTv.setText(strId)

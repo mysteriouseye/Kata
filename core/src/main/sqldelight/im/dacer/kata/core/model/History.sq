@@ -31,3 +31,8 @@ delete_row:
 DELETE
 FROM history
 WHERE id = ?;
+
+update_alias_star:
+UPDATE history
+SET alias = ?, star = ?
+WHERE id = ?;

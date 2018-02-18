@@ -75,9 +75,6 @@ dependencies {
 
     compile 'com.facebook.stetho:stetho:1.5.0'
     annotationProcessor 'com.baoyz.treasure:treasure-compiler:0.7.1'
-//    ikCompile project(':segment-ik')
-//    jcsegCompile project(':segment-jcseg')
-//    jiebaCompile project(':segment-jieba')
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
@@ -85,4 +82,5 @@ dependencies {
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 }

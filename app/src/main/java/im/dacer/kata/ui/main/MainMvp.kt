@@ -13,4 +13,5 @@ interface MainMvp {
     fun getClipTvText(): String
     fun showHistory(historyList: List<History>?)
     fun getDecorView(): View
+    fun updateHistory(index: Int, history: History)
 }

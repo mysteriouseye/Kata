@@ -25,7 +25,7 @@ class HistoryHelper {
 
         fun save(db: SQLiteDatabase, text: String) {
             val insertRow = HistoryModel.Insert_row(db)
-            insertRow.bind(text, null, null, System.currentTimeMillis())
+            insertRow.bind(text, "", false, System.currentTimeMillis())
             try {
                 insertRow.program.executeInsert()
             } catch (e: Exception) {
@@ -38,6 +38,16 @@ class HistoryHelper {
             deleteRow.bind(id)
             try {
                 deleteRow.program.executeUpdateDelete()
+            } catch (e: Exception) {
+                throw e
+            }
+        }
+
+        fun update(db: SQLiteDatabase, id: Long, alias: String?, star: Boolean?) {
+            val updateRow = HistoryModel.Update_alias_star(db)
+            updateRow.bind(alias ?: "", star == true, id)
+            try {
+                updateRow.program.executeUpdateDelete()
             } catch (e: Exception) {
                 throw e
             }
