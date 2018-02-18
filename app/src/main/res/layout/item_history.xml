@@ -25,13 +25,14 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:layout_marginBottom="12dp"
                 android:visibility="gone"/>
             <TextView
                 android:id="@+id/historyTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:maxLines="6"
+                android:textSize="14sp"
+                android:maxLines="5"
                 android:ellipsize="end"/>
         </LinearLayout>
 
