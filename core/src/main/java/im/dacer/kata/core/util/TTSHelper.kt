@@ -1,8 +1,8 @@
 package im.dacer.kata.core.util
 
-import android.app.AlertDialog
 import android.content.Context
 import android.speech.tts.TextToSpeech
+import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.core.R
 import java.util.*
 
@@ -27,11 +27,12 @@ class TTSHelper(val context: Context) {
         if (available) {
             tts.speak(string, TextToSpeech.QUEUE_FLUSH, null)
         } else {
-            AlertDialog.Builder(context)
-                    .setTitle(R.string.tts_error_title)
-                    .setMessage(R.string.tts_error_content)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create().show()
+            MaterialDialog.Builder(context)
+                    .title(R.string.tts_error_title)
+                    .content(R.string.tts_error_content)
+                    .positiveText(android.R.string.ok)
+                    .onPositive { _, _ -> }
+                    .show()
         }
     }
 

@@ -6,7 +6,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Canvas
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
@@ -121,13 +120,16 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
     fun onHistoryLongClicked(activity: Activity, index: Int): Boolean {
         val history = historyList?.get(index)!!
 
-        AlertDialog.Builder(activity)
-                .setItems(getLongClickItems(context)) { _, pos ->
+        MaterialDialog.Builder(activity)
+                .items(getLongClickItems(context))
+                .itemsCallback { _, _, pos, _ ->
                     when (pos) {
                         0 -> starHistory(index, history)
                         1 -> setHistoryAlias(activity, index, history)
                     }
-                }.show()
+                }
+                .show()
+
         return true
     }
 
@@ -158,7 +160,7 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
     }
 
     companion object {
-        fun getLongClickItems(c: Context): Array<String> =
-                arrayOf(c.getString(R.string.star), c.getString(R.string.set_alias))
+        fun getLongClickItems(c: Context): ArrayList<String> =
+                arrayListOf(c.getString(R.string.star), c.getString(R.string.set_alias))
     }
 }

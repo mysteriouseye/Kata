@@ -2,9 +2,9 @@ package im.dacer.kata.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import com.afollestad.materialdialogs.MaterialDialog
 import com.baoyz.treasure.Treasure
 import im.dacer.kata.Config
 import im.dacer.kata.R
@@ -26,11 +26,13 @@ class SettingsActivity : AppCompatActivity() {
 
 
         searchEngine.setOnClickListener {
-            AlertDialog.Builder(this@SettingsActivity)
-                    .setItems(SearchEngine.getSupportSearchEngineList()) { _, which ->
-                appPref.searchEngine = SearchEngine.getSupportSearchEngineList()[which]
-                updateUI()
-            }.show()
+            MaterialDialog.Builder(this)
+                    .items(SearchEngine.getSupportSearchEngineList().toList())
+                    .itemsCallback { _, _, pos, _ ->
+                        appPref.searchEngine = SearchEngine.getSupportSearchEngineList()[pos]
+                        updateUI()
+                    }
+                    .show()
         }
 
         enhancedModeSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -40,19 +42,23 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         translationTarget.setOnClickListener {
-            AlertDialog.Builder(this@SettingsActivity)
-                    .setItems(LangUtils.LANG_LIST) { _, which ->
-                appPref.targetLang = LangUtils.LANG_KEY_LIST[which]
-                updateUI()
-            }.show()
+            MaterialDialog.Builder(this)
+                    .items(LangUtils.LANG_LIST.toList())
+                    .itemsCallback { _, _, pos, _ ->
+                        appPref.targetLang = LangUtils.LANG_KEY_LIST[pos]
+                        updateUI()
+                    }
+                    .show()
         }
 
         webPageParser.setOnClickListener {
-            AlertDialog.Builder(this@SettingsActivity)
-                    .setItems(WebParser.getParserNameArray(this)) { _, which ->
-                appPref.webParser = WebParser.Parser.values()[which]
-                updateUI()
-            }.show()
+            MaterialDialog.Builder(this)
+                    .items(WebParser.getParserNameArray(this).toList())
+                    .itemsCallback { _, _, pos, _ ->
+                        appPref.webParser = WebParser.Parser.values()[pos]
+                        updateUI()
+                    }
+                    .show()
         }
 
         showFloatDialogSwit.setOnCheckedChangeListener { _, isChecked ->
