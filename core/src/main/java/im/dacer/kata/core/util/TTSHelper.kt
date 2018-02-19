@@ -1,5 +1,6 @@
 package im.dacer.kata.core.util
 
+import android.app.Activity
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import com.afollestad.materialdialogs.MaterialDialog
@@ -10,7 +11,7 @@ import java.util.*
 /**
  * Created by Dacer on 01/02/2018.
  */
-class TTSHelper(val context: Context) {
+class TTSHelper(val appContext: Context) {
     private var available = false
     private val initListener = TextToSpeech.OnInitListener {
         if (it == TextToSpeech.SUCCESS) {
@@ -20,14 +21,14 @@ class TTSHelper(val context: Context) {
             }
         }
     }
-    private val tts: TextToSpeech = TextToSpeech(context, initListener)
+    private val tts: TextToSpeech = TextToSpeech(appContext, initListener)
 
 
-    fun play(string: String) {
+    fun play(activity: Activity, string: String) {
         if (available) {
             tts.speak(string, TextToSpeech.QUEUE_FLUSH, null)
         } else {
-            MaterialDialog.Builder(context)
+            MaterialDialog.Builder(activity)
                     .title(R.string.tts_error_title)
                     .content(R.string.tts_error_content)
                     .positiveText(android.R.string.ok)

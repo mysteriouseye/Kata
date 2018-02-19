@@ -92,7 +92,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
     private fun onClickAudio() : Boolean {
         try {
-            currentSelectedToken?.run { ttsHelper?.play(this.reading) }
+            currentSelectedToken?.run { ttsHelper?.play(this@BigBangActivity, this.reading) }
         } catch (e: Exception) {
             timberAndToast(e)
         }
