@@ -44,17 +44,18 @@ class ListenClipboardService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        disableDis?.dispose()
-        if (appPref.enhancedMode) {
+        val foreground = intent?.getBooleanExtra(EXTRA_FOREGROUND, false)
+        if (foreground == true) {
             startForeground(NotificationUtil.NOTIFICATION_ID, NotificationUtil.getNotification(this))
         }
+        disableDis?.dispose()
         val disableTimeInSec = intent?.getLongExtra(EXTRA_TEMP_DISABLE_SECOND, 0L)
         if (disableTimeInSec != null && disableTimeInSec != 0L) {
             mClipboardManager.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener)
             disableDis = Observable.timer(disableTimeInSec, TimeUnit.SECONDS)
                     .subscribe{ mClipboardManager.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener) }
         }
-        return START_STICKY
+        return START_REDELIVER_INTENT
     }
 
     override fun onCreate() {
@@ -74,11 +75,14 @@ class ListenClipboardService : Service() {
 
     companion object {
         const val EXTRA_TEMP_DISABLE_SECOND = "extra_temp_disable_second"
+        const val EXTRA_FOREGROUND = "extra_foreground"
 
         fun start(context: Context) {
             val pref = MultiprocessPref(context)
+            val foreground = pref.enhancedMode
             val serviceIntent = Intent(context, ListenClipboardService::class.java)
-            if (pref.enhancedMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            serviceIntent.putExtra(EXTRA_FOREGROUND, foreground)
+            if (foreground && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(serviceIntent)
             } else {
                 context.startService(serviceIntent)

@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), MainMvp {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {
-            mainPresenter.restartListenService()
+//            mainPresenter.restartListenService()
         }
     }
 
