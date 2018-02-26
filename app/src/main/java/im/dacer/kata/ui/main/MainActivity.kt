@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity(), MainMvp {
             permissionErrorLayout.visibility = if (canDraw) View.GONE else View.VISIBLE
         }
         nothingHappenedView.visibility = View.GONE
+        invalidateOptionsMenu()
     }
 
     override fun onStop() {
@@ -129,6 +130,11 @@ class MainActivity : AppCompatActivity(), MainMvp {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.lyric)?.isVisible = mainPresenter.showLyricMenu()
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

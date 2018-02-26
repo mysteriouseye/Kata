@@ -29,4 +29,8 @@ public interface Config {
     int getCacheMax();
     void setCacheMax(int max);
 
+    @Default("false")
+    boolean showLyricBtn();
+    void setShowLyricBtn(boolean show);
+
 }

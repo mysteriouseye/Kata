@@ -60,6 +60,8 @@ class MainPresenter(val context: Context, private val mainMvp: MainMvp) : PopupV
 
     }
 
+    fun showLyricMenu(): Boolean = treasure.showLyricBtn()
+
     fun onResume() {
         restartListenService()
         refreshHistoryList()
