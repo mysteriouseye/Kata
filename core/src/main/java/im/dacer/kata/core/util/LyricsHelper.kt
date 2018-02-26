@@ -31,7 +31,7 @@ object LyricsHelper {
                 .jsonObjectObservable
                 .map { return@map it.getJSONObject("lrc")
                         .getString("lyric")
-                        .replace(Regex(pattern = "\\[\\d\\d:\\d\\d.\\d\\d]"), "")}
+                        .replace(Regex(pattern = "\\[\\d\\d:\\d\\d.\\d+]"), "")}
                 .subscribeOn(Schedulers.io())
     }
 }
