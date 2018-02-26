@@ -18,6 +18,8 @@
     <string name="set_alias">Set alias</string>
     <string name="star">Star</string>
 
+    <string name="lyric">Lyric</string>
+
     <string name="about">About</string>
     <string name="description">Kata (片) - A Japanese text segmentation app\n</string>
     <string name="homepage">HomePage</string>

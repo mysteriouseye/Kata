@@ -40,6 +40,11 @@
             android:label="@string/style"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".ui.lyric.LyricActivity"
+            android:label="@string/lyric"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible" />
 
 
         <activity android:name="im.dacer.kata.ui.FloatActivity"

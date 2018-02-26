@@ -23,6 +23,7 @@ import im.dacer.kata.core.extension.toast
 import im.dacer.kata.core.model.History
 import im.dacer.kata.service.ListenClipboardService
 import im.dacer.kata.ui.AboutActivity
+import im.dacer.kata.ui.lyric.LyricActivity
 import im.dacer.kata.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -132,6 +133,9 @@ class MainActivity : AppCompatActivity(), MainMvp {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.lyric -> {
+                startActivity(Intent(this, LyricActivity::class.java))
+            }
             R.id.about -> {
                 startActivity(Intent(this, AboutActivity::class.java))
             }
