@@ -15,17 +15,17 @@ class HistoryHelper {
 
     companion object {
 
-        fun saveAsync(context: Context, string: String) {
+        fun saveAsync(context: Context, string: String, alias: String = "") {
             Observable.fromCallable {
                 val historyDb = HistoryDbHelper(context).writableDatabase
-                HistoryHelper.save(historyDb, string)
+                HistoryHelper.save(historyDb, string, alias)
                 historyDb.close()
             }.subscribeOn(Schedulers.io()).subscribe({}, { Timber.e(it) })
         }
 
-        fun save(db: SQLiteDatabase, text: String) {
+        fun save(db: SQLiteDatabase, text: String, alias: String = "") {
             val insertRow = HistoryModel.Insert_row(db)
-            insertRow.bind(text, "", false, System.currentTimeMillis())
+            insertRow.bind(text, alias, false, System.currentTimeMillis())
             try {
                 insertRow.program.executeInsert()
             } catch (e: Exception) {
