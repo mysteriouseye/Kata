@@ -21,6 +21,8 @@ class LyricActivity : AppCompatActivity() {
     private var searchDisposable: Disposable? = null
     private val adapter: LyricAdapter = LyricAdapter()
     private val progressDialog: MaterialDialog by lazy { MaterialDialog.Builder(this).progress(true, 0).build() }
+    private var pageIndex = 1
+    private var searchKeyWord: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,7 @@ class LyricActivity : AppCompatActivity() {
         adapter.bindToRecyclerView(recyclerView)
         val bottomView = layoutInflater.inflate(R.layout.item_history_bottom, recyclerView.parent as ViewGroup, false)
         adapter.setFooterView(bottomView)
+        adapter.setOnLoadMoreListener({ loadMore() }, recyclerView)
 
         lyricEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -37,6 +40,8 @@ class LyricActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.isNotEmpty()) {
+                    searchKeyWord = s.toString()
+                    pageIndex = 1
                     searchDisposable = LyricsHelper.search(s.toString())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
@@ -66,4 +71,22 @@ class LyricActivity : AppCompatActivity() {
         searchDisposable?.dispose()
     }
 
+    private fun loadMore() {
+        pageIndex++
+        searchKeyWord?.run {
+            searchDisposable = LyricsHelper.search(this, pageIndex)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        if (it.songs?.isNotEmpty() == true) {
+                            adapter.addData(it.songs.toList())
+                            adapter.loadMoreComplete()
+                        } else {
+                            adapter.loadMoreEnd()
+                        }
+                    }, {
+                        timberAndToast(it)
+                        adapter.loadMoreFail()
+                    })
+        }
+    }
 }

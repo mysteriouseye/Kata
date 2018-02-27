@@ -12,12 +12,18 @@ object LyricsHelper {
     private val BASE_URL = "http://music.dacer.im"
     private val SEARCH_URL = "$BASE_URL/search"
     private val LYRIC_URL = "$BASE_URL/lyric"
+    private const val SEARCH_LIMIT = 30
 
 
-    fun search(keywords: String): Observable<MusicSearchResult.Result> {
+    /**
+     * page from 1
+     */
+    fun search(keywords: String, page: Int = 1): Observable<MusicSearchResult.Result> {
         return Rx2AndroidNetworking.get(SEARCH_URL)
                 .addQueryParameter("type", "1")
                 .addQueryParameter("keywords", keywords)
+                .addQueryParameter("limit", SEARCH_LIMIT.toString())
+                .addQueryParameter("offset", (SEARCH_LIMIT * (page - 1)).toString())
                 .build()
                 .getObjectObservable(MusicSearchResult::class.java)
                 .map { return@map it.result }
