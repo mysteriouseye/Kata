@@ -109,6 +109,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         dictDb?.close()
         ttsHelper?.onDestroy()
         segmentDis?.dispose()
+        dictDisposable?.dispose()
     }
 
     @SuppressLint("SetTextI18n")

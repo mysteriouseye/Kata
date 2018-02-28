@@ -18,7 +18,7 @@ import im.dacer.kata.segment.model.KanjiResult
 class FuriganaView @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    var kanjiResult: KanjiResult? = null
+    private var kanjiResult: KanjiResult? = null
 
     private val furiganaPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val normalPaint = Paint(Paint.ANTI_ALIAS_FLAG)

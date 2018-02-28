@@ -89,7 +89,7 @@ class KataLayout @JvmOverloads constructor(
     }
 
     fun reset() {
-        (childCount - 1 downTo 0).map { getChildAt(it) }.forEach { removeView(it) }
+        removeAllViews()
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -134,7 +134,6 @@ class KataLayout @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val widthSize = View.MeasureSpec.getSize(widthMeasureSpec) - paddingLeft - paddingRight
-        val childCount = childCount
         val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
         var newLineCount = 0f
         var childHeight = 0
