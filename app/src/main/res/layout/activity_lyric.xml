@@ -13,7 +13,11 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:id="@+id/lyricEditText"
-            android:hint="@string/lyric"/>
+            android:hint="@string/lyric"
+            android:lines="1"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionSearch"/>
     </android.support.v7.widget.Toolbar>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

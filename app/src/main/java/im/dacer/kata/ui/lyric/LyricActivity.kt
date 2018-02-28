@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import im.dacer.kata.R
 import im.dacer.kata.adapter.LyricAdapter
@@ -30,8 +29,8 @@ class LyricActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter.bindToRecyclerView(recyclerView)
-        val bottomView = layoutInflater.inflate(R.layout.item_history_bottom, recyclerView.parent as ViewGroup, false)
-        adapter.setFooterView(bottomView)
+//        val bottomView = layoutInflater.inflate(R.layout.item_history_bottom, recyclerView.parent as ViewGroup, false)
+//        adapter.setFooterView(bottomView)
         adapter.setOnLoadMoreListener({ loadMore() }, recyclerView)
 
         lyricEditText.addTextChangedListener(object : TextWatcher {
