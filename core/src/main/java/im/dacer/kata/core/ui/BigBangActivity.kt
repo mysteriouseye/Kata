@@ -21,12 +21,15 @@ import im.dacer.kata.core.data.SearchHelper
 import im.dacer.kata.core.extension.getSubtitle
 import im.dacer.kata.core.extension.strForSearch
 import im.dacer.kata.core.extension.timberAndToast
+import im.dacer.kata.core.model.DictEntry
+import im.dacer.kata.core.model.DictReading
 import im.dacer.kata.core.util.LangUtils
 import im.dacer.kata.core.util.TTSHelper
 import im.dacer.kata.core.view.KataLayout
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_big_bang.*
 
@@ -117,6 +120,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
         currentSelectedToken = kanjiResultList?.get(index)
         val strForSearch: String
 
+        pronunciationTv.visibility = View.GONE
         if (currentSelectedToken?.isKnown == true) {
             descTv.text = "[${currentSelectedToken?.baseForm}] ${currentSelectedToken?.getSubtitle()}"
             meaningTv.text = ""
@@ -129,20 +133,42 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
 
         dictDisposable?.dispose()
         dictDisposable = Observable.fromCallable{ searchHelper!!.search(strForSearch) }
-                .flatMap { Observable.fromIterable(it) }
-                .flatMap { langUtils.fetchTranslation(it) }
-                .toList()
-                .map { it.joinToString("\n\n") { "· $it" } }
+                .flatMap {
+                    Observable.zip(
+                            dealWithDictEntryList(it.dictEntryList),
+                            dealWithDictReadingList(it.dictReadingList),
+                            BiFunction<String, String, CombinedResult> { meaningStr, readingStr -> CombinedResult(meaningStr, readingStr) }
+                    )
+                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    if (it.isBlank()) {
-                        meaningTv.text = getString(R.string.not_found_error, strForSearch)
-                    } else {
-                        meaningTv.text = it
+                    val meaningStr = it.meaningStr
+                    meaningTv.text = if (meaningStr.isBlank()) {
+                        getString(R.string.not_found_error, strForSearch)
+                    } else { meaningStr }
+
+                    val readingStr = it.readingStr
+                    if (readingStr.isNotEmpty()) {
+                        pronunciationTv.visibility = View.VISIBLE
+                        pronunciationTv.text = readingStr
                     }
                 }, { timberAndToast(it) })
     }
+
+    private fun dealWithDictEntryList(dictEntryList: List<DictEntry>): Observable<String> {
+        return Observable.fromIterable(dictEntryList)
+                .flatMap { langUtils.fetchTranslation(it) }
+                .toList()
+                .map { it.joinToString("\n\n") { "· $it" } }
+                .toObservable()
+    }
+
+    private fun dealWithDictReadingList(dictReadingList: List<DictReading>?): Observable<String> {
+        return Observable.fromCallable { dictReadingList?.joinToString(",") {it.reading() ?: ""} ?: "" }
+    }
+
+    private data class CombinedResult(val meaningStr: String, val readingStr: String)
 
     private fun refreshIconStatus() {
         eyeBtn.text = if (kataLayout.showFurigana) "{gmd-visibility}" else "{gmd-visibility-off}"
@@ -185,6 +211,7 @@ class BigBangActivity : AppCompatActivity(), KataLayout.ItemClickListener {
     private fun resetTopLayout() {
         descTv.text = ""
         meaningTv.text = ""
+        pronunciationTv.visibility = View.GONE
     }
 
     companion object {

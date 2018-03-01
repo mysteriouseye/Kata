@@ -1,6 +1,7 @@
 package im.dacer.kata.core.data
 
 import android.database.sqlite.SQLiteDatabase
+import im.dacer.kata.core.model.BigbangSearchResult
 import im.dacer.kata.core.model.DictEntry
 import im.dacer.kata.core.model.DictKanji
 import im.dacer.kata.core.model.DictReading
@@ -10,13 +11,19 @@ import im.dacer.kata.core.model.DictReading
  */
 class SearchHelper(private val db: SQLiteDatabase) {
 
-    fun search(text: String): List<DictEntry> {
-        val idInEntryList = if (kanjiInside(text)) {
+    fun search(text: String): BigbangSearchResult {
+        val isKanjiInside = kanjiInside(text)
+        var dictReadingList: List<DictReading>? = null
+        val idInEntryList = if (isKanjiInside) {
             searchKanji(text)
         } else {
             searchReading(text)
         }
-        return idInEntryList.mapNotNull { it?.let { it1 -> searchEntry(it1) } }
+        val dictEntryList = idInEntryList.mapNotNull { it?.let { it1 -> searchEntry(it1) } }
+        if (isKanjiInside) {
+            dictReadingList = dictEntryList.flatMap { searchReading(it.id()) }
+        }
+        return BigbangSearchResult(dictEntryList, dictReadingList)
     }
 
     fun searchReading(entryId: Long): List<DictReading> {
@@ -66,4 +73,5 @@ class SearchHelper(private val db: SQLiteDatabase) {
     private fun kanjiInside(text: String): Boolean {
         return text.matches(Regex(".*[\\u4e00-\\u9faf]+.*"))
     }
+
 }
