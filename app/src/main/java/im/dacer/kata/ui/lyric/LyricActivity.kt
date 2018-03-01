@@ -41,6 +41,7 @@ class LyricActivity : AppCompatActivity() {
                 if (s.isNotEmpty()) {
                     searchKeyWord = s.toString()
                     pageIndex = 1
+                    searchDisposable?.dispose()
                     searchDisposable = LyricsHelper.search(s.toString())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
